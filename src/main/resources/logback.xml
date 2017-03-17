@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<!-- 控制台日志输出设置 -->
+	<appender name="CONSOLE-APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d [%t] %-5p [%c:%L] - %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 按时间滚动的策略显示日志 -->
+	<appender name="FILE-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/org-li.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/org-li-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<!-- 每个日志文件最大10M -->
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d [%t] %-5p [%c:%L] - %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.li" level="DEBUG" />
+
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE-APPENDER" />
+		<appender-ref ref="FILE-APPENDER" />
+	</root>
+
+</configuration>

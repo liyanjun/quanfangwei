@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- author:   liyanjun,  date:    2017-3-14 15:49:48,    -->
+
+<mapper namespace="org.li.module.dao.impl.UserDaoImpl">
+    <resultMap id="BaseResultMap" type="org.li.module.bean.User">
+        <result property="id" jdbcType="BIGINT" column="id"/>
+        <result property="name" jdbcType="VARCHAR" column="name"/>
+        <result property="age" jdbcType="INTEGER" column="age"/>
+        <result property="createTime" jdbcType="TIMESTAMP" column="create_time"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		id,
+		name,
+		age,
+		create_time	
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where
+        id = #{id}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user
+    where  
+			id = #{id} 		
+  </delete>
+    <insert id="insert" parameterType="org.li.module.bean.User" useGeneratedKeys="true" keyProperty="id">
+        insert into user (
+        <include refid="Base_Column_List"/>
+        )
+        values (
+        null,<!--主键自动生成  -->
+        #{name},
+        #{age},
+        now(),<!--生成日期  -->
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="org.li.module.bean.User" useGeneratedKeys="true" keyProperty="id">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test=" id != null">
+                id,
+            </if>
+            <if test=" name != null">
+                name,
+            </if>
+            <if test=" age != null">
+                age,
+            </if>
+            <if test=" createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test=" id != null">
+                #{id},
+            </if>
+            <if test=" name != null">
+                #{name},
+            </if>
+            <if test=" age != null">
+                #{age},
+            </if>
+            <if test=" createTime != null">
+                #{createTime},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.li.module.bean.User">
+        UPDATE user
+        <set>
+            <if test="name!=null">
+                name = #{name},
+            </if>
+            <if test="age!=null">
+                age = #{age},
+            </if>
+            <if test="createTime!=null">
+                create_time = #{createTime},
+            </if>
+        </set>
+        WHERE
+        id = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.li.module.bean.User">
+    update user set 
+			name = #{name},
+			age = #{age},
+			create_time = #{createTime}		
+    where 
+			id = #{id} 		
+  </update>
+
+    <!--查询条件-->
+    <sql id="selectCondition">
+        <where>
+            <trim suffixOverrides="and">
+                <if test=" entity != null">
+                    <if test="entity.id!=null">
+                        and id=#{entity.id}
+                    </if>
+                    <if test="entity.name!=null">
+                        and name=#{entity.name}
+                    </if>
+                </if>
+            </trim>
+            <trim suffixOverrides="and">
+                <if test="whereSql!=null">
+                    and ${whereSql}
+                </if>
+            </trim>
+        </where>
+    </sql>
+
+    <!-- 根据条件查询 -->
+    <select id="getListByEntityAndPageInfo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        <include refid="selectCondition"/>
+        <if test="orderBy!=null">
+            ${orderBy}
+        </if>
+        <if test="pageInfo!=null">
+            limit ${pageInfo.pagesize} offset ${pageInfo.startIndex}
+        </if>
+    </select>
+
+    <!-- 查询总数 -->
+    <select id="getTotalByEntity" resultType="java.lang.Integer">
+        select count(*) from user
+        <include refid="selectCondition"/>
+    </select>
+
+</mapper>
