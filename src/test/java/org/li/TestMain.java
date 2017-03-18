@@ -15,6 +15,5 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class TestMain {
     @Test
     public void testMain() throws InterruptedException {
-        Thread.sleep(1000000);
     }
 }

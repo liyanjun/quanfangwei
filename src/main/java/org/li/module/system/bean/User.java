@@ -1,4 +1,4 @@
-package org.li.module.bean;
+package org.li.module.system.bean;
 
 import org.li.common.base.bean.BaseEntity;
 

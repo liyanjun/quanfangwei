@@ -1,10 +1,10 @@
 
-package org.li.module.service;
+package org.li.module.system.service;
 
 
 import org.li.common.base.page.PageInfo;
 import org.li.common.base.page.PagerControl;
-import org.li.module.bean.User;
+import org.li.module.system.bean.User;
 
 /**
  * 

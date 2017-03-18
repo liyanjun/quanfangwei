@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<!-- author:   liyanjun,  date:    2017-3-14 15:49:48,    -->
+<!-- author:   liyanjun,  data:    2017-3-14 15:49:48,    -->
 
-<mapper namespace="org.li.module.dao.impl.UserDaoImpl">
-    <resultMap id="BaseResultMap" type="org.li.module.bean.User">
+<mapper namespace="org.li.module.system.dao.impl.UserDaoImpl">
+    <resultMap id="BaseResultMap" type="org.li.module.system.bean.User">
         <result property="id" jdbcType="BIGINT" column="id"/>
         <result property="name" jdbcType="VARCHAR" column="name"/>
         <result property="age" jdbcType="INTEGER" column="age"/>
@@ -28,7 +28,7 @@
     where  
 			id = #{id} 		
   </delete>
-    <insert id="insert" parameterType="org.li.module.bean.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="org.li.module.system.bean.User" useGeneratedKeys="true" keyProperty="id">
         insert into user (
         <include refid="Base_Column_List"/>
         )
@@ -39,7 +39,7 @@
         now(),<!--生成日期  -->
         )
     </insert>
-    <insert id="insertSelective" parameterType="org.li.module.bean.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertSelective" parameterType="org.li.module.system.bean.User" useGeneratedKeys="true" keyProperty="id">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test=" id != null">
@@ -70,7 +70,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="org.li.module.bean.User">
+    <update id="updateByPrimaryKeySelective" parameterType="org.li.module.system.bean.User">
         UPDATE user
         <set>
             <if test="name!=null">
@@ -86,7 +86,7 @@
         WHERE
         id = #{id}
     </update>
-    <update id="updateByPrimaryKey" parameterType="org.li.module.bean.User">
+    <update id="updateByPrimaryKey" parameterType="org.li.module.system.bean.User">
     update user set 
 			name = #{name},
 			age = #{age},

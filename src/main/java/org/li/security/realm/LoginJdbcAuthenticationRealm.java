@@ -1,8 +1,5 @@
 package org.li.security.realm;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.codec.digest.UnixCrypt;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
@@ -10,8 +7,8 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.li.module.bean.User;
-import org.li.module.service.UserService;
+import org.li.module.system.bean.User;
+import org.li.module.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
@@ -21,14 +18,14 @@ import java.util.Collection;
  * 认证（登录）类，用于 apache shiro 在执行认证（登录）时，通过该类对登录信息认证（登录）是否通过。
  *
  */
-public class AdminJdbcAuthenticationRealm extends AuthorizingRealm {
+public class LoginJdbcAuthenticationRealm extends AuthorizingRealm {
 
     @Autowired
     private UserService userService;
 
     @Override
     public boolean supports(AuthenticationToken token) {
-        if(token instanceof AdminToken){
+        if(token instanceof LoginToken){
             return true;
         }
         return super.supports(token);
@@ -72,7 +69,7 @@ public class AdminJdbcAuthenticationRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        AdminToken adminToken = (AdminToken) token;
+        LoginToken adminToken = (LoginToken) token;
 
         String username = adminToken.getUsername();
         User user = userService.findByUserName(username);
@@ -83,6 +80,7 @@ public class AdminJdbcAuthenticationRealm extends AuthorizingRealm {
         if (!user.getStatus().equals("QY")) {
             throw new DisabledAccountException("账户已经被锁定");
         }*/
+        //todo 校验密码
         return new SimpleAuthenticationInfo(adminToken.getPrincipal(), adminToken.getCredentials(), getName());
     }
 
@@ -96,9 +94,6 @@ public class AdminJdbcAuthenticationRealm extends AuthorizingRealm {
         return new SimpleCredentialsMatcher() {
             @Override
             public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
-                String password = new String(toBytes(token.getCredentials()));
-                String source = new String(toBytes(info.getCredentials()));
-//                return StringUtils.equals(UnixCrypt.crypt(password, DigestUtils.sha256Hex(password)),source);
                 return true;
             }
         };

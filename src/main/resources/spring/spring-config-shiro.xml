@@ -9,7 +9,7 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 	<!-- Realm实现 -->
-	<bean id="adminRealm" class="org.li.security.realm.AdminJdbcAuthenticationRealm"></bean>
+	<bean id="adminRealm" class="org.li.security.realm.LoginJdbcAuthenticationRealm"></bean>
 	<!--<bean id="statelessRealm" class="org.li.security.realm.StatelessRealm">
 		<property name="cachingEnabled" value="false"/>
 	</bean>-->
@@ -37,7 +37,7 @@
 	</bean>-->
 
 	<!--<bean id="statelessAuthcFilter" class="org.li.security.filter.StatelessAuthcFilter"/>-->
-	<bean id="adminAuthcFilter" class="org.li.security.filter.AdminAuthcFilter"/>
+	<bean id="adminAuthcFilter" class="org.li.security.filter.LoginAuthcFilter"/>
 
 	<!-- Shiro的Web过滤器 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">

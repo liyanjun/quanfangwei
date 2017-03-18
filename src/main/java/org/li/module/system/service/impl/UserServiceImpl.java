@@ -1,11 +1,11 @@
 
-package org.li.module.service.impl;
+package org.li.module.system.service.impl;
 
 import org.li.common.base.page.PageInfo;
 import org.li.common.base.page.PagerControl;
-import org.li.module.bean.User;
-import org.li.module.dao.UserDao;
-import org.li.module.service.UserService;
+import org.li.module.system.bean.User;
+import org.li.module.system.dao.UserDao;
+import org.li.module.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

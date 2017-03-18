@@ -1,9 +1,9 @@
 
-package org.li.module.dao;
+package org.li.module.system.dao;
 
 
 import org.li.common.base.dao.IDao;
-import org.li.module.bean.User;
+import org.li.module.system.bean.User;
 
 /**
  * 

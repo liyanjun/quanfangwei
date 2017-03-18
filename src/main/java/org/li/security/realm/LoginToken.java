@@ -9,12 +9,12 @@ import java.util.Map;
  * <p>Date: 14-2-26
  * <p>Version: 1.0
  */
-public class AdminToken implements AuthenticationToken {
+public class LoginToken implements AuthenticationToken {
 
     private String username;
     private String password;
 
-    public AdminToken(String username, String password) {
+    public LoginToken(String username, String password) {
         this.username = username;
         this.password = password;
     }

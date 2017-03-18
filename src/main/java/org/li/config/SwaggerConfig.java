@@ -42,8 +42,8 @@ public class SwaggerConfig {
     private ApiInfo apiInfo()
     {
         ApiInfo apiInfo = new ApiInfo(
-                "My Apps API Title",
-                "My Apps API Description",
+                "全方卫士接口文档",
+                "接口文档主要分为三个部分，系统部分，用户部分，管理员部分",
                 "My Apps API terms of service",
                 "My Apps API Contact Email",
                 "My Apps API Licence Type",

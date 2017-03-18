@@ -1,9 +1,9 @@
 
-package org.li.module.dao.impl;
+package org.li.module.system.dao.impl;
 
 import org.li.common.base.dao.BaseDao;
-import org.li.module.bean.User;
-import org.li.module.dao.UserDao;
+import org.li.module.system.bean.User;
+import org.li.module.system.dao.UserDao;
 import org.springframework.stereotype.Repository;
 
 /**
