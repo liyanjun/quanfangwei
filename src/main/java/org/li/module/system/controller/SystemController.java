@@ -45,7 +45,7 @@ public class SystemController {
     @RequestMapping("login")
     @ApiOperation(value = "用户登陆", httpMethod = "POST", response = org.li.common.vo.Result.class, notes = "用户登陆")
     public Result login(@ApiParam(required = true, name = "phone", value = "用户输入的手机号") @RequestParam String phone,
-                           @ApiParam(required = true, name = "password", value = "验证码") @RequestParam String password) {
+                        @ApiParam(required = true, name = "password", value = "验证码") @RequestParam String password) {
         //todo 校验密码
         String token = CryptographyUtil.md5(phone + password,"quanfangwei");
         EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE,token,phone);

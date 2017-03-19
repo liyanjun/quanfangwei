@@ -3,10 +3,7 @@ package org.li.module.admin.controller;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.li.common.vo.Result;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 管理员接口
@@ -19,14 +16,14 @@ public class AdminController {
     @ResponseBody
     @RequestMapping("findPerson")
     @ApiOperation(value = "查询管理员辖内人员", httpMethod = "POST", response = Result.class, notes = "查询管理员辖内人员")
-    public Result findPerson() {
+    public Result findPerson(@RequestHeader String token) {
         return Result.success("查询管理员辖内人员成功");
     }
 
     @ResponseBody
     @RequestMapping("findBuilding")
     @ApiOperation(value = "查询管理员所管理的楼栋住房", httpMethod = "POST", response = Result.class, notes = "查询管理员所管理的楼栋住房")
-    public Result findBuilding() {
+    public Result findBuilding(@RequestHeader String token) {
         return Result.success("查询管理员所管理的楼栋住房成功");
     }
 
@@ -44,14 +41,16 @@ public class AdminController {
                             @ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone,
                             @ApiParam(required = true, name = "addressId", value = "楼栋住房ID") @RequestParam String addressId,
                             @ApiParam(required = true, name = "beginTime", value = "有效期开始时间") @RequestParam String beginTime,
-                            @ApiParam(required = true, name = "endTime", value = "有效期结束时间") @RequestParam String endTime) {
+                            @ApiParam(required = true, name = "endTime", value = "有效期结束时间") @RequestParam String endTime,
+                            @RequestHeader String token) {
         return Result.success("新增用户成功");
     }
 
     @ResponseBody
     @RequestMapping("deletePerson")
     @ApiOperation(value = "删除用户", httpMethod = "POST", response = Result.class, notes = "删除用户")
-    public Result deletePerson(@ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone) {
+    public Result deletePerson(@ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone,
+                               @RequestHeader String token) {
         return Result.success("删除用户成功");
     }
 
@@ -61,7 +60,8 @@ public class AdminController {
     public Result editPerson(@ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone,
                              @ApiParam(required = true, name = "addressId", value = "楼栋住房ID") @RequestParam String addressId,
                              @ApiParam(required = true, name = "beginTime", value = "有效期开始时间") @RequestParam String beginTime,
-                             @ApiParam(required = true, name = "endTime", value = "有效期结束时间") @RequestParam String endTime) {
+                             @ApiParam(required = true, name = "endTime", value = "有效期结束时间") @RequestParam String endTime,
+                             @RequestHeader String token) {
         return Result.success("编辑用户成功");
     }
 }
