@@ -18,16 +18,15 @@ public class UserBizController {
 
     @ResponseBody
     @RequestMapping("createQRCode")
-    @ApiOperation(value = "二维码生成", httpMethod = "POST", response = Result.class, notes = "业主或者管理员用户生成门禁二维码")
-    public Result createQRCode(@ApiParam(required = true, name = "phone", value = "用户输入的手机号") @RequestParam String phone) {
+    @ApiOperation(value = "二维码生成", httpMethod = "POST", response = Result.class, notes = "生成门禁二维码")
+    public Result createQRCode() {
         return Result.success("二维码生成成功");
     }
 
     @ResponseBody
     @RequestMapping("createVisitorQRCode")
     @ApiOperation(value = "访客二维码生成", httpMethod = "POST", response = Result.class, notes = "业主或者管理员用户生成访客门禁二维码")
-    public Result createVisitorQRCode(@ApiParam(required = true, name = "phone", value = "用户输入的手机号") @RequestParam String phone,
-                                      @ApiParam(required = true, name = "name", value = "用户名") @RequestParam String name,
+    public Result createVisitorQRCode(@ApiParam(required = true, name = "name", value = "访客名") @RequestParam String name,
                                       @ApiParam(required = true, name = "visitorPhone", value = "访客的手机号") @RequestParam String visitorPhone,
                                       @ApiParam(required = true, name = "visitorDate", value = "访问日期（年月日，如2016-03-16）") @RequestParam String visitorDate) {
         return Result.success("访客二维码生成成功");
@@ -36,16 +35,22 @@ public class UserBizController {
     @ResponseBody
     @RequestMapping("findDev")
     @ApiOperation(value = "查询用户可用门禁设备", httpMethod = "POST", response = Result.class, notes = "查询用户可用门禁设备")
-    public Result findDev(@ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone) {
+    public Result findDev() {
         return Result.success("查询用户可用门禁设备成功");
     }
 
     @ResponseBody
     @RequestMapping("open")
     @ApiOperation(value = "开门", httpMethod = "POST", response = Result.class, notes = "业主或者管理员选择设备开门")
-    public Result open(@ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone,
-                                      @ApiParam(required = true, name = "devId", value = "设备Id") @RequestParam String devId) {
+    public Result open(@ApiParam(required = true, name = "devId", value = "设备Id") @RequestParam String devId) {
         return Result.success("开门成功");
+    }
+
+    @ResponseBody
+    @RequestMapping("findDev")
+    @ApiOperation(value = "查询访客记录", httpMethod = "POST", response = Result.class, notes = "查询访客记录")
+    public Result findVisitRecord() {
+        return Result.success("查询访客记录成功");
     }
 
 }

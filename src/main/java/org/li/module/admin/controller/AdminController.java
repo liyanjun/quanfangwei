@@ -19,14 +19,14 @@ public class AdminController {
     @ResponseBody
     @RequestMapping("findPerson")
     @ApiOperation(value = "查询管理员辖内人员", httpMethod = "POST", response = Result.class, notes = "查询管理员辖内人员")
-    public Result findPerson(@ApiParam(required = true, name = "userId", value = "管理员用户Id") @RequestParam String userId) {
+    public Result findPerson() {
         return Result.success("查询管理员辖内人员成功");
     }
 
     @ResponseBody
     @RequestMapping("findBuilding")
     @ApiOperation(value = "查询管理员所管理的楼栋住房", httpMethod = "POST", response = Result.class, notes = "查询管理员所管理的楼栋住房")
-    public Result findBuilding(@ApiParam(required = true, name = "userId", value = "管理员用户Id") @RequestParam String userId) {
+    public Result findBuilding() {
         return Result.success("查询管理员所管理的楼栋住房成功");
     }
 
