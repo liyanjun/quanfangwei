@@ -12,11 +12,20 @@
     </defaultCache>
 
     <cache name="login-cache"
-           maxElementsInMemory="20"
+           maxElementsInMemory="1000"
            overflowToDisk="false"
            eternal="false"
            timeToIdleSeconds="172800"
            timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"
+           transactionalMode="off"
+    >
+    <cache name="captcha-cache"
+           maxElementsInMemory="1000"
+           overflowToDisk="false"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="600000"
            memoryStoreEvictionPolicy="LRU"
            transactionalMode="off"
     >

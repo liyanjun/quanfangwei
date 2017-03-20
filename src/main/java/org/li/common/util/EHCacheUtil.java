@@ -10,6 +10,7 @@ import net.sf.ehcache.Element;
  */
 public class EHCacheUtil {
     public static String LOGIN_CACHE = "login-cache";
+    public static String CAPTCHA_CACHE = "captcha-cache";
     public static EHCacheUtil instance = null;
     public static CacheManager manager;
 

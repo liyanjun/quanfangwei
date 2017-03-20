@@ -6,8 +6,11 @@ import org.li.common.base.page.PagerControl;
 import org.li.module.lingling.bean.SvOwner;
 import org.li.module.lingling.dao.SvOwnerDao;
 import org.li.module.lingling.service.SvOwnerService;
+import org.li.module.user.bean.SvDevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 业主信息表
@@ -21,30 +24,14 @@ public class SvOwnerServiceImpl implements SvOwnerService {
     @Autowired
     private SvOwnerDao svOwnerDao;
 
-    public Integer insertSvOwner(SvOwner svOwner) {
-        if (svOwner == null) {
-            return 0;
-        }
-
-        Integer i = svOwnerDao.insert(svOwner);
-        return i;
+    @Override
+    public SvOwner findLingLingUserInfo(String phone) {
+        return svOwnerDao.findLingLingUserInfo(phone);
     }
 
-    public Integer updateSvOwner(SvOwner svOwner) {
-        if (svOwner == null) {
-            return 0;
-        }
-
-        Integer i = svOwnerDao.update(svOwner);
-        return i;
-    }
-
-    public PagerControl<SvOwner> page(SvOwner svOwner, PageInfo pageInfo, String whereSql, String orderSql) {
-        return svOwnerDao.getPagerByObj(svOwner, pageInfo, whereSql, orderSql);
-    }
-
-    public SvOwner find(Integer id) {
-        return svOwnerDao.getEntityById(id);
+    @Override
+    public List<SvDevice> findUserDevices(Integer owner_id) {
+        return svOwnerDao.findUserDevices(owner_id);
     }
 
 }

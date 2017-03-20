@@ -1,6 +1,7 @@
 package org.li.module.system.bean;
 
 import org.li.common.base.bean.BaseEntity;
+import org.li.module.lingling.bean.SvOwner;
 
 import java.sql.Timestamp;
 
@@ -26,7 +27,7 @@ public class SystemUser extends BaseEntity {
     /**
      * lingling_id
      */
-    private Integer linglingId;
+    private String linglingId;
 
     /**
      * 密码
@@ -121,6 +122,11 @@ public class SystemUser extends BaseEntity {
     public SystemUser() {
     }
 
+    public SystemUser(String phone, String password) {
+        this.phone = phone;
+        this.password = password;
+    }
+
     public SystemUser(Integer id) {
         this.id = id;
     }
@@ -149,11 +155,11 @@ public class SystemUser extends BaseEntity {
         return this.ownerId;
     }
 
-    public void setLinglingId(Integer value) {
+    public void setLinglingId(String value) {
         this.linglingId = value;
     }
 
-    public Integer getLinglingId() {
+    public String getLinglingId() {
         return this.linglingId;
     }
 
@@ -309,5 +315,11 @@ public class SystemUser extends BaseEntity {
         return this.isDel;
     }
 
+    public void setValue(SvOwner value) {
+        //TODO 赋值
+        this.ownerId = value.getOwnerId();
+        this.linglingId = value.getLinglingId();
+
+    }
 }
 

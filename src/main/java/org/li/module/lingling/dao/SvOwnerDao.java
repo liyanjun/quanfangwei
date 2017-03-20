@@ -2,6 +2,9 @@
 package org.li.module.lingling.dao;
 import org.li.common.base.dao.IDao;
 import org.li.module.lingling.bean.SvOwner;
+import org.li.module.user.bean.SvDevice;
+
+import java.util.List;
 
 /**
  * 业主信息表
@@ -10,4 +13,7 @@ import org.li.module.lingling.bean.SvOwner;
  */
 public interface SvOwnerDao extends IDao<Integer, SvOwner> {
 
+    SvOwner findLingLingUserInfo(String phone);
+
+    List<SvDevice> findUserDevices(Integer owner_id);
 }

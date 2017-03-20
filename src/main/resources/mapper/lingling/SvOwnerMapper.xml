@@ -3,460 +3,60 @@
 
 <!-- author:   liyanjun,  date:    2017-3-20 10:52:44,    业主信息表-->
 
-<mapper namespace="org.li.module.lingling.dao.impl.SvOwnerDaoImpl" >
-  <resultMap id="BaseResultMap" type="org.li.module.lingling.bean.SvOwner" >
-		<result property="ownerId" jdbcType="INTEGER" column="owner_id"/>
-		<result property="parentId" jdbcType="INTEGER" column="parent_id"/>
-		<result property="regcode" jdbcType="VARCHAR" column="regcode"/>
-		<result property="ownerName" jdbcType="VARCHAR" column="owner_name"/>
-		<result property="ownerTelephone" jdbcType="VARCHAR" column="owner_telephone"/>
-		<result property="weixinId" jdbcType="VARCHAR" column="weixin_id"/>
-		<result property="regTime" jdbcType="TIMESTAMP" column="reg_time"/>
-		<result property="regEffecDay" jdbcType="INTEGER" column="reg_effec_day"/>
-		<result property="firstLoginTime" jdbcType="TIMESTAMP" column="first_login_time"/>
-		<result property="useEffecDay" jdbcType="INTEGER" column="use_effec_day"/>
-		<result property="status" jdbcType="INTEGER" column="status"/>
-		<result property="residentialId" jdbcType="INTEGER" column="residential_id"/>
-		<result property="callId" jdbcType="VARCHAR" column="call_id"/>
-		<result property="terminalType" jdbcType="INTEGER" column="terminal_type"/>
-		<result property="note" jdbcType="VARCHAR" column="note"/>
-		<result property="linglingId" jdbcType="VARCHAR" column="lingling_id"/>
-		<result property="visitorAuthority" jdbcType="INTEGER" column="visitor_authority"/>
-		<result property="ownerGender" jdbcType="INTEGER" column="owner_gender"/>
-		<result property="ownerRace" jdbcType="VARCHAR" column="owner_race"/>
-		<result property="ownerBirthday" jdbcType="TIMESTAMP" column="owner_birthday"/>
-		<result property="ownerCensusAddr" jdbcType="VARCHAR" column="owner_census_addr"/>
-		<result property="ownerIdenNumber" jdbcType="VARCHAR" column="owner_iden_number"/>
-		<result property="idenImgId" jdbcType="INTEGER" column="iden_img_id"/>
-		<result property="phoneImei" jdbcType="VARCHAR" column="phone_IMEI"/>
-		<result property="longitude" jdbcType="DOUBLE" column="longitude"/>
-		<result property="latitude" jdbcType="DOUBLE" column="latitude"/>
-		<result property="ownerPolice" jdbcType="VARCHAR" column="owner_police"/>
-		<result property="ownerActiveFrom" jdbcType="VARCHAR" column="owner_active_from"/>
-		<result property="ownerActiveTo" jdbcType="VARCHAR" column="owner_active_to"/>
-  </resultMap>
-  <sql id="Base_Column_List" >
-		owner_id,
-		parent_id,
-		regcode,
-		owner_name,
-		owner_telephone,
-		weixin_id,
-		reg_time,
-		reg_effec_day,
-		first_login_time,
-		use_effec_day,
-		status,
-		residential_id,
-		call_id,
-		terminal_type,
-		note,
-		lingling_id,
-		visitor_authority,
-		owner_gender,
-		owner_race,
-		owner_birthday,
-		owner_census_addr,
-		owner_iden_number,
-		iden_img_id,
-		phone_IMEI,
-		longitude,
-		latitude,
-		owner_police,
-		owner_active_from,
-		owner_active_to	
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from sv_owner
-    where  
-			owner_id = #{ownerId} 		
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from sv_owner
-    where  
-			owner_id = #{ownerId} 		
-  </delete>
-  <insert id="insert" parameterType="org.li.module.lingling.bean.SvOwner" useGeneratedKeys="true" keyProperty="ownerId">
-    insert into sv_owner (<include refid="Base_Column_List" />
-      )
-    values (
-	        null,<!--主键自动生成  -->
-			#{parentId},
-			#{regcode},
-			#{ownerName},
-			#{ownerTelephone},
-			#{weixinId},
-			#{regTime},
-			#{regEffecDay},
-			#{firstLoginTime},
-			#{useEffecDay},
-			#{status},
-			#{residentialId},
-			#{callId},
-			#{terminalType},
-			#{note},
-			#{linglingId},
-			#{visitorAuthority},
-			#{ownerGender},
-			#{ownerRace},
-			#{ownerBirthday},
-			#{ownerCensusAddr},
-			#{ownerIdenNumber},
-			#{idenImgId},
-			#{phoneImei},
-			#{longitude},
-			#{latitude},
-			#{ownerPolice},
-			#{ownerActiveFrom},
-			#{ownerActiveTo}      )
-  </insert>
-  <insert id="insertSelective" parameterType="org.li.module.lingling.bean.SvOwner" useGeneratedKeys="true" keyProperty="ownerId">
-    insert into sv_owner
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-    		<if test=" ownerId != null" >
-	        	owner_id,
-	        </if>
-    		<if test=" parentId != null" >
-	        	parent_id,
-	        </if>
-    		<if test=" regcode != null" >
-	        	regcode,
-	        </if>
-    		<if test=" ownerName != null" >
-	        	owner_name,
-	        </if>
-    		<if test=" ownerTelephone != null" >
-	        	owner_telephone,
-	        </if>
-    		<if test=" weixinId != null" >
-	        	weixin_id,
-	        </if>
-    		<if test=" regTime != null" >
-	        	reg_time,
-	        </if>
-    		<if test=" regEffecDay != null" >
-	        	reg_effec_day,
-	        </if>
-    		<if test=" firstLoginTime != null" >
-	        	first_login_time,
-	        </if>
-    		<if test=" useEffecDay != null" >
-	        	use_effec_day,
-	        </if>
-    		<if test=" status != null" >
-	        	status,
-	        </if>
-    		<if test=" residentialId != null" >
-	        	residential_id,
-	        </if>
-    		<if test=" callId != null" >
-	        	call_id,
-	        </if>
-    		<if test=" terminalType != null" >
-	        	terminal_type,
-	        </if>
-    		<if test=" note != null" >
-	        	note,
-	        </if>
-    		<if test=" linglingId != null" >
-	        	lingling_id,
-	        </if>
-    		<if test=" visitorAuthority != null" >
-	        	visitor_authority,
-	        </if>
-    		<if test=" ownerGender != null" >
-	        	owner_gender,
-	        </if>
-    		<if test=" ownerRace != null" >
-	        	owner_race,
-	        </if>
-    		<if test=" ownerBirthday != null" >
-	        	owner_birthday,
-	        </if>
-    		<if test=" ownerCensusAddr != null" >
-	        	owner_census_addr,
-	        </if>
-    		<if test=" ownerIdenNumber != null" >
-	        	owner_iden_number,
-	        </if>
-    		<if test=" idenImgId != null" >
-	        	iden_img_id,
-	        </if>
-    		<if test=" phoneImei != null" >
-	        	phone_IMEI,
-	        </if>
-    		<if test=" longitude != null" >
-	        	longitude,
-	        </if>
-    		<if test=" latitude != null" >
-	        	latitude,
-	        </if>
-    		<if test=" ownerPolice != null" >
-	        	owner_police,
-	        </if>
-    		<if test=" ownerActiveFrom != null" >
-	        	owner_active_from,
-	        </if>
-    		<if test=" ownerActiveTo != null" >
-	        	owner_active_to,
-	        </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-    		<if test=" ownerId != null" >
-	        	#{ownerId},
-	        </if>
-    		<if test=" parentId != null" >
-	        	#{parentId},
-	        </if>
-    		<if test=" regcode != null" >
-	        	#{regcode},
-	        </if>
-    		<if test=" ownerName != null" >
-	        	#{ownerName},
-	        </if>
-    		<if test=" ownerTelephone != null" >
-	        	#{ownerTelephone},
-	        </if>
-    		<if test=" weixinId != null" >
-	        	#{weixinId},
-	        </if>
-    		<if test=" regTime != null" >
-	        	#{regTime},
-	        </if>
-    		<if test=" regEffecDay != null" >
-	        	#{regEffecDay},
-	        </if>
-    		<if test=" firstLoginTime != null" >
-	        	#{firstLoginTime},
-	        </if>
-    		<if test=" useEffecDay != null" >
-	        	#{useEffecDay},
-	        </if>
-    		<if test=" status != null" >
-	        	#{status},
-	        </if>
-    		<if test=" residentialId != null" >
-	        	#{residentialId},
-	        </if>
-    		<if test=" callId != null" >
-	        	#{callId},
-	        </if>
-    		<if test=" terminalType != null" >
-	        	#{terminalType},
-	        </if>
-    		<if test=" note != null" >
-	        	#{note},
-	        </if>
-    		<if test=" linglingId != null" >
-	        	#{linglingId},
-	        </if>
-    		<if test=" visitorAuthority != null" >
-	        	#{visitorAuthority},
-	        </if>
-    		<if test=" ownerGender != null" >
-	        	#{ownerGender},
-	        </if>
-    		<if test=" ownerRace != null" >
-	        	#{ownerRace},
-	        </if>
-    		<if test=" ownerBirthday != null" >
-	        	#{ownerBirthday},
-	        </if>
-    		<if test=" ownerCensusAddr != null" >
-	        	#{ownerCensusAddr},
-	        </if>
-    		<if test=" ownerIdenNumber != null" >
-	        	#{ownerIdenNumber},
-	        </if>
-    		<if test=" idenImgId != null" >
-	        	#{idenImgId},
-	        </if>
-    		<if test=" phoneImei != null" >
-	        	#{phoneImei},
-	        </if>
-    		<if test=" longitude != null" >
-	        	#{longitude},
-	        </if>
-    		<if test=" latitude != null" >
-	        	#{latitude},
-	        </if>
-    		<if test=" ownerPolice != null" >
-	        	#{ownerPolice},
-	        </if>
-    		<if test=" ownerActiveFrom != null" >
-	        	#{ownerActiveFrom},
-	        </if>
-    		<if test=" ownerActiveTo != null" >
-	        	#{ownerActiveTo},
-	        </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="org.li.module.lingling.bean.SvOwner" >
-	UPDATE sv_owner 
-		<set>
-				<if test="parentId!=null">
-					parent_id = #{parentId},
-				</if>
-				<if test="regcode!=null">
-					regcode = #{regcode},
-				</if>
-				<if test="ownerName!=null">
-					owner_name = #{ownerName},
-				</if>
-				<if test="ownerTelephone!=null">
-					owner_telephone = #{ownerTelephone},
-				</if>
-				<if test="weixinId!=null">
-					weixin_id = #{weixinId},
-				</if>
-				<if test="regTime!=null">
-					reg_time = #{regTime},
-				</if>
-				<if test="regEffecDay!=null">
-					reg_effec_day = #{regEffecDay},
-				</if>
-				<if test="firstLoginTime!=null">
-					first_login_time = #{firstLoginTime},
-				</if>
-				<if test="useEffecDay!=null">
-					use_effec_day = #{useEffecDay},
-				</if>
-				<if test="status!=null">
-					status = #{status},
-				</if>
-				<if test="residentialId!=null">
-					residential_id = #{residentialId},
-				</if>
-				<if test="callId!=null">
-					call_id = #{callId},
-				</if>
-				<if test="terminalType!=null">
-					terminal_type = #{terminalType},
-				</if>
-				<if test="note!=null">
-					note = #{note},
-				</if>
-				<if test="linglingId!=null">
-					lingling_id = #{linglingId},
-				</if>
-				<if test="visitorAuthority!=null">
-					visitor_authority = #{visitorAuthority},
-				</if>
-				<if test="ownerGender!=null">
-					owner_gender = #{ownerGender},
-				</if>
-				<if test="ownerRace!=null">
-					owner_race = #{ownerRace},
-				</if>
-				<if test="ownerBirthday!=null">
-					owner_birthday = #{ownerBirthday},
-				</if>
-				<if test="ownerCensusAddr!=null">
-					owner_census_addr = #{ownerCensusAddr},
-				</if>
-				<if test="ownerIdenNumber!=null">
-					owner_iden_number = #{ownerIdenNumber},
-				</if>
-				<if test="idenImgId!=null">
-					iden_img_id = #{idenImgId},
-				</if>
-				<if test="phoneImei!=null">
-					phone_IMEI = #{phoneImei},
-				</if>
-				<if test="longitude!=null">
-					longitude = #{longitude},
-				</if>
-				<if test="latitude!=null">
-					latitude = #{latitude},
-				</if>
-				<if test="ownerPolice!=null">
-					owner_police = #{ownerPolice},
-				</if>
-				<if test="ownerActiveFrom!=null">
-					owner_active_from = #{ownerActiveFrom},
-				</if>
-				<if test="ownerActiveTo!=null">
-					owner_active_to = #{ownerActiveTo},
-				</if>
-		</set>
-	WHERE 
-		owner_id = #{ownerId}		
-  </update>
-  <update id="updateByPrimaryKey" parameterType="org.li.module.lingling.bean.SvOwner" >
-    update sv_owner set 
-			parent_id = #{parentId},
-			regcode = #{regcode},
-			owner_name = #{ownerName},
-			owner_telephone = #{ownerTelephone},
-			weixin_id = #{weixinId},
-			reg_time = #{regTime},
-			reg_effec_day = #{regEffecDay},
-			first_login_time = #{firstLoginTime},
-			use_effec_day = #{useEffecDay},
-			status = #{status},
-			residential_id = #{residentialId},
-			call_id = #{callId},
-			terminal_type = #{terminalType},
-			note = #{note},
-			lingling_id = #{linglingId},
-			visitor_authority = #{visitorAuthority},
-			owner_gender = #{ownerGender},
-			owner_race = #{ownerRace},
-			owner_birthday = #{ownerBirthday},
-			owner_census_addr = #{ownerCensusAddr},
-			owner_iden_number = #{ownerIdenNumber},
-			iden_img_id = #{idenImgId},
-			phone_IMEI = #{phoneImei},
-			longitude = #{longitude},
-			latitude = #{latitude},
-			owner_police = #{ownerPolice},
-			owner_active_from = #{ownerActiveFrom},
-			owner_active_to = #{ownerActiveTo}		
-    where 
-			owner_id = #{ownerId} 		
-  </update>
+<mapper namespace="org.li.module.lingling.dao.impl.SvOwnerDaoImpl">
 
-  <!--查询条件-->
-  <sql id="selectCondition">
-    <where>
-      <trim suffixOverrides="and">
-      	<!-- 
-        <if test=" entity != null">
-          <if test="entity.id!=null">
-            and id=#{entity.id}
-          </if>
-        </if>
-         -->
-         and is_del = -1
-      </trim>
-      <trim suffixOverrides="and">
-        <if test="whereSql!=null">
-          and ${whereSql}
-        </if>
-      </trim>
-    </where>
-  </sql>
-
-  <!-- 根据条件查询 -->
-  <select id="getListByEntityAndPageInfo" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from sv_owner
-    <include refid="selectCondition" />
-    <if test="orderBy!=null">
-      ${orderBy}
-    </if>
-    <if test="pageInfo!=null">
-      limit ${pageInfo.pagesize} offset ${pageInfo.startIndex}
-    </if>
+    <resultMap id="BaseResultMap" type="org.li.module.lingling.bean.SvOwner">
+        <result property="ownerId" jdbcType="INTEGER" column="owner_id"/>
+        <result property="parentId" jdbcType="INTEGER" column="parent_id"/>
+        <result property="regcode" jdbcType="VARCHAR" column="regcode"/>
+        <result property="ownerName" jdbcType="VARCHAR" column="owner_name"/>
+        <result property="ownerTelephone" jdbcType="VARCHAR" column="owner_telephone"/>
+        <result property="weixinId" jdbcType="VARCHAR" column="weixin_id"/>
+        <result property="regTime" jdbcType="TIMESTAMP" column="reg_time"/>
+        <result property="regEffecDay" jdbcType="INTEGER" column="reg_effec_day"/>
+        <result property="firstLoginTime" jdbcType="TIMESTAMP" column="first_login_time"/>
+        <result property="useEffecDay" jdbcType="INTEGER" column="use_effec_day"/>
+        <result property="status" jdbcType="INTEGER" column="status"/>
+        <result property="residentialId" jdbcType="INTEGER" column="residential_id"/>
+        <result property="callId" jdbcType="VARCHAR" column="call_id"/>
+        <result property="terminalType" jdbcType="INTEGER" column="terminal_type"/>
+        <result property="note" jdbcType="VARCHAR" column="note"/>
+        <result property="linglingId" jdbcType="VARCHAR" column="lingling_id"/>
+        <result property="visitorAuthority" jdbcType="INTEGER" column="visitor_authority"/>
+        <result property="ownerGender" jdbcType="INTEGER" column="owner_gender"/>
+        <result property="ownerRace" jdbcType="VARCHAR" column="owner_race"/>
+        <result property="ownerBirthday" jdbcType="TIMESTAMP" column="owner_birthday"/>
+        <result property="ownerCensusAddr" jdbcType="VARCHAR" column="owner_census_addr"/>
+        <result property="ownerIdenNumber" jdbcType="VARCHAR" column="owner_iden_number"/>
+        <result property="idenImgId" jdbcType="INTEGER" column="iden_img_id"/>
+        <result property="phoneImei" jdbcType="VARCHAR" column="phone_IMEI"/>
+        <result property="longitude" jdbcType="DOUBLE" column="longitude"/>
+        <result property="latitude" jdbcType="DOUBLE" column="latitude"/>
+        <result property="ownerPolice" jdbcType="VARCHAR" column="owner_police"/>
+        <result property="ownerActiveFrom" jdbcType="VARCHAR" column="owner_active_from"/>
+        <result property="ownerActiveTo" jdbcType="VARCHAR" column="owner_active_to"/>
+    </resultMap>
+    <select id="findLingLingUserInfo" resultType="BaseResultMap">
+    select o.owner_id, o.parent_id, o.regcode, o.owner_name, o.owner_telephone,
+    o.weixin_id, o.reg_time, o.reg_effec_day, o.first_login_time, o.use_effec_day,
+    o.status, o.residential_id, o.call_id, o.terminal_type, o.note, o.lingling_id,
+    o.visitor_authority, o.owner_gender, o.owner_race,  o.owner_birthday, o.owner_census_addr,
+    o.owner_iden_number, o.iden_img_id, o.phone_IMEI, o.longitude, o.latitude, o.owner_police,
+	r.residential_id, r.region_id, r.residential_code, r.residential_name, r.manager_name,
+	r.telephone, r.address, r.time, r.user_id, r.residential_type, r.start_time, r.end_time,
+	r.status, r.note
+	from sv_owner o left join sv_residential r on o.residential_id=r.residential_id
+	where o.owner_telephone=#{phone}
   </select>
 
-  <!-- 查询总数 -->
-  <select id="getTotalByEntity" resultType="java.lang.Integer">
-    select count(*) from sv_owner
-    <include refid="selectCondition" />
-  </select>
-  
+    <select id="findUserDevices" resultType="BaseResultMap">
+		select d.device_id, d.name, d.family_id, d.device_type, d.device_code, d.mac, d.default_mac, d.wifi_ssid, d.wifi_password, d.bluetooch_name, d.bluetooch_password, d.lock_type,  d.lock_interval, d.last_synchro_time, d.status, d.region_id, d.custom_type, d.residential_type,
+		d.note, d.v3_device_id, d.is_online, d.x_coordinate, d.y_coordinate, d.mark, d.lock_status, d.make_time
+		from sv_owner o
+		left join sv_owner_device od on o.owner_id=od.owner_id
+		left join sv_device d on d.device_id=od.device_id
+		where o.owner_id=#{ownerId}
+	</select>
+
+
 </mapper>

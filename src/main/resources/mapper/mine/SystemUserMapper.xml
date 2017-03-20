@@ -8,7 +8,7 @@
 		<result property="id" jdbcType="INTEGER" column="id"/>
 		<result property="phone" jdbcType="VARCHAR" column="phone"/>
 		<result property="ownerId" jdbcType="INTEGER" column="owner_id"/>
-		<result property="linglingId" jdbcType="INTEGER" column="lingling_id"/>
+		<result property="linglingId" jdbcType="VARCHAR" column="lingling_id"/>
 		<result property="password" jdbcType="VARCHAR" column="password"/>
 		<result property="username" jdbcType="VARCHAR" column="username"/>
 		<result property="sex" jdbcType="INTEGER" column="sex"/>

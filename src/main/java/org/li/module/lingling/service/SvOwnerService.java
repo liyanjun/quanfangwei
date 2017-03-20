@@ -5,6 +5,9 @@ package org.li.module.lingling.service;
 import org.li.common.base.page.PageInfo;
 import org.li.common.base.page.PagerControl;
 import org.li.module.lingling.bean.SvOwner;
+import org.li.module.user.bean.SvDevice;
+
+import java.util.List;
 
 /**
  * 业主信息表
@@ -13,12 +16,18 @@ import org.li.module.lingling.bean.SvOwner;
  */
 public interface SvOwnerService {
 
-    Integer insertSvOwner(SvOwner svOwner);
+    /**
+     * 从令令数据库查询用户信息
+     * @param phone
+     * @return
+     */
+    SvOwner findLingLingUserInfo(String phone);
 
-    Integer updateSvOwner(SvOwner svOwner);
-
-    PagerControl<SvOwner> page(SvOwner svOwner, PageInfo pageInfo, String whereSql, String orderSql);
-
-    SvOwner find(Integer id);
+    /**
+     * 住户可用设备查询
+     * @param owner_id
+     * @return
+     */
+    List<SvDevice> findUserDevices(Integer owner_id);
     
 }
