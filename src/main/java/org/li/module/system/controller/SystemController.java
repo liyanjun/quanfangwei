@@ -5,7 +5,8 @@ import com.wordnik.swagger.annotations.ApiParam;
 import org.li.common.util.CryptographyUtil;
 import org.li.common.util.EHCacheUtil;
 import org.li.common.vo.Result;
-import org.li.module.system.service.UserService;
+import org.li.module.lingling.service.SvOwnerService;
+import org.li.module.system.service.SystemUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,9 @@ public class SystemController {
     Logger logger = LoggerFactory.getLogger(SystemController.class);
 
     @Autowired
-    private UserService userService;
+    private SystemUserService userService;
+    @Autowired
+    private SvOwnerService svOwnerService;
 
     @ResponseBody
     @RequestMapping("getVerificationCode")
@@ -46,6 +49,8 @@ public class SystemController {
     @ApiOperation(value = "用户登陆", httpMethod = "POST", response = org.li.common.vo.Result.class, notes = "用户登陆")
     public Result login(@ApiParam(required = true, name = "phone", value = "用户输入的手机号") @RequestParam String phone,
                         @ApiParam(required = true, name = "password", value = "验证码") @RequestParam String password) {
+        userService.find(1);
+        svOwnerService.find(1);
         //todo 校验密码
         String token = CryptographyUtil.md5(phone + password,"quanfangwei");
         EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE,token,phone);

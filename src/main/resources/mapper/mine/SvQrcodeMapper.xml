@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- author:   liyanjun,  date:    2017-3-20 16:28:07,    -->
+
+<mapper namespace="org.li.module.user.dao.impl.SvQrcodeDaoImpl" >
+  <resultMap id="BaseResultMap" type="org.li.module.user.bean.SvQrcode" >
+		<result property="id" jdbcType="INTEGER" column="id"/>
+		<result property="type" jdbcType="INTEGER" column="type"/>
+		<result property="codeId" jdbcType="INTEGER" column="code_id"/>
+		<result property="qrcodeKey" jdbcType="VARCHAR" column="qrcode_key"/>
+		<result property="userId" jdbcType="INTEGER" column="user_id"/>
+		<result property="visitPhone" jdbcType="VARCHAR" column="visit_phone"/>
+		<result property="name" jdbcType="VARCHAR" column="name"/>
+		<result property="startTime" jdbcType="TIMESTAMP" column="start_time"/>
+		<result property="endTime" jdbcType="INTEGER" column="end_time"/>
+		<result property="createTime" jdbcType="TIMESTAMP" column="create_time"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+		id,
+		type,
+		code_id,
+		qrcode_key,
+		user_id,
+		visit_phone,
+		name,
+		start_time,
+		end_time,
+		create_time	
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from sv_qrcode
+    where  
+			id = #{id} 		
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sv_qrcode
+    where  
+			id = #{id} 		
+  </delete>
+  <insert id="insert" parameterType="org.li.module.user.bean.SvQrcode" useGeneratedKeys="true" keyProperty="id">
+    insert into sv_qrcode (<include refid="Base_Column_List" />
+      )
+    values (
+	        null,<!--主键自动生成  -->
+			#{type},
+			#{codeId},
+			#{qrcodeKey},
+			#{userId},
+			#{visitPhone},
+			#{name},
+			#{startTime},
+			#{endTime},
+	        now(),<!--生成日期  -->
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.li.module.user.bean.SvQrcode" useGeneratedKeys="true" keyProperty="id">
+    insert into sv_qrcode
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+    		<if test=" id != null" >
+	        	id,
+	        </if>
+    		<if test=" type != null" >
+	        	type,
+	        </if>
+    		<if test=" codeId != null" >
+	        	code_id,
+	        </if>
+    		<if test=" qrcodeKey != null" >
+	        	qrcode_key,
+	        </if>
+    		<if test=" userId != null" >
+	        	user_id,
+	        </if>
+    		<if test=" visitPhone != null" >
+	        	visit_phone,
+	        </if>
+    		<if test=" name != null" >
+	        	name,
+	        </if>
+    		<if test=" startTime != null" >
+	        	start_time,
+	        </if>
+    		<if test=" endTime != null" >
+	        	end_time,
+	        </if>
+    		<if test=" createTime != null" >
+	        	create_time,
+	        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+    		<if test=" id != null" >
+	        	#{id},
+	        </if>
+    		<if test=" type != null" >
+	        	#{type},
+	        </if>
+    		<if test=" codeId != null" >
+	        	#{codeId},
+	        </if>
+    		<if test=" qrcodeKey != null" >
+	        	#{qrcodeKey},
+	        </if>
+    		<if test=" userId != null" >
+	        	#{userId},
+	        </if>
+    		<if test=" visitPhone != null" >
+	        	#{visitPhone},
+	        </if>
+    		<if test=" name != null" >
+	        	#{name},
+	        </if>
+    		<if test=" startTime != null" >
+	        	#{startTime},
+	        </if>
+    		<if test=" endTime != null" >
+	        	#{endTime},
+	        </if>
+    		<if test=" createTime != null" >
+	        	#{createTime},
+	        </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.li.module.user.bean.SvQrcode" >
+	UPDATE sv_qrcode 
+		<set>
+				<if test="type!=null">
+					type = #{type},
+				</if>
+				<if test="codeId!=null">
+					code_id = #{codeId},
+				</if>
+				<if test="qrcodeKey!=null">
+					qrcode_key = #{qrcodeKey},
+				</if>
+				<if test="userId!=null">
+					user_id = #{userId},
+				</if>
+				<if test="visitPhone!=null">
+					visit_phone = #{visitPhone},
+				</if>
+				<if test="name!=null">
+					name = #{name},
+				</if>
+				<if test="startTime!=null">
+					start_time = #{startTime},
+				</if>
+				<if test="endTime!=null">
+					end_time = #{endTime},
+				</if>
+				<if test="createTime!=null">
+					create_time = #{createTime},
+				</if>
+		</set>
+	WHERE 
+		id = #{id}		
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.li.module.user.bean.SvQrcode" >
+    update sv_qrcode set 
+			type = #{type},
+			code_id = #{codeId},
+			qrcode_key = #{qrcodeKey},
+			user_id = #{userId},
+			visit_phone = #{visitPhone},
+			name = #{name},
+			start_time = #{startTime},
+			end_time = #{endTime},
+			create_time = #{createTime}		
+    where 
+			id = #{id} 		
+  </update>
+
+  <!--查询条件-->
+  <sql id="selectCondition">
+    <where>
+      <trim suffixOverrides="and">
+      	<!-- 
+        <if test=" entity != null">
+          <if test="entity.id!=null">
+            and id=#{entity.id}
+          </if>
+        </if>
+         -->
+         and is_del = -1
+      </trim>
+      <trim suffixOverrides="and">
+        <if test="whereSql!=null">
+          and ${whereSql}
+        </if>
+      </trim>
+    </where>
+  </sql>
+
+  <!-- 根据条件查询 -->
+  <select id="getListByEntityAndPageInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sv_qrcode
+    <include refid="selectCondition" />
+    <if test="orderBy!=null">
+      ${orderBy}
+    </if>
+    <if test="pageInfo!=null">
+      limit ${pageInfo.pagesize} offset ${pageInfo.startIndex}
+    </if>
+  </select>
+
+  <!-- 查询总数 -->
+  <select id="getTotalByEntity" resultType="java.lang.Integer">
+    select count(*) from sv_qrcode
+    <include refid="selectCondition" />
+  </select>
+  
+</mapper>

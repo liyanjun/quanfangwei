@@ -9,21 +9,12 @@
                         "  default-lazy-init="true">
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="mapperLocations" value="classpath*:/mapper/*Mapper.xml"/>
+        <property name="dataSource" ref="mineDataSource"/>
+        <property  name="mapperLocations"  value="classpath*:mapper/mine/*.xml"/>
     </bean>
-
-    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="org.li.module.dao"/>
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-    </bean>-->
-
-    <!-- 事务配置 -->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
+    <bean id="sqlSessionFactoryLingLing" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="linglingDataSource"/>
+        <property  name="mapperLocations"  value="classpath*:mapper/lingling/*.xml"/>
     </bean>
-
-    <!-- 使用 annotation 定义事务 -->
-    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 
 </beans>

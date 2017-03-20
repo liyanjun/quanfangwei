@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- author:   liyanjun,  date:    2017-3-20 16:28:07,    -->
+
+<mapper namespace="org.li.module.user.dao.impl.SvDeviceDaoImpl" >
+  <resultMap id="BaseResultMap" type="org.li.module.user.bean.SvDevice" >
+		<result property="id" jdbcType="INTEGER" column="id"/>
+		<result property="deviceId" jdbcType="INTEGER" column="device_id"/>
+		<result property="sdkKey" jdbcType="VARCHAR" column="sdk_key"/>
+		<result property="userId" jdbcType="INTEGER" column="user_id"/>
+		<result property="keyEffecDay" jdbcType="INTEGER" column="key_effec_day"/>
+		<result property="createTime" jdbcType="TIMESTAMP" column="create_time"/>
+		<result property="updateTime" jdbcType="TIMESTAMP" column="update_time"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+		id,
+		device_id,
+		sdk_key,
+		user_id,
+		key_effec_day,
+		create_time,
+		update_time	
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from sv_device
+    where  
+			id = #{id} 		
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sv_device
+    where  
+			id = #{id} 		
+  </delete>
+  <insert id="insert" parameterType="org.li.module.user.bean.SvDevice" useGeneratedKeys="true" keyProperty="id">
+    insert into sv_device (<include refid="Base_Column_List" />
+      )
+    values (
+	        null,<!--主键自动生成  -->
+			#{deviceId},
+			#{sdkKey},
+			#{userId},
+			#{keyEffecDay},
+	        now(),<!--生成日期  -->
+			#{updateTime}      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.li.module.user.bean.SvDevice" useGeneratedKeys="true" keyProperty="id">
+    insert into sv_device
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+    		<if test=" id != null" >
+	        	id,
+	        </if>
+    		<if test=" deviceId != null" >
+	        	device_id,
+	        </if>
+    		<if test=" sdkKey != null" >
+	        	sdk_key,
+	        </if>
+    		<if test=" userId != null" >
+	        	user_id,
+	        </if>
+    		<if test=" keyEffecDay != null" >
+	        	key_effec_day,
+	        </if>
+    		<if test=" createTime != null" >
+	        	create_time,
+	        </if>
+    		<if test=" updateTime != null" >
+	        	update_time,
+	        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+    		<if test=" id != null" >
+	        	#{id},
+	        </if>
+    		<if test=" deviceId != null" >
+	        	#{deviceId},
+	        </if>
+    		<if test=" sdkKey != null" >
+	        	#{sdkKey},
+	        </if>
+    		<if test=" userId != null" >
+	        	#{userId},
+	        </if>
+    		<if test=" keyEffecDay != null" >
+	        	#{keyEffecDay},
+	        </if>
+    		<if test=" createTime != null" >
+	        	#{createTime},
+	        </if>
+    		<if test=" updateTime != null" >
+	        	#{updateTime},
+	        </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.li.module.user.bean.SvDevice" >
+	UPDATE sv_device 
+		<set>
+				<if test="deviceId!=null">
+					device_id = #{deviceId},
+				</if>
+				<if test="sdkKey!=null">
+					sdk_key = #{sdkKey},
+				</if>
+				<if test="userId!=null">
+					user_id = #{userId},
+				</if>
+				<if test="keyEffecDay!=null">
+					key_effec_day = #{keyEffecDay},
+				</if>
+				<if test="createTime!=null">
+					create_time = #{createTime},
+				</if>
+		</set>
+	WHERE 
+		id = #{id}		
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.li.module.user.bean.SvDevice" >
+    update sv_device set 
+			device_id = #{deviceId},
+			sdk_key = #{sdkKey},
+			user_id = #{userId},
+			key_effec_day = #{keyEffecDay},
+			create_time = #{createTime},
+		
+    where 
+			id = #{id} 		
+  </update>
+
+  <!--查询条件-->
+  <sql id="selectCondition">
+    <where>
+      <trim suffixOverrides="and">
+      	<!-- 
+        <if test=" entity != null">
+          <if test="entity.id!=null">
+            and id=#{entity.id}
+          </if>
+        </if>
+         -->
+         and is_del = -1
+      </trim>
+      <trim suffixOverrides="and">
+        <if test="whereSql!=null">
+          and ${whereSql}
+        </if>
+      </trim>
+    </where>
+  </sql>
+
+  <!-- 根据条件查询 -->
+  <select id="getListByEntityAndPageInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sv_device
+    <include refid="selectCondition" />
+    <if test="orderBy!=null">
+      ${orderBy}
+    </if>
+    <if test="pageInfo!=null">
+      limit ${pageInfo.pagesize} offset ${pageInfo.startIndex}
+    </if>
+  </select>
+
+  <!-- 查询总数 -->
+  <select id="getTotalByEntity" resultType="java.lang.Integer">
+    select count(*) from sv_device
+    <include refid="selectCondition" />
+  </select>
+  
+</mapper>

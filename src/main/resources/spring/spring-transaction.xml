@@ -9,11 +9,17 @@
                         "  default-lazy-init="true">
 
     <!-- 事务配置 -->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
+    <bean id="transactionManagerMine" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="mineDataSource" />
+    </bean>
+
+    <!-- 事务配置 -->
+    <bean id="transactionManagerLingLing" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="linglingDataSource" />
     </bean>
 
     <!-- 使用 annotation 定义事务 -->
-    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+    <tx:annotation-driven transaction-manager="transactionManagerMine" proxy-target-class="true" />
+    <tx:annotation-driven transaction-manager="transactionManagerLingLing" proxy-target-class="true" />
 
 </beans>

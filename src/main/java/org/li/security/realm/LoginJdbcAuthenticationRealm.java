@@ -7,8 +7,8 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.li.module.system.bean.User;
-import org.li.module.system.service.UserService;
+import org.li.module.system.bean.SystemUser;
+import org.li.module.system.service.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
@@ -21,7 +21,7 @@ import java.util.Collection;
 public class LoginJdbcAuthenticationRealm extends AuthorizingRealm {
 
     @Autowired
-    private UserService userService;
+    private SystemUserService userService;
 
     @Override
     public boolean supports(AuthenticationToken token) {
@@ -72,7 +72,7 @@ public class LoginJdbcAuthenticationRealm extends AuthorizingRealm {
         LoginToken adminToken = (LoginToken) token;
 
         String username = adminToken.getUsername();
-        User user = userService.findByUserName(username);
+        SystemUser user = userService.find(1);
       /*  QueryUserInfoRsp user = queryUserInfoService.queryUserEntity(username);
         if (user == null) {
             throw new UnknownAccountException("账户名或密码错误");

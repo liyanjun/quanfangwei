@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- author:   liyanjun,  date:    2017-3-20 16:28:07,    -->
+
+<mapper namespace="org.li.module.system.dao.impl.SystemResourceDaoImpl" >
+  <resultMap id="BaseResultMap" type="org.li.module.system.bean.SystemResource" >
+		<result property="id" jdbcType="INTEGER" column="id"/>
+		<result property="name" jdbcType="VARCHAR" column="name"/>
+		<result property="url" jdbcType="VARCHAR" column="url"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+		id,
+		name,
+		url	
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from system_resource
+    where  
+			id = #{id} 		
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system_resource
+    where  
+			id = #{id} 		
+  </delete>
+  <insert id="insert" parameterType="org.li.module.system.bean.SystemResource" useGeneratedKeys="true" keyProperty="id">
+    insert into system_resource (<include refid="Base_Column_List" />
+      )
+    values (
+	        null,<!--主键自动生成  -->
+			#{name},
+			#{url}      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.li.module.system.bean.SystemResource" useGeneratedKeys="true" keyProperty="id">
+    insert into system_resource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+    		<if test=" id != null" >
+	        	id,
+	        </if>
+    		<if test=" name != null" >
+	        	name,
+	        </if>
+    		<if test=" url != null" >
+	        	url,
+	        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+    		<if test=" id != null" >
+	        	#{id},
+	        </if>
+    		<if test=" name != null" >
+	        	#{name},
+	        </if>
+    		<if test=" url != null" >
+	        	#{url},
+	        </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.li.module.system.bean.SystemResource" >
+	UPDATE system_resource 
+		<set>
+				<if test="name!=null">
+					name = #{name},
+				</if>
+				<if test="url!=null">
+					url = #{url},
+				</if>
+		</set>
+	WHERE 
+		id = #{id}		
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.li.module.system.bean.SystemResource" >
+    update system_resource set 
+			name = #{name},
+			url = #{url}		
+    where 
+			id = #{id} 		
+  </update>
+
+  <!--查询条件-->
+  <sql id="selectCondition">
+    <where>
+      <trim suffixOverrides="and">
+      	<!-- 
+        <if test=" entity != null">
+          <if test="entity.id!=null">
+            and id=#{entity.id}
+          </if>
+        </if>
+         -->
+         and is_del = -1
+      </trim>
+      <trim suffixOverrides="and">
+        <if test="whereSql!=null">
+          and ${whereSql}
+        </if>
+      </trim>
+    </where>
+  </sql>
+
+  <!-- 根据条件查询 -->
+  <select id="getListByEntityAndPageInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from system_resource
+    <include refid="selectCondition" />
+    <if test="orderBy!=null">
+      ${orderBy}
+    </if>
+    <if test="pageInfo!=null">
+      limit ${pageInfo.pagesize} offset ${pageInfo.startIndex}
+    </if>
+  </select>
+
+  <!-- 查询总数 -->
+  <select id="getTotalByEntity" resultType="java.lang.Integer">
+    select count(*) from system_resource
+    <include refid="selectCondition" />
+  </select>
+  
+</mapper>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- author:   liyanjun,  date:    2017-3-20 16:28:08,    -->
+
+<mapper namespace="org.li.module.system.dao.impl.SystemRoleDaoImpl" >
+  <resultMap id="BaseResultMap" type="org.li.module.system.bean.SystemRole" >
+		<result property="id" jdbcType="INTEGER" column="id"/>
+		<result property="name" jdbcType="VARCHAR" column="name"/>
+		<result property="describ" jdbcType="VARCHAR" column="describ"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+		id,
+		name,
+		describ	
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from system_role
+    where  
+			id = #{id} 		
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system_role
+    where  
+			id = #{id} 		
+  </delete>
+  <insert id="insert" parameterType="org.li.module.system.bean.SystemRole" useGeneratedKeys="true" keyProperty="id">
+    insert into system_role (<include refid="Base_Column_List" />
+      )
+    values (
+	        null,<!--主键自动生成  -->
+			#{name},
+			#{describ}      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.li.module.system.bean.SystemRole" useGeneratedKeys="true" keyProperty="id">
+    insert into system_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+    		<if test=" id != null" >
+	        	id,
+	        </if>
+    		<if test=" name != null" >
+	        	name,
+	        </if>
+    		<if test=" describ != null" >
+	        	describ,
+	        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+    		<if test=" id != null" >
+	        	#{id},
+	        </if>
+    		<if test=" name != null" >
+	        	#{name},
+	        </if>
+    		<if test=" describ != null" >
+	        	#{describ},
+	        </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.li.module.system.bean.SystemRole" >
+	UPDATE system_role 
+		<set>
+				<if test="name!=null">
+					name = #{name},
+				</if>
+				<if test="describ!=null">
+					describ = #{describ},
+				</if>
+		</set>
+	WHERE 
+		id = #{id}		
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.li.module.system.bean.SystemRole" >
+    update system_role set 
+			name = #{name},
+			describ = #{describ}		
+    where 
+			id = #{id} 		
+  </update>
+
+  <!--查询条件-->
+  <sql id="selectCondition">
+    <where>
+      <trim suffixOverrides="and">
+      	<!-- 
+        <if test=" entity != null">
+          <if test="entity.id!=null">
+            and id=#{entity.id}
+          </if>
+        </if>
+         -->
+         and is_del = -1
+      </trim>
+      <trim suffixOverrides="and">
+        <if test="whereSql!=null">
+          and ${whereSql}
+        </if>
+      </trim>
+    </where>
+  </sql>
+
+  <!-- 根据条件查询 -->
+  <select id="getListByEntityAndPageInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from system_role
+    <include refid="selectCondition" />
+    <if test="orderBy!=null">
+      ${orderBy}
+    </if>
+    <if test="pageInfo!=null">
+      limit ${pageInfo.pagesize} offset ${pageInfo.startIndex}
+    </if>
+  </select>
+
+  <!-- 查询总数 -->
+  <select id="getTotalByEntity" resultType="java.lang.Integer">
+    select count(*) from system_role
+    <include refid="selectCondition" />
+  </select>
+  
+</mapper>
