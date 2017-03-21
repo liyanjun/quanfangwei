@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- author:   liyanjun,  date:    2017-3-21 17:08:14,    第三方链接日志表-->
+
+<mapper namespace="org.li.module.system.dao.impl.SystemThirdconnectorLogDaoImpl" >
+  <resultMap id="BaseResultMap" type="org.li.module.system.bean.SystemThirdconnectorLog" >
+		<result property="id" jdbcType="INTEGER" column="id"/>
+		<result property="connectorName" jdbcType="VARCHAR" column="connectorName"/>
+		<result property="requestUrl" jdbcType="VARCHAR" column="requestUrl"/>
+		<result property="request" jdbcType="VARCHAR" column="request"/>
+		<result property="returnBack" jdbcType="VARCHAR" column="return_back"/>
+		<result property="other1" jdbcType="VARCHAR" column="other1"/>
+		<result property="other2" jdbcType="VARCHAR" column="other2"/>
+		<result property="createTime" jdbcType="TIMESTAMP" column="create_time"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+		id,
+		connectorName,
+		requestUrl,
+		request,
+		return_back,
+		other1,
+		other2,
+		create_time	
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from system_thirdconnector_log
+    where  
+			id = #{id} 		
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system_thirdconnector_log
+    where  
+			id = #{id} 		
+  </delete>
+  <insert id="insert" parameterType="org.li.module.system.bean.SystemThirdconnectorLog" useGeneratedKeys="true" keyProperty="id">
+    insert into system_thirdconnector_log (<include refid="Base_Column_List" />
+      )
+    values (
+	        null,<!--主键自动生成  -->
+			#{connectorName},
+			#{requestUrl},
+			#{request},
+			#{returnBack},
+			#{other1},
+			#{other2},
+	        now(),<!--生成日期  -->
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.li.module.system.bean.SystemThirdconnectorLog" useGeneratedKeys="true" keyProperty="id">
+    insert into system_thirdconnector_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+    		<if test=" id != null" >
+	        	id,
+	        </if>
+    		<if test=" connectorName != null" >
+	        	connectorName,
+	        </if>
+    		<if test=" requestUrl != null" >
+	        	requestUrl,
+	        </if>
+    		<if test=" request != null" >
+	        	request,
+	        </if>
+    		<if test=" returnBack != null" >
+	        	return_back,
+	        </if>
+    		<if test=" other1 != null" >
+	        	other1,
+	        </if>
+    		<if test=" other2 != null" >
+	        	other2,
+	        </if>
+    		<if test=" createTime != null" >
+	        	create_time,
+	        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+    		<if test=" id != null" >
+	        	#{id},
+	        </if>
+    		<if test=" connectorName != null" >
+	        	#{connectorName},
+	        </if>
+    		<if test=" requestUrl != null" >
+	        	#{requestUrl},
+	        </if>
+    		<if test=" request != null" >
+	        	#{request},
+	        </if>
+    		<if test=" returnBack != null" >
+	        	#{returnBack},
+	        </if>
+    		<if test=" other1 != null" >
+	        	#{other1},
+	        </if>
+    		<if test=" other2 != null" >
+	        	#{other2},
+	        </if>
+    		<if test=" createTime != null" >
+	        	#{createTime},
+	        </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.li.module.system.bean.SystemThirdconnectorLog" >
+	UPDATE system_thirdconnector_log 
+		<set>
+				<if test="connectorName!=null">
+					connectorName = #{connectorName},
+				</if>
+				<if test="requestUrl!=null">
+					requestUrl = #{requestUrl},
+				</if>
+				<if test="request!=null">
+					request = #{request},
+				</if>
+				<if test="returnBack!=null">
+					return_back = #{returnBack},
+				</if>
+				<if test="other1!=null">
+					other1 = #{other1},
+				</if>
+				<if test="other2!=null">
+					other2 = #{other2},
+				</if>
+				<if test="createTime!=null">
+					create_time = #{createTime},
+				</if>
+		</set>
+	WHERE 
+		id = #{id}		
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.li.module.system.bean.SystemThirdconnectorLog" >
+    update system_thirdconnector_log set 
+			connectorName = #{connectorName},
+			requestUrl = #{requestUrl},
+			request = #{request},
+			return_back = #{returnBack},
+			other1 = #{other1},
+			other2 = #{other2},
+			create_time = #{createTime}		
+    where 
+			id = #{id} 		
+  </update>
+
+  <!--查询条件-->
+  <sql id="selectCondition">
+    <where>
+      <trim suffixOverrides="and">
+      	<!-- 
+        <if test=" entity != null">
+          <if test="entity.id!=null">
+            and id=#{entity.id}
+          </if>
+        </if>
+         -->
+         and is_del = -1
+      </trim>
+      <trim suffixOverrides="and">
+        <if test="whereSql!=null">
+          and ${whereSql}
+        </if>
+      </trim>
+    </where>
+  </sql>
+
+  <!-- 根据条件查询 -->
+  <select id="getListByEntityAndPageInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from system_thirdconnector_log
+    <include refid="selectCondition" />
+    <if test="orderBy!=null">
+      ${orderBy}
+    </if>
+    <if test="pageInfo!=null">
+      limit ${pageInfo.pagesize} offset ${pageInfo.startIndex}
+    </if>
+  </select>
+
+  <!-- 查询总数 -->
+  <select id="getTotalByEntity" resultType="java.lang.Integer">
+    select count(*) from system_thirdconnector_log
+    <include refid="selectCondition" />
+  </select>
+  
+</mapper>

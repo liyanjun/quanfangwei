@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- author:   liyanjun,  date:    2017-3-21 17:08:14,    创建开门二维码记录-->
+
+<mapper namespace="org.li.module.user.dao.impl.SvCreateQrcodeRecordDaoImpl" >
+  <resultMap id="BaseResultMap" type="org.li.module.user.bean.SvCreateQrcodeRecord" >
+		<result property="id" jdbcType="INTEGER" column="id"/>
+		<result property="deviceIds" jdbcType="VARCHAR" column="device_ids"/>
+		<result property="userId" jdbcType="INTEGER" column="user_id"/>
+		<result property="qrcode" jdbcType="VARCHAR" column="qrcode"/>
+		<result property="effectTime" jdbcType="INTEGER" column="effect_time"/>
+		<result property="createTime" jdbcType="TIMESTAMP" column="create_time"/>
+		<result property="isAvalible" jdbcType="TINYINT" column="is_avalible"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+		id,
+		device_ids,
+		user_id,
+		qrcode,
+		effect_time,
+		create_time,
+		is_avalible	
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from sv_create_qrcode_record
+    where  
+			id = #{id} 		
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sv_create_qrcode_record
+    where  
+			id = #{id} 		
+  </delete>
+  <insert id="insert" parameterType="org.li.module.user.bean.SvCreateQrcodeRecord" useGeneratedKeys="true" keyProperty="id">
+    insert into sv_create_qrcode_record (<include refid="Base_Column_List" />
+      )
+    values (
+	        null,<!--主键自动生成  -->
+			#{deviceIds},
+			#{userId},
+			#{qrcode},
+			#{effectTime},
+	        now(),<!--生成日期  -->
+			#{isAvalible}      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.li.module.user.bean.SvCreateQrcodeRecord" useGeneratedKeys="true" keyProperty="id">
+    insert into sv_create_qrcode_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+    		<if test=" id != null" >
+	        	id,
+	        </if>
+    		<if test=" deviceIds != null" >
+	        	device_ids,
+	        </if>
+    		<if test=" userId != null" >
+	        	user_id,
+	        </if>
+    		<if test=" qrcode != null" >
+	        	qrcode,
+	        </if>
+    		<if test=" effectTime != null" >
+	        	effect_time,
+	        </if>
+    		<if test=" createTime != null" >
+	        	create_time,
+	        </if>
+    		<if test=" isAvalible != null" >
+	        	is_avalible,
+	        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+    		<if test=" id != null" >
+	        	#{id},
+	        </if>
+    		<if test=" deviceIds != null" >
+	        	#{deviceIds},
+	        </if>
+    		<if test=" userId != null" >
+	        	#{userId},
+	        </if>
+    		<if test=" qrcode != null" >
+	        	#{qrcode},
+	        </if>
+    		<if test=" effectTime != null" >
+	        	#{effectTime},
+	        </if>
+    		<if test=" createTime != null" >
+	        	#{createTime},
+	        </if>
+    		<if test=" isAvalible != null" >
+	        	#{isAvalible},
+	        </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.li.module.user.bean.SvCreateQrcodeRecord" >
+	UPDATE sv_create_qrcode_record 
+		<set>
+				<if test="deviceIds!=null">
+					device_ids = #{deviceIds},
+				</if>
+				<if test="userId!=null">
+					user_id = #{userId},
+				</if>
+				<if test="qrcode!=null">
+					qrcode = #{qrcode},
+				</if>
+				<if test="effectTime!=null">
+					effect_time = #{effectTime},
+				</if>
+				<if test="createTime!=null">
+					create_time = #{createTime},
+				</if>
+				<if test="isAvalible!=null">
+					is_avalible = #{isAvalible},
+				</if>
+		</set>
+	WHERE 
+		id = #{id}		
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.li.module.user.bean.SvCreateQrcodeRecord" >
+    update sv_create_qrcode_record set 
+			device_ids = #{deviceIds},
+			user_id = #{userId},
+			qrcode = #{qrcode},
+			effect_time = #{effectTime},
+			create_time = #{createTime},
+			is_avalible = #{isAvalible}		
+    where 
+			id = #{id} 		
+  </update>
+
+  <!--查询条件-->
+  <sql id="selectCondition">
+    <where>
+      <trim suffixOverrides="and">
+      	<!-- 
+        <if test=" entity != null">
+          <if test="entity.id!=null">
+            and id=#{entity.id}
+          </if>
+        </if>
+         -->
+         and is_del = -1
+      </trim>
+      <trim suffixOverrides="and">
+        <if test="whereSql!=null">
+          and ${whereSql}
+        </if>
+      </trim>
+    </where>
+  </sql>
+
+  <!-- 根据条件查询 -->
+  <select id="getListByEntityAndPageInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sv_create_qrcode_record
+    <include refid="selectCondition" />
+    <if test="orderBy!=null">
+      ${orderBy}
+    </if>
+    <if test="pageInfo!=null">
+      limit ${pageInfo.pagesize} offset ${pageInfo.startIndex}
+    </if>
+  </select>
+
+  <!-- 查询总数 -->
+  <select id="getTotalByEntity" resultType="java.lang.Integer">
+    select count(*) from sv_create_qrcode_record
+    <include refid="selectCondition" />
+  </select>
+  
+</mapper>
