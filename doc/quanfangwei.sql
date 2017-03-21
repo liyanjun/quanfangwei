@@ -1,25 +1,44 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost_3306
-Source Server Version : 50530
+Source Server         : local
+Source Server Version : 50717
 Source Host           : localhost:3306
 Source Database       : quanfangwei
 
 Target Server Type    : MYSQL
-Target Server Version : 50530
+Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-03-19 23:13:09
+Date: 2017-03-21 16:10:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `device`
+-- Table structure for sv_create_qrcode_record
 -- ----------------------------
-DROP TABLE IF EXISTS `device`;
-CREATE TABLE `device` (
+DROP TABLE IF EXISTS `sv_create_qrcode_record`;
+CREATE TABLE `sv_create_qrcode_record` (
+  `id` int(11) NOT NULL,
+  `device_ids` varchar(512) NOT NULL COMMENT '设备ID',
+  `user_id` int(11) NOT NULL COMMENT '哪个用户创建的',
+  `qrcode` varchar(255) DEFAULT NULL COMMENT '创建出来的二维码',
+  `effect_time` int(11) NOT NULL,
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_avalible` tinyint(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='创建开门二维码记录';
+
+-- ----------------------------
+-- Records of sv_create_qrcode_record
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sv_device
+-- ----------------------------
+DROP TABLE IF EXISTS `sv_device`;
+CREATE TABLE `sv_device` (
   `id` int(11) NOT NULL,
   `device_id` int(11) NOT NULL COMMENT '设备ID',
   `sdk_key` varchar(255) DEFAULT NULL COMMENT '开门秘钥',
@@ -31,14 +50,14 @@ CREATE TABLE `device` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of device
+-- Records of sv_device
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `qrcode`
+-- Table structure for sv_qrcode
 -- ----------------------------
-DROP TABLE IF EXISTS `qrcode`;
-CREATE TABLE `qrcode` (
+DROP TABLE IF EXISTS `sv_qrcode`;
+CREATE TABLE `sv_qrcode` (
   `id` int(11) NOT NULL DEFAULT '0',
   `type` int(11) NOT NULL COMMENT '业主二维码：1，访客二维码：2',
   `code_id` int(11) NOT NULL COMMENT '二维码的code_id',
@@ -53,14 +72,14 @@ CREATE TABLE `qrcode` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of qrcode
+-- Records of sv_qrcode
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `resource`
+-- Table structure for system_resource
 -- ----------------------------
-DROP TABLE IF EXISTS `resource`;
-CREATE TABLE `resource` (
+DROP TABLE IF EXISTS `system_resource`;
+CREATE TABLE `system_resource` (
   `id` int(11) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL COMMENT '资源名',
   `url` varchar(255) NOT NULL COMMENT '资源地址',
@@ -68,14 +87,14 @@ CREATE TABLE `resource` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of resource
+-- Records of system_resource
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `role`
+-- Table structure for system_role
 -- ----------------------------
-DROP TABLE IF EXISTS `role`;
-CREATE TABLE `role` (
+DROP TABLE IF EXISTS `system_role`;
+CREATE TABLE `system_role` (
   `id` int(11) NOT NULL DEFAULT '0',
   `name` varchar(32) NOT NULL COMMENT '角色名',
   `describ` varchar(255) DEFAULT NULL COMMENT '角色描述',
@@ -83,14 +102,27 @@ CREATE TABLE `role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of role
+-- Records of system_role
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `user`
+-- Table structure for system_third_log
 -- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
+DROP TABLE IF EXISTS `system_third_log`;
+CREATE TABLE `system_third_log` (
+  `id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='记录和第三方通讯时候的情况';
+
+-- ----------------------------
+-- Records of system_third_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for system_user
+-- ----------------------------
+DROP TABLE IF EXISTS `system_user`;
+CREATE TABLE `system_user` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `phone` varchar(255) NOT NULL COMMENT '手机号',
   `owner_id` int(11) DEFAULT NULL COMMENT '令令数据库中的用户ID',
@@ -114,9 +146,11 @@ CREATE TABLE `user` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录创建时间',
   `update_time` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   `is_del` tinyint(11) NOT NULL COMMENT '-1：已删除，1：未删除',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `phone_pk` (`phone`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of user
+-- Records of system_user
 -- ----------------------------
+INSERT INTO `system_user` VALUES ('1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2017-03-20 11:21:03', '2017-03-20 11:21:17', null, '2017-03-20 11:21:29', null, '-1');

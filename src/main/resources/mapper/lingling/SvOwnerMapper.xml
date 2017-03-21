@@ -36,27 +36,455 @@
         <result property="ownerActiveFrom" jdbcType="VARCHAR" column="owner_active_from"/>
         <result property="ownerActiveTo" jdbcType="VARCHAR" column="owner_active_to"/>
     </resultMap>
-    <select id="findLingLingUserInfo" resultType="BaseResultMap">
-    select o.owner_id, o.parent_id, o.regcode, o.owner_name, o.owner_telephone,
-    o.weixin_id, o.reg_time, o.reg_effec_day, o.first_login_time, o.use_effec_day,
-    o.status, o.residential_id, o.call_id, o.terminal_type, o.note, o.lingling_id,
-    o.visitor_authority, o.owner_gender, o.owner_race,  o.owner_birthday, o.owner_census_addr,
-    o.owner_iden_number, o.iden_img_id, o.phone_IMEI, o.longitude, o.latitude, o.owner_police,
-	r.residential_id, r.region_id, r.residential_code, r.residential_name, r.manager_name,
-	r.telephone, r.address, r.time, r.user_id, r.residential_type, r.start_time, r.end_time,
-	r.status, r.note
-	from sv_owner o left join sv_residential r on o.residential_id=r.residential_id
-	where o.owner_telephone=#{phone}
+    <select id="findLingLingUserInfo" resultType="org.li.module.lingling.bean.SvOwner">
+		SELECT
+			o.owner_id,
+			o.parent_id,
+			o.regcode,
+			o.owner_name,
+			o.owner_telephone,
+			o.weixin_id,
+			o.reg_time,
+			o.reg_effec_day,
+			o.first_login_time,
+			o.use_effec_day,
+			o. STATUS,
+			o.residential_id,
+			o.call_id,
+			o.terminal_type,
+			o.note,
+			o.lingling_id,
+			o.visitor_authority,
+			o.owner_gender,
+			o.owner_race,
+			o.owner_birthday,
+			o.owner_census_addr,
+			o.owner_iden_number,
+			o.iden_img_id,
+			o.phone_IMEI,
+			o.longitude,
+			o.latitude,
+			o.owner_police,
+			r.residential_id,
+			r.region_id,
+			r.residential_code,
+			r.residential_name,
+			r.manager_name,
+			r.telephone,
+			r.address,
+			r.time,
+			r.user_id,
+			r.residential_type,
+			r.start_time,
+			r.end_time,
+			r. STATUS,
+			r.note
+		FROM
+			sv_owner o
+		LEFT JOIN sv_residential r ON o.residential_id = r.residential_id
+		WHERE
+			o.owner_telephone = #{phone}
   </select>
-
-    <select id="findUserDevices" resultType="BaseResultMap">
-		select d.device_id, d.name, d.family_id, d.device_type, d.device_code, d.mac, d.default_mac, d.wifi_ssid, d.wifi_password, d.bluetooch_name, d.bluetooch_password, d.lock_type,  d.lock_interval, d.last_synchro_time, d.status, d.region_id, d.custom_type, d.residential_type,
-		d.note, d.v3_device_id, d.is_online, d.x_coordinate, d.y_coordinate, d.mark, d.lock_status, d.make_time
-		from sv_owner o
-		left join sv_owner_device od on o.owner_id=od.owner_id
-		left join sv_device d on d.device_id=od.device_id
-		where o.owner_id=#{ownerId}
+  <select id="findLingLingManagerInfo" resultType="org.li.module.lingling.bean.SvOwner">
+		SELECT
+			u.user_id,
+			u.account,
+			u.name,
+			u.sex,
+			u.mobile_phone,
+			u.email,
+			u.address,
+			u.password,
+			u.dept_id,
+			u.type_id,
+			u.status_id,
+			u.note,
+			r.residential_id,
+			r.region_id,
+			r.residential_code,
+			r.residential_name,
+			r.manager_name,
+			r.telephone,
+			r.address,
+			r.time,
+			r.user_id,
+			r.residential_type,
+			r.start_time,
+			r.end_time,
+			r.status,
+			r.note
+		FROM
+			sys_user u
+		LEFT JOIN sys_user_residential ur ON u.user_id = ur.user_id
+		LEFT JOIN sv_residential r ON r.residential_id = ur.residential_id
+		WHERE
+			u.mobile_phone = #{phone}
 	</select>
+
+  <select id="findUserDevices" resultType="org.li.module.lingling.bean.SvOwner">
+		SELECT
+			d.device_id,
+			d. NAME,
+			d.family_id,
+			d.device_type,
+			d.device_code,
+			d.mac,
+			d.default_mac,
+			d.wifi_ssid,
+			d.wifi_password,
+			d.bluetooch_name,
+			d.bluetooch_password,
+			d.lock_type,
+			d.lock_interval,
+			d.last_synchro_time,
+			d. STATUS,
+			d.region_id,
+			d.custom_type,
+			d.residential_type,
+			d.note,
+			d.v3_device_id,
+			d.is_online,
+			d.x_coordinate,
+			d.y_coordinate,
+			d.mark,
+			d.lock_status,
+			d.make_time
+		FROM
+			sv_owner o
+		LEFT JOIN sv_owner_device od ON o.owner_id = od.owner_id
+		LEFT JOIN sv_device d ON d.device_id = od.device_id
+		WHERE
+			o.owner_id = #{ownerId}
+	</select>
+
+	<!--通过residential_id查询社区下的住户列表-->
+	<select id="findResidentialUser" resultType="org.li.module.lingling.bean.SvOwner">
+		SELECT
+			o.owner_id,
+			o.parent_id,
+			o.regcode,
+			o.owner_name,
+			o.owner_telephone,
+			o.weixin_id,
+			o.reg_time o.reg_effec_day,
+			o.first_login_time,
+			o.use_effec_day,
+			o. STATUS,
+			o.residential_id,
+			o.call_id,
+			o.terminal_type,
+			o.note,
+			o.lingling_id,
+			o.visitor_authority,
+			o.owner_gender,
+			o.owner_race,
+			o.owner_birthday,
+			o.owner_census_addr,
+			o.owner_iden_number,
+			o.iden_img_id,
+			o.phone_IMEI,
+			o.longitude,
+			o.latitude,
+			o.owner_police
+		FROM
+			sv_owner o
+		WHERE
+			o.residential_id = #{residentialId};
+	</select>
+
+	<!--通过user_id查询社区管理员管理下的住户列表-->
+	<select id="findManagerUser" resultType="org.li.module.lingling.bean.SvOwner">
+		SELECT
+			o.owner_id,
+			o.regcode,
+			o.owner_name,
+			o.owner_telephone,
+			o.weixin_id,
+			o.reg_time,
+			o.reg_effec_day,
+			o.first_login_time,
+			o.use_effec_day,
+			o. STATUS,
+			o.residential_id,
+			o.call_id,
+			o.terminal_type,
+			o.note,
+			o.lingling_id,
+			o.visitor_authority,
+			o.owner_gender,
+			o.owner_race,
+			o.owner_birthday,
+			o.owner_census_addr,
+			o.owner_iden_number,
+			o.iden_img_id,
+			o.phone_IMEI,
+			o.longitude,
+			o.latitude,
+			o.owner_police
+		  FROM
+			sv_owner o
+		  WHERE
+			EXISTS (
+			SELECT
+				*
+			FROM
+				sv_residential r
+			LEFT JOIN sys_user_residential ur ON r.residential_id = ur.residential_id
+			LEFT JOIN sys_user u ON u.user_id = ur.user_id
+			WHERE
+			u.user_id = #{userId}
+			AND o.residential_id = r.residential_id
+			)
+	</select>
+
+	<!--通过owner_id查询访客记录-->
+	<select id="findVisitRecord" resultType="org.li.module.lingling.bean.SvOwner">
+		SELECT
+			vq.code_id,
+			vq.owner_id,
+			vq.code_data,
+			vq.code_type,
+			vq.visitor_name,
+			vq.visitor_telephone,
+			vq.visitor_gender,
+			vq.is_drive,
+			vq.visitor_purpose,
+			vq.make_reason,
+			vq.make_time,
+			vq.start_time,
+			vq.end_time,
+			vq.effec_number,
+			vq. STATUS,
+			vq.v3_code_id,
+			vq.user_id
+		FROM
+			sv_visitor_qrcode vq
+		WHERE
+			vq.owner_id = #{ownerId}
+	</select>
+
+	<!--通过residential_id查询住房情况-->
+	<select id="findResidentialInfo" resultType="org.li.module.lingling.bean.SvOwner">
+		SELECT
+			r.residential_id,
+			r.region_id,
+			r.residential_code,
+			r.residential_name,
+			r.manager_name,
+			r.telephone,
+			r.address,
+			r.time,
+			r.user_id,
+			r.residential_type,
+			r.start_time,
+			r.end_time,
+			r. STATUS,
+			r.note,
+			room.room_number,
+			room. STATUS,
+			room.note
+		FROM
+			sv_room room
+		LEFT JOIN sv_residential r ON room.residential_id = r.residential_id
+		WHERE
+			r.residential_id = #{residentialId};
+	</select>
+
+	<insert id="insertOwner" parameterType="org.li.module.lingling.bean.SvOwner" useGeneratedKeys="true" keyProperty="ownerId">
+		insert into sv_owner
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test=" parentId != null" >
+				parent_id,
+			</if>
+			<if test=" regcode != null" >
+				regcode,
+			</if>
+			<if test=" ownerName != null" >
+				owner_name,
+			</if>
+			<if test=" ownerTelephone != null" >
+				owner_telephone,
+			</if>
+			<if test=" weixinId != null" >
+				weixin_id,
+			</if>
+			<if test=" regTime != null" >
+				reg_time,
+			</if>
+			<if test=" regEffecDay != null" >
+				reg_effec_day,
+			</if>
+			<if test=" firstLoginTime != null" >
+				first_login_time,
+			</if>
+			<if test=" useEffecDay != null" >
+				use_effec_day,
+			</if>
+			<if test=" status != null" >
+				status,
+			</if>
+			<if test=" residentialId != null" >
+				residential_id,
+			</if>
+			<if test=" callId != null" >
+				call_id,
+			</if>
+			<if test=" terminalType != null" >
+				terminal_type,
+			</if>
+			<if test=" note != null" >
+				note,
+			</if>
+			<if test=" linglingId != null" >
+				lingling_id,
+			</if>
+			<if test=" visitorAuthority != null" >
+				visitor_authority,
+			</if>
+			<if test=" ownerGender != null" >
+				owner_gender,
+			</if>
+			<if test=" ownerRace != null" >
+				owner_race,
+			</if>
+			<if test=" ownerBirthday != null" >
+				owner_birthday,
+			</if>
+			<if test=" ownerCensusAddr != null" >
+				owner_census_addr,
+			</if>
+			<if test=" ownerIdenNumber != null" >
+				owner_iden_number,
+			</if>
+			<if test=" idenImgId != null" >
+				iden_img_id,
+			</if>
+			<if test=" phoneImei != null" >
+				phone_IMEI,
+			</if>
+			<if test=" longitude != null" >
+				longitude,
+			</if>
+			<if test=" latitude != null" >
+				latitude,
+			</if>
+			<if test=" ownerPolice != null" >
+				owner_police,
+			</if>
+			<if test=" ownerActiveFrom != null" >
+				owner_active_from,
+			</if>
+			<if test=" ownerActiveTo != null" >
+				owner_active_to,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" parentId != null" >
+				#{parentId},
+			</if>
+			<if test=" regcode != null" >
+				#{regcode},
+			</if>
+			<if test=" ownerName != null" >
+				#{ownerName},
+			</if>
+			<if test=" ownerTelephone != null" >
+				#{ownerTelephone},
+			</if>
+			<if test=" weixinId != null" >
+				#{weixinId},
+			</if>
+			<if test=" regTime != null" >
+				#{regTime},
+			</if>
+			<if test=" regEffecDay != null" >
+				#{regEffecDay},
+			</if>
+			<if test=" firstLoginTime != null" >
+				#{firstLoginTime},
+			</if>
+			<if test=" useEffecDay != null" >
+				#{useEffecDay},
+			</if>
+			<if test=" status != null" >
+				#{status},
+			</if>
+			<if test=" residentialId != null" >
+				#{residentialId},
+			</if>
+			<if test=" callId != null" >
+				#{callId},
+			</if>
+			<if test=" terminalType != null" >
+				#{terminalType},
+			</if>
+			<if test=" note != null" >
+				#{note},
+			</if>
+			<if test=" linglingId != null" >
+				#{linglingId},
+			</if>
+			<if test=" visitorAuthority != null" >
+				#{visitorAuthority},
+			</if>
+			<if test=" ownerGender != null" >
+				#{ownerGender},
+			</if>
+			<if test=" ownerRace != null" >
+				#{ownerRace},
+			</if>
+			<if test=" ownerBirthday != null" >
+				#{ownerBirthday},
+			</if>
+			<if test=" ownerCensusAddr != null" >
+				#{ownerCensusAddr},
+			</if>
+			<if test=" ownerIdenNumber != null" >
+				#{ownerIdenNumber},
+			</if>
+			<if test=" idenImgId != null" >
+				#{idenImgId},
+			</if>
+			<if test=" phoneImei != null" >
+				#{phoneImei},
+			</if>
+			<if test=" longitude != null" >
+				#{longitude},
+			</if>
+			<if test=" latitude != null" >
+				#{latitude},
+			</if>
+			<if test=" ownerPolice != null" >
+				#{ownerPolice},
+			</if>
+			<if test=" ownerActiveFrom != null" >
+				#{ownerActiveFrom},
+			</if>
+			<if test=" ownerActiveTo != null" >
+				#{ownerActiveTo},
+			</if>
+		</trim>
+	</insert>
+
+	<insert id="insertOwner" parameterType="org.li.module.lingling.bean.SvOwnerRoom" useGeneratedKeys="true" keyProperty="ownerId">
+		insert into sv_owner
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test=" roomId != null" >
+				room_id,
+			</if>
+			<if test=" ownerId != null" >
+				owner_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test=" roomId != null" >
+				#{roomId},
+			</if>
+			<if test=" ownerId != null" >
+				#{ownerId},
+			</if>
+		</trim>
+	</insert>
 
 
 </mapper>
