@@ -1,7 +1,7 @@
 package org.li.common.util;
 
 import com.google.gson.Gson;
-import org.li.module.user.bean.SvDevice;
+import org.li.module.lingling.bean.SvLingLingDevice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,11 @@ import java.util.List;
  */
 public class ParameterUtil {
 
-    public static synchronized String geneDevceIds(List<SvDevice> devices) {
+    public static synchronized String getDeviceId(List<SvLingLingDevice> devices) {
         List<Integer> list = new ArrayList<>();
-        for (SvDevice svDevice : devices) {
-            list.add(svDevice.getId());
+        for (SvLingLingDevice svDevice : devices) {
+            if(svDevice!=null)
+            list.add(svDevice.getDeviceId());
         }
         return new Gson().toJson(list);
     }

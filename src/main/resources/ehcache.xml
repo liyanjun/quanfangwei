@@ -20,6 +20,8 @@
            memoryStoreEvictionPolicy="LRU"
            transactionalMode="off"
     >
+        <searchable keys="true"/> <!--可以根据Key进行查询，查询的Attribute就是keys-->
+    </cache>
     <cache name="captcha-cache"
            maxElementsInMemory="1000"
            overflowToDisk="false"

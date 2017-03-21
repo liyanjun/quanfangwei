@@ -2,6 +2,7 @@
 package org.li.module.lingling.dao.impl;
 
 import org.li.common.base.dao.LingLingBaseDao;
+import org.li.module.lingling.bean.SvLingLingDevice;
 import org.li.module.lingling.bean.SvOwner;
 import org.li.module.lingling.dao.SvOwnerDao;
 import org.li.module.user.bean.SvDevice;
@@ -24,7 +25,7 @@ public class SvOwnerDaoImpl extends LingLingBaseDao<Integer, SvOwner> implements
     }
 
     @Override
-    public List<SvDevice> findUserDevices(Integer owner_id) {
-        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findUserDevices", owner_id);
+    public List<SvLingLingDevice> findUserDevices(Integer ownerId) {
+        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findUserDevices", ownerId);
     }
 }

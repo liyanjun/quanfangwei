@@ -56,14 +56,14 @@ public class SvDeviceServiceImpl implements SvDeviceService {
     }
 
 //    public Integer delete(Integer id){
-//	SvDevice temp = new SvDevice();
+//	SvLingLingDevice temp = new SvLingLingDevice();
 //	temp.setId(id);
 //	temp.setDeleted(true);
 //	return svDeviceDao.update(temp);
 //    }
 //
 //    public Integer delete(Integer id, Integer updateId) {
-//	SvDevice temp = new SvDevice();
+//	SvLingLingDevice temp = new SvLingLingDevice();
 //	temp.setId(id);
 //	temp.setDeleted(true);
 //	temp.setUpdateId(updateId);

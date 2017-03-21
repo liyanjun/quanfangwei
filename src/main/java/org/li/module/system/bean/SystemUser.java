@@ -315,11 +315,11 @@ public class SystemUser extends BaseEntity {
         return this.isDel;
     }
 
-    public void setValue(SvOwner value) {
+    public SystemUser setValue(SvOwner value) {
         //TODO 赋值
         this.ownerId = value.getOwnerId();
         this.linglingId = value.getLinglingId();
-
+        return this;
     }
 }
 

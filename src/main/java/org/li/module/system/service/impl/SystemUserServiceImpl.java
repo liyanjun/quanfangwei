@@ -59,5 +59,12 @@ public class SystemUserServiceImpl implements SystemUserService {
         return systemUserDao.update(temp);
     }
 
+    @Override
+    public SystemUser findByPhone(String phone) {
+        SystemUser systemUser = new SystemUser();
+        systemUser.setPhone(phone);
+        return systemUserDao.getEntityByObj(systemUser);
+    }
+
 
 }

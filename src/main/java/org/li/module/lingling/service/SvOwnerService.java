@@ -4,6 +4,7 @@ package org.li.module.lingling.service;
 
 import org.li.common.base.page.PageInfo;
 import org.li.common.base.page.PagerControl;
+import org.li.module.lingling.bean.SvLingLingDevice;
 import org.li.module.lingling.bean.SvOwner;
 import org.li.module.user.bean.SvDevice;
 
@@ -28,6 +29,6 @@ public interface SvOwnerService {
      * @param owner_id
      * @return
      */
-    List<SvDevice> findUserDevices(Integer owner_id);
+    List<SvLingLingDevice> findUserDevices(Integer owner_id);
     
 }

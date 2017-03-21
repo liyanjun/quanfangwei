@@ -3,6 +3,7 @@ package org.li.module.lingling.service.impl;
 
 import org.li.common.base.page.PageInfo;
 import org.li.common.base.page.PagerControl;
+import org.li.module.lingling.bean.SvLingLingDevice;
 import org.li.module.lingling.bean.SvOwner;
 import org.li.module.lingling.dao.SvOwnerDao;
 import org.li.module.lingling.service.SvOwnerService;
@@ -30,8 +31,8 @@ public class SvOwnerServiceImpl implements SvOwnerService {
     }
 
     @Override
-    public List<SvDevice> findUserDevices(Integer owner_id) {
-        return svOwnerDao.findUserDevices(owner_id);
+    public List<SvLingLingDevice> findUserDevices(Integer ownerId) {
+        return svOwnerDao.findUserDevices(ownerId);
     }
 
 }

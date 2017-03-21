@@ -14,7 +14,7 @@ import java.sql.Timestamp;
  * @author liyanjun
  * @date 2017-3-21 11:04:47
  */
-public class SvDevice extends BaseEntity {
+public class SvLingLingDevice extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
@@ -97,10 +97,10 @@ public class SvDevice extends BaseEntity {
 	/**设备添加时间*/
 	private Timestamp makeTime;
 
-	public SvDevice(){
+	public SvLingLingDevice(){
 	}
 
-	public SvDevice(Integer deviceId){
+	public SvLingLingDevice(Integer deviceId){
 		this.deviceId = deviceId;
 	}
 
@@ -329,9 +329,9 @@ public class SvDevice extends BaseEntity {
 	}
 
 	public boolean equals(Object obj) {
-		if(obj instanceof SvDevice == false) return false;
+		if(obj instanceof SvLingLingDevice == false) return false;
 		if(this == obj) return true;
-		SvDevice other = (SvDevice)obj;
+		SvLingLingDevice other = (SvLingLingDevice)obj;
 		return new EqualsBuilder()
 			.append(getDeviceId(),other.getDeviceId())
 			.isEquals();

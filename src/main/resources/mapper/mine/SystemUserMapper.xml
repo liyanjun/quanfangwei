@@ -340,13 +340,11 @@
   <sql id="selectCondition">
     <where>
       <trim suffixOverrides="and">
-      	<!-- 
         <if test=" entity != null">
-          <if test="entity.id!=null">
-            and id=#{entity.id}
+          <if test="entity.phone!=null">
+            and phone=#{entity.phone}
           </if>
         </if>
-         -->
          and is_del = -1
       </trim>
       <trim suffixOverrides="and">
