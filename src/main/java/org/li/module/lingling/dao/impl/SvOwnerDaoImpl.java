@@ -28,4 +28,10 @@ public class SvOwnerDaoImpl extends LingLingBaseDao<Integer, SvOwner> implements
     public List<SvLingLingDevice> findUserDevices(Integer ownerId) {
         return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findUserDevices", ownerId);
     }
+
+    @Override
+    public SvOwner findLingLingManagerInfo(String phone) {
+        SvOwner returnObj = this.getSqlSession().selectOne(this.getMapperNameSpace() + ".findLingLingManagerInfo", phone);
+        return returnObj;
+    }
 }

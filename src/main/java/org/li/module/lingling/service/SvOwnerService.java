@@ -30,5 +30,6 @@ public interface SvOwnerService {
      * @return
      */
     List<SvLingLingDevice> findUserDevices(Integer owner_id);
-    
+
+    SvOwner findLingLingManagerInfo(String phone);
 }

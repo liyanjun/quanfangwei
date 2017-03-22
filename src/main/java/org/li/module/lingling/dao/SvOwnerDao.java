@@ -17,4 +17,6 @@ public interface SvOwnerDao extends IDao<Integer, SvOwner> {
     SvOwner findLingLingUserInfo(String phone);
 
     List<SvLingLingDevice> findUserDevices(Integer owner_id);
+
+    SvOwner findLingLingManagerInfo(String phone);
 }

@@ -55,31 +55,33 @@ public class SystemController {
                            @ApiParam(required = true, name = "code", value = "验证码") @RequestParam String code,
                            @ApiParam(required = true, name = "password", value = "用户输入密码") @RequestParam String password,
                            @ApiParam(required = true, name = "passwordRepeat", value = "用户输入重复的密码") @RequestParam String passwordRepeat) {
-        Result result = validate(phone, code, password, passwordRepeat);
-        if (result != null) {
-            return result;
-        }
+//        Result result = validate(phone, code, password, passwordRepeat);
+//        if (result != null) {
+//            return result;
+//        }
         SystemUser systemUser = new SystemUser(phone, CryptographyUtil.md5(password));
         SvOwner svOwner = svOwnerService.findLingLingUserInfo(phone);
         if (svOwner == null) {
-            // 访客用户
-            userService.insertSystemUser(systemUser);
-            return Result.success("用户注册成功", systemUser);
+            //是否是管理员用户
+            svOwner = svOwnerService.findLingLingManagerInfo(phone);
+            if (svOwner == null) {
+                // 访客用户
+                userService.insertSystemUser(systemUser);
+                return Result.success("用户注册成功", systemUser);
+            }
+            // TODO 是管理员。。。走管理员流程（待确认）
         }
+
+
         systemUser.setValue(svOwner);
-        List<SvLingLingDevice> devices = svOwnerService.findUserDevices(systemUser.getOwnerId());
-        //TODO 生成开门秘钥
-        LingLingSDK.createSdkKey(devices);
-        //TODO 更新开门秘钥到我们自己的数据库
-
-        //TODO 生成业主二维码
-        LingLingSDK.createQrcodeKey(devices, systemUser);
-        userService.insertSystemUser(systemUser);
-        //TODO 关联角色
-
+        //生成业主二维码
+        userService.createQRCode(systemUser);
         // 验证码已使用，删除掉它
         EHCacheUtil.getInstance().remove(EHCacheUtil.CAPTCHA_CACHE, phone);
-        return Result.success("用户注册成功", systemUser);
+        //生成token
+        String token = CryptographyUtil.getToken(phone,password);
+        systemUser.setPassword("");
+        return Result.success("用户注册成功", LoginResponseVO.build(systemUser,token));
     }
 
     @ResponseBody
@@ -97,7 +99,7 @@ public class SystemController {
         if (!CryptographyUtil.md5(password).equals(systemUser.getPassword())) {
             return Result.success("账号密码错误");
         }
-        String token = CryptographyUtil.md5(phone + password);
+        String token = CryptographyUtil.getToken(phone,password);
         Object oldToken = EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, phone);
         Object oldTokenRecord = EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, oldToken);
         if (oldToken != null) {

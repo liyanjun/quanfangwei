@@ -17,4 +17,8 @@ public class CryptographyUtil {
     public static String md5(String str){
         return new Md5Hash(str,litileMore).toString();
     }
+
+    public static String getToken(String phone, String password) {
+        return md5(phone+password+DateUtil.getCurrentTimestamp());
+    }
 }

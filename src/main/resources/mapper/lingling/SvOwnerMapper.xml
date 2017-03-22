@@ -11,22 +11,22 @@
 			o.parent_id as parentId,
 			o.regcode,
 			o.owner_name as ownerName,
-			o.owner_telephone as ownerTelephone
-			/*o.weixin_id,
+			o.owner_telephone as ownerTelephone,
+			o.weixin_id,
 			o.reg_time,
 			o.reg_effec_day,
 			o.first_login_time,
 			o.use_effec_day,
 			o. STATUS,
-			o.residential_id,
+			o.residential_id as residentialId,
 			o.call_id,
 			o.terminal_type,
 			o.note,
-			o.lingling_id,
+			o.lingling_id as linglingId,
 			o.visitor_authority,
-			o.owner_gender,
+			o.owner_gender as ownerGender,
 			o.owner_race,
-			o.owner_birthday,
+			o.owner_birthday as ownerBirthday,
 			o.owner_census_addr,
 			o.owner_iden_number,
 			o.iden_img_id,
@@ -37,7 +37,7 @@
 			r.residential_id,
 			r.region_id,
 			r.residential_code,
-			r.residential_name,
+			r.residential_name as residentialName,
 			r.manager_name,
 			r.telephone,
 			r.address,
@@ -47,7 +47,7 @@
 			r.start_time,
 			r.end_time,
 			r. STATUS,
-			r.note*/
+			r.note
 		FROM
 			sv_owner o
 		LEFT JOIN sv_residential r ON o.residential_id = r.residential_id

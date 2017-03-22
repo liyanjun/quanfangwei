@@ -3,11 +3,18 @@ package org.li.module.system.service.impl;
 
 import org.li.common.base.page.PageInfo;
 import org.li.common.base.page.PagerControl;
+import org.li.common.util.lingling.LingLingSDK;
+import org.li.module.lingling.bean.SvLingLingDevice;
+import org.li.module.lingling.dao.SvOwnerDao;
 import org.li.module.system.bean.SystemUser;
 import org.li.module.system.dao.SystemUserDao;
 import org.li.module.system.service.SystemUserService;
+import org.li.module.user.bean.SvDevice;
+import org.li.module.user.dao.SvDeviceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author liyanjun
@@ -18,6 +25,12 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Autowired
     private SystemUserDao systemUserDao;
+
+    @Autowired
+    private SvOwnerDao svOwnerDao;
+
+    @Autowired
+    private SvDeviceDao svDeviceDao;
 
     public Integer insertSystemUser(SystemUser systemUser) {
         if (systemUser == null) {
@@ -64,6 +77,24 @@ public class SystemUserServiceImpl implements SystemUserService {
         SystemUser systemUser = new SystemUser();
         systemUser.setPhone(phone);
         return systemUserDao.getEntityByObj(systemUser);
+    }
+
+    @Override
+    public void createQRCode(SystemUser systemUser) {
+        List<SvLingLingDevice> devices = svOwnerDao.findUserDevices(systemUser.getOwnerId());
+        //TODO 生成开门秘钥,生成我们自己的设备记录
+        List<SvDevice> svDevices = LingLingSDK.createSdkKey(devices);
+        //TODO 生成业主二维码
+        LingLingSDK.createQrcodeKey(devices, systemUser);
+
+        //TODO 更新开门秘钥到我们自己的数据库
+        for (SvDevice device : svDevices){
+            SvDevice svDevice = new SvDevice();
+            svDeviceDao.insert(svDevice);
+        }
+        systemUserDao.insert(systemUser);
+        //TODO 关联角色
+
     }
 
 
