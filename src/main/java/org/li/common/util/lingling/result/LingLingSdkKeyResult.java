@@ -8,4 +8,12 @@ import com.google.gson.JsonObject;
  */
 public class LingLingSdkKeyResult extends LingLingResult {
     private JsonObject responseResult;
+
+    public JsonObject getResponseResult() {
+        return responseResult;
+    }
+
+    public void setResponseResult(JsonObject responseResult) {
+        this.responseResult = responseResult;
+    }
 }

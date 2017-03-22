@@ -33,8 +33,8 @@ public class LingLingSDK {
         map.put("signature","69abeeba-fbc7-4b1a-903a-4a1a6beb6160");
         paramterMap.put("header",new Gson().toJson(map));
         map.clear();
-        map.put("MESSAGE","{requestParam:{deviceIds:[17],keyEffecDay:180},header:{token:\"2859441A22A912349035C58DC764159A\",signature:\"69abeeba-fbc7-4b1a-903a-4a1a6beb6160\"}}");
-        HttpPost httpPost = ConnectUtil.createPost("http://120.24.172.108:8889/cgi-bin/key/makeSDKKey",map);
+        map.put("MESSAGE","{requestParam:{deviceIds:[17],keyEffecDay:180},header:{token:\"1489806448986\",signature:\"69abeeba-fbc7-4b1a-903a-4a1a6beb6160\"}}");
+        HttpPost httpPost = ConnectUtil.createPost("http://120.24.172.108:8889/cgi-bin/key/makeSDKKey/2859441A22A912349035C58DC764159A",map);
         try {
             String response = ConnectUtil.submitPost(httpPost);
             LingLingResult lingLingResult = new Gson().fromJson(response,LingLingResult.class);
