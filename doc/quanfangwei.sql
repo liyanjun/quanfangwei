@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-03-21 16:10:25
+Date: 2017-03-22 17:43:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -103,6 +103,26 @@ CREATE TABLE `system_role` (
 
 -- ----------------------------
 -- Records of system_role
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for system_thirdconnector_log
+-- ----------------------------
+DROP TABLE IF EXISTS `system_thirdconnector_log`;
+CREATE TABLE `system_thirdconnector_log` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `connectorName` varchar(50) NOT NULL DEFAULT '0' COMMENT '链接名',
+  `requestUrl` varchar(250) NOT NULL DEFAULT '0' COMMENT '请求地址',
+  `request` varchar(800) NOT NULL DEFAULT '0' COMMENT '请求',
+  `return_back` varchar(800) NOT NULL DEFAULT '0' COMMENT '返回',
+  `other1` varchar(500) DEFAULT '0' COMMENT '保留参数',
+  `other2` varchar(500) DEFAULT '0' COMMENT '保留参数2',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8 COMMENT='第三方链接日志表';
+
+-- ----------------------------
+-- Records of system_thirdconnector_log
 -- ----------------------------
 
 -- ----------------------------
