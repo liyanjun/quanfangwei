@@ -23,4 +23,6 @@ public interface SvOwnerDao extends IDao<Integer, SvOwner> {
     List<SvVisitorQrcode> findVisitRecord(Integer ownerId, Integer first, Integer count);
 
     SysUser findLingLingManagerInfo(String phone);
+
+    List<SvOwner> findManagerUser(Integer userId, Integer first, Integer count);
 }

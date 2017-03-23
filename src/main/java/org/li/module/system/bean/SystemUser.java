@@ -3,6 +3,7 @@ package org.li.module.system.bean;
 import org.li.common.base.bean.BaseEntity;
 import org.li.common.util.DateUtil;
 import org.li.module.lingling.bean.SvOwner;
+import org.li.module.lingling.bean.SysUser;
 
 import java.sql.Timestamp;
 
@@ -117,6 +118,8 @@ public class SystemUser extends BaseEntity {
      * 更新时间
      */
     private Timestamp updateTime;
+
+    private Integer roleId;
 
     private Integer isDel = -1; // 已删除,1,-1
 
@@ -292,6 +295,14 @@ public class SystemUser extends BaseEntity {
         return this.endDate;
     }
 
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
     public void setCreateTime(Timestamp value) {
         this.createTime = value;
     }
@@ -332,5 +343,10 @@ public class SystemUser extends BaseEntity {
 
         return this;
     }
+
+    public void setAdminValue(SysUser sysUser) {
+        this.ownerId = sysUser.getUserId();
+    }
+
 }
 

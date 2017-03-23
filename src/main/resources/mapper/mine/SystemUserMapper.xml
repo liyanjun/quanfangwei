@@ -76,6 +76,14 @@
 		#{roleId}
 		      )
 	</insert>
+	<select id="findRoleId" resultType="org.li.module.system.bean.SystemUserRole" parameterType="java.lang.Integer" >
+		select
+		user_id as userId,
+		role_id as roleId
+		from system_user_role
+		where
+		user_id = #{id}
+	</select>
   <insert id="insert" parameterType="org.li.module.system.bean.SystemUser" useGeneratedKeys="true" keyProperty="id">
     insert into system_user (<include refid="Base_Column_List" />
       )

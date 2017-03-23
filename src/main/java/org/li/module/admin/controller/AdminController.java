@@ -2,8 +2,16 @@ package org.li.module.admin.controller;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.li.common.util.EHCacheUtil;
 import org.li.common.vo.Result;
+import org.li.module.lingling.bean.SvOwner;
+import org.li.module.lingling.bean.SvVisitorQrcode;
+import org.li.module.lingling.service.SvOwnerService;
+import org.li.module.system.bean.SystemUser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 管理员接口
@@ -13,17 +21,37 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 public class AdminController {
 
+    @Autowired
+    SvOwnerService svOwnerService;
+
     @ResponseBody
     @RequestMapping("findPerson")
     @ApiOperation(value = "查询管理员辖内人员", httpMethod = "POST", response = Result.class, notes = "查询管理员辖内人员")
-    public Result findPerson(@RequestHeader String token) {
-        return Result.success("查询管理员辖内人员成功");
+    public Result findPerson(@RequestHeader String token,
+                             @ApiParam(required = true,name = "first",value = "当前浏览到的记录-1") @RequestParam Integer first,
+                             @ApiParam(required = true,name = "count",value = "本次要加载的记录") @RequestParam Integer count) {
+        SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
+        if(systemUser == null){
+            return Result.fail("登录超时");
+        }
+        if(systemUser.getRoleId() != 3){
+            return Result.fail("权限不足");
+        }
+        List<SvOwner> svOwners = svOwnerService.findLingLingUserInfoList(systemUser.getOwnerId(),first,count);
+        return Result.success("查询管理员辖内人员成功",svOwners);
     }
 
     @ResponseBody
     @RequestMapping("findBuilding")
     @ApiOperation(value = "查询管理员所管理的楼栋住房", httpMethod = "POST", response = Result.class, notes = "查询管理员所管理的楼栋住房")
     public Result findBuilding(@RequestHeader String token) {
+        SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
+        if(systemUser == null){
+            return Result.fail("登录超时");
+        }
+        if(systemUser.getRoleId() != 3){
+            return Result.fail("权限不足");
+        }
         return Result.success("查询管理员所管理的楼栋住房成功");
     }
 

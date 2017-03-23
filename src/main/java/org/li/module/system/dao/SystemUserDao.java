@@ -13,4 +13,6 @@ import org.li.module.system.bean.SystemUserRole;
 public interface SystemUserDao extends IDao<Integer, SystemUser> {
 
     int insertUserRole(SystemUserRole systemUserRole);
+
+    Integer findRoleId(Integer id);
 }

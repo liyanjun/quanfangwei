@@ -18,6 +18,10 @@ public class SystemUserRole extends BaseEntity {
 	/**用户名*/
 	private Integer userId;
 
+	public SystemUserRole(){
+
+	}
+
 	public SystemUserRole(Integer id, Integer roleId) {
 		this.userId = id;
 		this.roleId = roleId;

@@ -81,7 +81,12 @@ public class SystemUserServiceImpl implements SystemUserService {
     public SystemUser findByPhone(String phone) {
         SystemUser systemUser = new SystemUser();
         systemUser.setPhone(phone);
-        return systemUserDao.getEntityByObj(systemUser);
+        systemUser = systemUserDao.getEntityByObj(systemUser);
+        if(systemUser == null){
+            return null;
+        }
+        systemUser.setRoleId(systemUserDao.findRoleId(systemUser.getId()));
+        return systemUser;
     }
 
 //    @Override

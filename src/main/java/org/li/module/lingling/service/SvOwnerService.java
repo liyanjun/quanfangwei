@@ -40,4 +40,6 @@ public interface SvOwnerService {
     List<SvVisitorQrcode> findVisitRecord(Integer ownerId, Integer first, Integer count);
 
     SysUser findLingLingManagerInfo(String phone);
+
+    List<SvOwner> findLingLingUserInfoList(Integer userId, Integer first, Integer count);
 }

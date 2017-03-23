@@ -78,7 +78,7 @@ public class SystemController {
 
         if (sysUser != null) {
             roleId = 3;
-            // TODO 设置管理员信息。
+            systemUser.setAdminValue(sysUser);
         }
         userService.insertSystemUser(systemUser, roleId);
         // 验证码已使用，删除掉它
@@ -86,6 +86,9 @@ public class SystemController {
         //生成token
         String token = CryptographyUtil.getToken(phone,password);
         systemUser.setPassword("");
+        systemUser.setRoleId(roleId);
+        EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE, token, systemUser);
+        EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE, phone, token);
         return Result.success("用户注册成功", LoginResponseVO.build(systemUser,token));
     }
 
@@ -112,8 +115,10 @@ public class SystemController {
             EHCacheUtil.getInstance().remove(EHCacheUtil.LOGIN_CACHE, oldToken);
             EHCacheUtil.getInstance().remove(EHCacheUtil.LOGIN_CACHE, oldTokenRecord);
         }
+
         EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE, token, systemUser);
         EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE, phone, token);
+        systemUser.setPassword("");
         return Result.success("用户登陆成功", LoginResponseVO.build(systemUser, token));
     }
 
@@ -158,6 +163,10 @@ public class SystemController {
         }
         if (password.length() < 6 || passwordRepeat.length() < 6) {
             return Result.fail("请输入六位以上密码。");
+        }
+        SystemUser systemUser = userService.findByPhone(phone);
+        if(systemUser != null){
+            return Result.fail("该手机号码已注册。");
         }
         return null;
     }

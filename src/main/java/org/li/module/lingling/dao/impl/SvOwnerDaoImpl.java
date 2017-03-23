@@ -39,8 +39,14 @@ public class SvOwnerDaoImpl extends LingLingBaseDao<Integer, SvOwner> implements
 
     @Override
     public SysUser findLingLingManagerInfo(String phone) {
-        SysUser returnObj = this.getSqlSession().selectOne(this.getMapperNameSpace() + ".findLingLingManagerInfo", phone);
+        // 使用手机号查出多个管理员，问题解决
+        SysUser returnObj = (SysUser) this.getSqlSession().selectList(this.getMapperNameSpace() + ".findLingLingManagerInfo", phone).get(0);
         return returnObj;
+    }
+
+    @Override
+    public List<SvOwner> findManagerUser(Integer userId, Integer first, Integer count) {
+        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findManagerUser", getParameter( userId,  first,  count));
     }
 
     private Map getParameter(Integer ownerId, Integer first, Integer count){

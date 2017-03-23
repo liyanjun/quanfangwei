@@ -53,7 +53,9 @@ public class UserController {
     @ResponseBody
     @RequestMapping("findDev")
     @ApiOperation(value = "查询用户可用门禁设备", httpMethod = "POST", response = Result.class, notes = "查询用户可用门禁设备")
-    public Result findDev(@RequestHeader String token,@ApiParam(required = true,name = "first",value = "当前浏览到的记录-1") Integer first,@ApiParam(required = true,name = "count",value = "本次要加载的记录") Integer count) {
+    public Result findDev(@RequestHeader String token,
+                          @ApiParam(required = true,name = "first",value = "当前浏览到的记录-1") @RequestParam Integer first,
+                          @ApiParam(required = true,name = "count",value = "本次要加载的记录") @RequestParam Integer count) {
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
         if(systemUser == null){
             return Result.fail("登录超时");
@@ -73,7 +75,9 @@ public class UserController {
     @ResponseBody
     @RequestMapping("findVisitRecord")
     @ApiOperation(value = "查询访客记录", httpMethod = "POST", response = Result.class, notes = "查询访客记录")
-    public Result findVisitRecord(@RequestHeader String token,@ApiParam(required = true,name = "first",value = "当前浏览到的记录-1") Integer first,@ApiParam(required = true,name = "count",value = "本次要加载的记录") Integer count) {
+    public Result findVisitRecord(@RequestHeader String token,
+                                  @ApiParam(required = true,name = "first",value = "当前浏览到的记录-1") @RequestParam Integer first,
+                                  @ApiParam(required = true,name = "count",value = "本次要加载的记录") @RequestParam Integer count) {
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
         if(systemUser == null){
             return Result.fail("登录超时");

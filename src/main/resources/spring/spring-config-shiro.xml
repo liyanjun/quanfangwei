@@ -55,8 +55,8 @@
 		<property name="unauthorizedUrl" value="/unauthorized"/>
 		<property name="filterChainDefinitions">
 			<value>
-				/admin/login=anon
-				/admin/**=adminAuthc
+				<!--/admin/login=anon
+				/admin/**=adminAuthc-->
 			</value>
 		</property>
 	</bean>

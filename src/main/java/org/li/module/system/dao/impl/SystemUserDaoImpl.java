@@ -17,6 +17,12 @@ public class SystemUserDaoImpl extends BaseDao<Integer, SystemUser> implements S
 
     @Override
     public int insertUserRole(SystemUserRole systemUserRole) {
-        return this.getSqlSession().insert(this.getMapperNameSpace() + ".insertSelective", systemUserRole);
+        return this.getSqlSession().insert(this.getMapperNameSpace() + ".insertUserRole", systemUserRole);
+    }
+
+    @Override
+    public Integer findRoleId(Integer id) {
+        SystemUserRole userRole = this.getSqlSession().selectOne(this.getMapperNameSpace() + ".findRoleId", id);
+        return userRole.getRoleId();
     }
 }

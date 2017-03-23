@@ -1,22 +1,22 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local
-Source Server Version : 50717
+Source Server         : localhost_3306
+Source Server Version : 50530
 Source Host           : localhost:3306
 Source Database       : quanfangwei
 
 Target Server Type    : MYSQL
-Target Server Version : 50717
+Target Server Version : 50530
 File Encoding         : 65001
 
-Date: 2017-03-23 17:39:53
+Date: 2017-03-23 22:59:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for sv_create_qrcode_record
+-- Table structure for `sv_create_qrcode_record`
 -- ----------------------------
 DROP TABLE IF EXISTS `sv_create_qrcode_record`;
 CREATE TABLE `sv_create_qrcode_record` (
@@ -35,7 +35,7 @@ CREATE TABLE `sv_create_qrcode_record` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for sv_device
+-- Table structure for `sv_device`
 -- ----------------------------
 DROP TABLE IF EXISTS `sv_device`;
 CREATE TABLE `sv_device` (
@@ -54,7 +54,7 @@ CREATE TABLE `sv_device` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for sv_qrcode
+-- Table structure for `sv_qrcode`
 -- ----------------------------
 DROP TABLE IF EXISTS `sv_qrcode`;
 CREATE TABLE `sv_qrcode` (
@@ -76,7 +76,7 @@ CREATE TABLE `sv_qrcode` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for system_resource
+-- Table structure for `system_resource`
 -- ----------------------------
 DROP TABLE IF EXISTS `system_resource`;
 CREATE TABLE `system_resource` (
@@ -91,7 +91,7 @@ CREATE TABLE `system_resource` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for system_role
+-- Table structure for `system_role`
 -- ----------------------------
 DROP TABLE IF EXISTS `system_role`;
 CREATE TABLE `system_role` (
@@ -109,7 +109,7 @@ INSERT INTO `system_role` VALUES ('2', '业主', '业主');
 INSERT INTO `system_role` VALUES ('3', '管理员', '管理员');
 
 -- ----------------------------
--- Table structure for system_thirdconnector_log
+-- Table structure for `system_thirdconnector_log`
 -- ----------------------------
 DROP TABLE IF EXISTS `system_thirdconnector_log`;
 CREATE TABLE `system_thirdconnector_log` (
@@ -129,7 +129,7 @@ CREATE TABLE `system_thirdconnector_log` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for system_third_log
+-- Table structure for `system_third_log`
 -- ----------------------------
 DROP TABLE IF EXISTS `system_third_log`;
 CREATE TABLE `system_third_log` (
@@ -142,14 +142,14 @@ CREATE TABLE `system_third_log` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for system_user
+-- Table structure for `system_user`
 -- ----------------------------
 DROP TABLE IF EXISTS `system_user`;
 CREATE TABLE `system_user` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `phone` varchar(255) NOT NULL COMMENT '手机号',
   `owner_id` int(11) DEFAULT NULL COMMENT '令令数据库中的用户ID',
-  `lingling_id` int(11) DEFAULT NULL COMMENT 'lingling_id',
+  `lingling_id` varchar(32) DEFAULT NULL COMMENT 'lingling_id',
   `password` varchar(64) NOT NULL COMMENT '密码',
   `username` varchar(16) DEFAULT NULL COMMENT '用户姓名',
   `sex` int(11) DEFAULT NULL COMMENT '性别',
@@ -171,27 +171,30 @@ CREATE TABLE `system_user` (
   `is_del` tinyint(11) NOT NULL COMMENT '-1：已删除，1：未删除',
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone_pk` (`phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
 INSERT INTO `system_user` VALUES ('1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2017-03-20 11:21:03', '2017-03-20 11:21:17', null, '2017-03-20 11:21:29', null, '-1');
+INSERT INTO `system_user` VALUES ('4', '17702495456', '63', '042d000ce0', '4e299bce9c8390ba9655e55e34fee3dd', '刘一兰', '2', null, '1981-05-04', null, null, null, null, '105', '沈阳勃通科技', null, null, null, null, null, '2017-03-23 21:02:17', null, '-1');
+INSERT INTO `system_user` VALUES ('8', '13942829144', null, '042d000ccb', 'f3842dd3a9524bd105fe1ec387ed6c6f', '张霆文', '2', null, '1980-12-24', null, null, null, null, '108', '二期23楼1号', null, null, null, null, null, '2017-03-23 22:34:55', null, '-1');
+INSERT INTO `system_user` VALUES ('9', '13829483934', '20', null, '0e84c3d11ca56ed17951e6c212bf5cdc', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '2017-03-23 22:46:32', null, '-1');
 
 -- ----------------------------
--- Table structure for system_user_role
+-- Table structure for `system_user_role`
 -- ----------------------------
 DROP TABLE IF EXISTS `system_user_role`;
 CREATE TABLE `system_user_role` (
-  `id` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(32) NOT NULL COMMENT '角色名',
-  `describ` varchar(255) DEFAULT NULL COMMENT '角色描述',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '角色名',
+  `role_id` int(11) NOT NULL COMMENT '角色描述',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of system_user_role
 -- ----------------------------
-INSERT INTO `system_user_role` VALUES ('1', '访客', '访客');
-INSERT INTO `system_user_role` VALUES ('2', '业主', '业主');
-INSERT INTO `system_user_role` VALUES ('3', '管理员', '管理员');
+INSERT INTO `system_user_role` VALUES ('1', '4', '2');
+INSERT INTO `system_user_role` VALUES ('3', '8', '3');
+INSERT INTO `system_user_role` VALUES ('4', '9', '3');
