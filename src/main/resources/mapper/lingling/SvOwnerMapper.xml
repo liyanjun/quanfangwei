@@ -188,6 +188,7 @@
 			o.iden_img_id,
 			o.phone_IMEI,
 			o.longitude,
+
 			o.latitude,
 			o.owner_police
 		  FROM
