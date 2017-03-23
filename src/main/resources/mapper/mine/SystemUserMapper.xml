@@ -66,6 +66,16 @@
     where  
 			id = #{id} 		
   </delete>
+	<insert id="insertUserRole" parameterType="org.li.module.system.bean.SystemUserRole" useGeneratedKeys="true" keyProperty="id">
+		insert into system_user_role (
+		user_id,
+		role_id
+		)
+		values (
+		#{userId),
+		#{roleId}
+		      )
+	</insert>
   <insert id="insert" parameterType="org.li.module.system.bean.SystemUser" useGeneratedKeys="true" keyProperty="id">
     insert into system_user (<include refid="Base_Column_List" />
       )

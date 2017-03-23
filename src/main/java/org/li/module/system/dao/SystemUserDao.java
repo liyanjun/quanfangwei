@@ -4,6 +4,7 @@ package org.li.module.system.dao;
 
 import org.li.common.base.dao.IDao;
 import org.li.module.system.bean.SystemUser;
+import org.li.module.system.bean.SystemUserRole;
 
 /**
  * @author liyanjun
@@ -11,4 +12,5 @@ import org.li.module.system.bean.SystemUser;
  */
 public interface SystemUserDao extends IDao<Integer, SystemUser> {
 
+    int insertUserRole(SystemUserRole systemUserRole);
 }

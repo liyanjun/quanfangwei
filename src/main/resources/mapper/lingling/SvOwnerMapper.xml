@@ -54,7 +54,7 @@
 		WHERE
 			o.owner_telephone = #{phone}
   </select>
-  <select id="findLingLingManagerInfo" resultType="org.li.module.lingling.bean.SvOwner">
+  <select id="findLingLingManagerInfo" resultType="org.li.module.lingling.bean.SysUser">
 		SELECT
 			u.user_id,
 			u.account,
@@ -123,7 +123,7 @@
 		LEFT JOIN sv_owner_device od ON o.owner_id = od.owner_id
 		LEFT JOIN sv_device d ON d.device_id = od.device_id
 		WHERE
-			o.owner_id = #{ownerId}
+			o.owner_id = #{ownerId} <if test="first != null  and count != null ">LIMIT #{first}, #{count}</if>
 	</select>
 
 	<!--通过residential_id查询社区下的住户列表-->
@@ -229,7 +229,7 @@
 		FROM
 			sv_visitor_qrcode vq
 		WHERE
-			vq.owner_id = #{ownerId}
+		vq.owner_id = #{ownerId} <if test="first != null and count != null ">LIMIT #{first}, #{count}</if>
 	</select>
 
 	<!--通过residential_id查询住房情况-->

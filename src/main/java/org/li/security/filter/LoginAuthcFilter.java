@@ -4,11 +4,14 @@ import com.google.gson.Gson;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.li.common.util.EHCacheUtil;
 import org.li.common.vo.Result;
+import org.li.module.system.bean.SystemUser;
 import org.li.security.realm.LoginToken;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -27,21 +30,19 @@ public class LoginAuthcFilter extends FormAuthenticationFilter {
 
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
-        String phone = request.getParameter("phone");
-        String password = request.getParameter("password");
-        LoginToken token = new LoginToken(phone,password);
-        if(token == null) {
-            String e1 = "createToken method implementation returned null. A valid non-null AuthenticationToken must be created in order to execute a login attempt.";
-            throw new IllegalStateException(e1);
-        } else {
-            try {
-                Subject e = this.getSubject(request, response);
-                e.login(token);
-                return this.onLoginSuccess(token, e, request, response);
-            } catch (AuthenticationException var5) {
-                return this.onLoginFailure(token, var5, request, response);
-            }
-        }
+        String token = ((HttpServletRequest)request).getHeader("token");
+//        if(token == null) {
+            onLoginFail(response);
+            return true;
+//        } else {
+//            try {
+//                Subject e = this.getSubject(request, response);
+////                e.login(token);
+//                return this.onLoginSuccess(token, e, request, response);
+//            } catch (AuthenticationException var5) {
+//                return this.onLoginFailure(token, var5, request, response);
+//            }
+//        }
     }
 
     //登录失败时默认返回401状态码

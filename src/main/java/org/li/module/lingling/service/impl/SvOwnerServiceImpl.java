@@ -1,17 +1,18 @@
 
 package org.li.module.lingling.service.impl;
 
-import org.li.common.base.page.PageInfo;
-import org.li.common.base.page.PagerControl;
 import org.li.module.lingling.bean.SvLingLingDevice;
 import org.li.module.lingling.bean.SvOwner;
+import org.li.module.lingling.bean.SvVisitorQrcode;
+import org.li.module.lingling.bean.SysUser;
 import org.li.module.lingling.dao.SvOwnerDao;
 import org.li.module.lingling.service.SvOwnerService;
-import org.li.module.user.bean.SvDevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 业主信息表
@@ -31,8 +32,18 @@ public class SvOwnerServiceImpl implements SvOwnerService {
     }
 
     @Override
-    public List<SvLingLingDevice> findUserDevices(Integer ownerId) {
-        return svOwnerDao.findUserDevices(ownerId);
+    public List<SvLingLingDevice> findUserDevices(Integer ownerId, Integer first, Integer count) {
+        return svOwnerDao.findUserDevices(ownerId,first,count);
+    }
+
+    @Override
+    public List<SvVisitorQrcode> findVisitRecord(Integer ownerId, Integer first, Integer count) {
+        return svOwnerDao.findVisitRecord(ownerId,first,count);
+    }
+
+    @Override
+    public SysUser findLingLingManagerInfo(String phone) {
+        return svOwnerDao.findLingLingManagerInfo(phone);
     }
 
 }

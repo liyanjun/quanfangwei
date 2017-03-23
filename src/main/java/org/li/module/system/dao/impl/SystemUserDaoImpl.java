@@ -2,7 +2,9 @@
 package org.li.module.system.dao.impl;
 
 import org.li.common.base.dao.BaseDao;
+import org.li.module.system.bean.SystemRole;
 import org.li.module.system.bean.SystemUser;
+import org.li.module.system.bean.SystemUserRole;
 import org.li.module.system.dao.SystemUserDao;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +15,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class SystemUserDaoImpl extends BaseDao<Integer, SystemUser> implements SystemUserDao {
 
+    @Override
+    public int insertUserRole(SystemUserRole systemUserRole) {
+        return this.getSqlSession().insert(this.getMapperNameSpace() + ".insertSelective", systemUserRole);
+    }
 }

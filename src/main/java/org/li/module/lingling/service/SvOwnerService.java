@@ -2,11 +2,10 @@
 package org.li.module.lingling.service;
 
 
-import org.li.common.base.page.PageInfo;
-import org.li.common.base.page.PagerControl;
 import org.li.module.lingling.bean.SvLingLingDevice;
 import org.li.module.lingling.bean.SvOwner;
-import org.li.module.user.bean.SvDevice;
+import org.li.module.lingling.bean.SvVisitorQrcode;
+import org.li.module.lingling.bean.SysUser;
 
 import java.util.List;
 
@@ -27,8 +26,18 @@ public interface SvOwnerService {
     /**
      * 住户可用设备查询
      * @param owner_id
-     * @return
+     * @param first
+     *@param count @return
      */
-    List<SvLingLingDevice> findUserDevices(Integer owner_id);
-    
+    List<SvLingLingDevice> findUserDevices(Integer owner_id, Integer first, Integer count);
+
+    /**
+     * 查询访客记录
+     * @param ownerId
+     * @param first
+     * @param count
+     */
+    List<SvVisitorQrcode> findVisitRecord(Integer ownerId, Integer first, Integer count);
+
+    SysUser findLingLingManagerInfo(String phone);
 }

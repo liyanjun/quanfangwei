@@ -12,7 +12,7 @@ import org.li.module.system.bean.SystemUser;
  */
 public interface SystemUserService {
 
-    Integer insertSystemUser(SystemUser systemUser);
+    Integer insertSystemUser(SystemUser systemUser,Integer roleId);
 
     Integer updateSystemUser(SystemUser systemUser);
 

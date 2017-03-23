@@ -8,7 +8,9 @@ import org.li.common.util.lingling.LingLingSDK;
 import org.li.common.vo.Result;
 import org.li.module.lingling.bean.SvLingLingDevice;
 import org.li.module.lingling.bean.SvOwner;
+import org.li.module.lingling.bean.SysUser;
 import org.li.module.lingling.service.SvOwnerService;
+import org.li.module.system.bean.SystemRole;
 import org.li.module.system.bean.SystemUser;
 import org.li.module.system.bean.vo.LoginResponseVO;
 import org.li.module.system.service.SystemUserService;
@@ -55,28 +57,30 @@ public class SystemController {
                            @ApiParam(required = true, name = "code", value = "验证码") @RequestParam String code,
                            @ApiParam(required = true, name = "password", value = "用户输入密码") @RequestParam String password,
                            @ApiParam(required = true, name = "passwordRepeat", value = "用户输入重复的密码") @RequestParam String passwordRepeat) {
+        Integer roleId = 1;
         Result result = validate(phone, code, password, passwordRepeat);
         if (result != null) {
             return result;
         }
         SystemUser systemUser = new SystemUser(phone, CryptographyUtil.md5(password));
         SvOwner svOwner = svOwnerService.findLingLingUserInfo(phone);
-        if (svOwner == null) {
+        SysUser sysUser = svOwnerService.findLingLingManagerInfo(phone);
+        if (svOwner == null && sysUser == null) {
             // 访客用户
-            userService.insertSystemUser(systemUser);
+            userService.insertSystemUser(systemUser, roleId);
             return Result.success("用户注册成功", systemUser);
         }
-        systemUser.setValue(svOwner);
-        List<SvLingLingDevice> devices = svOwnerService.findUserDevices(systemUser.getOwnerId());
-        //TODO 生成开门秘钥
-        LingLingSDK.createSdkKey(devices);
-        //TODO 更新开门秘钥到我们自己的数据库
 
-        //TODO 生成业主二维码
-        LingLingSDK.createQrcodeKey(devices, systemUser);
-        userService.insertSystemUser(systemUser);
-        //TODO 关联角色
+        if (svOwner != null) {
+            roleId = 2;
+            systemUser.setValue(svOwner);
+        }
 
+        if (sysUser != null) {
+            roleId = 3;
+            // TODO 设置管理员信息。
+        }
+        userService.insertSystemUser(systemUser, roleId);
         // 验证码已使用，删除掉它
         EHCacheUtil.getInstance().remove(EHCacheUtil.CAPTCHA_CACHE, phone);
         return Result.success("用户注册成功", systemUser);
@@ -102,12 +106,12 @@ public class SystemController {
         Object oldTokenRecord = EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, oldToken);
         if (oldToken != null) {
             //之前存在有效登陆的，清理掉
-            EHCacheUtil.getInstance().remove(EHCacheUtil.LOGIN_CACHE,oldToken);
-            EHCacheUtil.getInstance().remove(EHCacheUtil.LOGIN_CACHE,oldTokenRecord);
+            EHCacheUtil.getInstance().remove(EHCacheUtil.LOGIN_CACHE, oldToken);
+            EHCacheUtil.getInstance().remove(EHCacheUtil.LOGIN_CACHE, oldTokenRecord);
         }
-        EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE, token, phone);
+        EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE, token, systemUser);
         EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE, phone, token);
-        return Result.success("用户登陆成功", LoginResponseVO.build(systemUser,token));
+        return Result.success("用户登陆成功", LoginResponseVO.build(systemUser, token));
     }
 
     @ResponseBody
@@ -131,13 +135,14 @@ public class SystemController {
 
     /**
      * 注册或者找回密码时验证
+     *
      * @param phone
      * @param code
      * @param password
      * @param passwordRepeat
      * @return
      */
-    private Result validate(String phone,String code,String password,String passwordRepeat) {
+    private Result validate(String phone, String code, String password, String passwordRepeat) {
         if (!RegexUtil.isPhone(phone)) {
             return Result.fail("请输入正确的手机号码。");
         }
