@@ -83,7 +83,10 @@ public class SystemController {
         userService.insertSystemUser(systemUser, roleId);
         // 验证码已使用，删除掉它
         EHCacheUtil.getInstance().remove(EHCacheUtil.CAPTCHA_CACHE, phone);
-        return Result.success("用户注册成功", systemUser);
+        //生成token
+        String token = CryptographyUtil.getToken(phone,password);
+        systemUser.setPassword("");
+        return Result.success("用户注册成功", LoginResponseVO.build(systemUser,token));
     }
 
     @ResponseBody
@@ -101,7 +104,7 @@ public class SystemController {
         if (!CryptographyUtil.md5(password).equals(systemUser.getPassword())) {
             return Result.success("账号密码错误");
         }
-        String token = CryptographyUtil.md5(phone + password);
+        String token = CryptographyUtil.getToken(phone,password);
         Object oldToken = EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, phone);
         Object oldTokenRecord = EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, oldToken);
         if (oldToken != null) {

@@ -25,4 +25,6 @@ public interface SystemUserService {
     Integer delete(Integer id, Integer updateId);
 
     SystemUser findByPhone(String phone);
+
+    void createQRCode(SystemUser systemUser);
 }

@@ -3,8 +3,7 @@ package org.li.module.lingling.dao;
 import org.li.common.base.dao.IDao;
 import org.li.module.lingling.bean.SvLingLingDevice;
 import org.li.module.lingling.bean.SvOwner;
-import org.li.module.lingling.bean.SvVisitorQrcode;
-import org.li.module.lingling.bean.SysUser;
+import org.li.module.user.bean.SvDevice;
 
 import java.util.List;
 

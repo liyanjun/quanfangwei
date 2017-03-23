@@ -1,6 +1,7 @@
 package org.li.module.system.bean;
 
 import org.li.common.base.bean.BaseEntity;
+import org.li.common.util.DateUtil;
 import org.li.module.lingling.bean.SvOwner;
 
 import java.sql.Timestamp;
@@ -40,7 +41,7 @@ public class SystemUser extends BaseEntity {
     private String username;
 
     /**
-     * 性别
+     * 性别1:男，2女
      */
     private Integer sex;
 
@@ -317,8 +318,18 @@ public class SystemUser extends BaseEntity {
 
     public SystemUser setValue(SvOwner value) {
         //TODO 赋值
+        this.phone = value.getOwnerTelephone();
         this.ownerId = value.getOwnerId();
         this.linglingId = value.getLinglingId();
+        this.username = value.getOwnerName();
+        this.sex = value.getOwnerGender();
+        this.nation = value.getOwnerRace();
+        this.birthday = DateUtil.getStr(value.getOwnerBirthday(),"yyyy-MM-dd");
+        this.creditAddress = value.getOwnerCensusAddr();
+        this.creditNo = value.getOwnerIdenNumber();
+        this.addressId = value.getResidentialId();
+        this.address = value.getResidentialName();
+
         return this;
     }
 }

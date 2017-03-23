@@ -46,4 +46,9 @@ public class SvOwnerServiceImpl implements SvOwnerService {
         return svOwnerDao.findLingLingManagerInfo(phone);
     }
 
+    @Override
+    public SvOwner findLingLingManagerInfo(String phone) {
+        return svOwnerDao.findLingLingManagerInfo(phone);
+    }
+
 }

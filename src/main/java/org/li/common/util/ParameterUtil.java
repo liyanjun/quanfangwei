@@ -11,12 +11,12 @@ import java.util.List;
  */
 public class ParameterUtil {
 
-    public static synchronized String getDeviceId(List<SvLingLingDevice> devices) {
+    public static synchronized List<Integer> getDeviceId(List<SvLingLingDevice> devices) {
         List<Integer> list = new ArrayList<>();
         for (SvLingLingDevice svDevice : devices) {
             if(svDevice!=null)
             list.add(svDevice.getDeviceId());
         }
-        return new Gson().toJson(list);
+        return list;
     }
 }

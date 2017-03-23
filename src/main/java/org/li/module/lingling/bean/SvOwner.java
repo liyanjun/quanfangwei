@@ -102,6 +102,11 @@ public class SvOwner extends BaseEntity {
 	/***/
 	private String ownerActiveTo;
 
+	/**
+	 * 小区名
+	 */
+	private String residentialName;
+
 	public SvOwner(){
 	}
 
@@ -314,6 +319,10 @@ public class SvOwner extends BaseEntity {
 
 	public String getOwnerActiveTo() {
 		return this.ownerActiveTo;
+	}
+
+	public String getResidentialName() {
+		return residentialName;
 	}
 }
 
