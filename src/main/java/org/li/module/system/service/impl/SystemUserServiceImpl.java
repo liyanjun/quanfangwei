@@ -29,21 +29,20 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Autowired
     private SystemUserDao systemUserDao;
-
-    @Transactional
-    public Integer insertSystemUser(SystemUser systemUser,Integer roleId) {
     @Autowired
     private SvOwnerDao svOwnerDao;
 
     @Autowired
     private SvDeviceDao svDeviceDao;
 
-    public Integer insertSystemUser(SystemUser systemUser) {
+    @Transactional
+    public Integer insertSystemUser(SystemUser systemUser,Integer roleId) {
+
         if (systemUser == null) {
             return 0;
         }
-
         Integer i = systemUserDao.insert(systemUser);
+        systemUserDao.insertUserRole(new SystemUserRole(systemUser.getId(),roleId));
         return i;
     }
 
@@ -87,7 +86,7 @@ public class SystemUserServiceImpl implements SystemUserService {
 
     @Override
     public void createQRCode(SystemUser systemUser) {
-        List<SvLingLingDevice> devices = svOwnerDao.findUserDevices(systemUser.getOwnerId());
+        List<SvLingLingDevice> devices = svOwnerDao.findUserDevices(systemUser.getOwnerId(),null,null);
         //TODO 生成开门秘钥,生成我们自己的设备记录
         List<SvDevice> svDevices = LingLingSDK.createSdkKey(devices);
         //TODO 生成业主二维码

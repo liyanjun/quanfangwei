@@ -57,9 +57,4 @@ public class SvOwnerDaoImpl extends LingLingBaseDao<Integer, SvOwner> implements
         return map;
     }
 
-    @Override
-    public SvOwner findLingLingManagerInfo(String phone) {
-        SvOwner returnObj = this.getSqlSession().selectOne(this.getMapperNameSpace() + ".findLingLingManagerInfo", phone);
-        return returnObj;
-    }
 }

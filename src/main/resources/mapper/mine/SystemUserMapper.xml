@@ -72,7 +72,7 @@
 		role_id
 		)
 		values (
-		#{userId),
+		#{userId},
 		#{roleId}
 		      )
 	</insert>
