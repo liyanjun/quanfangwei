@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-03-22 17:43:33
+Date: 2017-03-23 17:39:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -104,6 +104,9 @@ CREATE TABLE `system_role` (
 -- ----------------------------
 -- Records of system_role
 -- ----------------------------
+INSERT INTO `system_role` VALUES ('1', '访客', '访客');
+INSERT INTO `system_role` VALUES ('2', '业主', '业主');
+INSERT INTO `system_role` VALUES ('3', '管理员', '管理员');
 
 -- ----------------------------
 -- Table structure for system_thirdconnector_log
@@ -119,7 +122,7 @@ CREATE TABLE `system_thirdconnector_log` (
   `other2` varchar(500) DEFAULT '0' COMMENT '保留参数2',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8 COMMENT='第三方链接日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='第三方链接日志表';
 
 -- ----------------------------
 -- Records of system_thirdconnector_log
@@ -174,3 +177,21 @@ CREATE TABLE `system_user` (
 -- Records of system_user
 -- ----------------------------
 INSERT INTO `system_user` VALUES ('1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2017-03-20 11:21:03', '2017-03-20 11:21:17', null, '2017-03-20 11:21:29', null, '-1');
+
+-- ----------------------------
+-- Table structure for system_user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `system_user_role`;
+CREATE TABLE `system_user_role` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(32) NOT NULL COMMENT '角色名',
+  `describ` varchar(255) DEFAULT NULL COMMENT '角色描述',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of system_user_role
+-- ----------------------------
+INSERT INTO `system_user_role` VALUES ('1', '访客', '访客');
+INSERT INTO `system_user_role` VALUES ('2', '业主', '业主');
+INSERT INTO `system_user_role` VALUES ('3', '管理员', '管理员');

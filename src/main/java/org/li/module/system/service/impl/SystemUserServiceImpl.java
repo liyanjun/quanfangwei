@@ -84,23 +84,15 @@ public class SystemUserServiceImpl implements SystemUserService {
         return systemUserDao.getEntityByObj(systemUser);
     }
 
-    @Override
-    public void createQRCode(SystemUser systemUser) {
-        List<SvLingLingDevice> devices = svOwnerDao.findUserDevices(systemUser.getOwnerId(),null,null);
-        //TODO 生成开门秘钥,生成我们自己的设备记录
-        List<SvDevice> svDevices = LingLingSDK.createSdkKey(devices);
-        //TODO 生成业主二维码
-        LingLingSDK.createQrcodeKey(devices, systemUser);
-
-        //TODO 更新开门秘钥到我们自己的数据库
-        for (SvDevice device : svDevices){
-            SvDevice svDevice = new SvDevice();
-            svDeviceDao.insert(svDevice);
-        }
-        systemUserDao.insert(systemUser);
-        //TODO 关联角色
-
-    }
+//    @Override
+//    public void createQRCode(SystemUser systemUser) {
+//        List<SvLingLingDevice> devices = svOwnerDao.findUserDevices(systemUser.getOwnerId(),null,null);
+//        //TODO 生成开门秘钥,生成我们自己的设备记录
+//        List<SvDevice> svDevices = LingLingSDK.createSdkKey(devices);
+//        //TODO 生成业主二维码
+//        LingLingSDK.createQrcodeKey(devices, systemUser);
+//
+//    }
 
 
 }

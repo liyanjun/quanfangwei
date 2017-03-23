@@ -26,5 +26,5 @@ public interface SystemUserService {
 
     SystemUser findByPhone(String phone);
 
-    void createQRCode(SystemUser systemUser);
+//    void createQRCode(SystemUser systemUser);
 }
