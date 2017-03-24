@@ -36,7 +36,7 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Autowired
     private SvDeviceDao svDeviceDao;
 
-    @Transactional
+    @Transactional(value = "transactionManagerMine")
     public Integer insertSystemUser(SystemUser systemUser,Integer roleId) {
 
         if (systemUser == null) {
