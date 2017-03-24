@@ -1,10 +1,7 @@
 
 package org.li.module.lingling.service.impl;
 
-import org.li.module.lingling.bean.SvLingLingDevice;
-import org.li.module.lingling.bean.SvOwner;
-import org.li.module.lingling.bean.SvVisitorQrcode;
-import org.li.module.lingling.bean.SysUser;
+import org.li.module.lingling.bean.*;
 import org.li.module.lingling.dao.SvOwnerDao;
 import org.li.module.lingling.service.SvOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +46,11 @@ public class SvOwnerServiceImpl implements SvOwnerService {
     @Override
     public List<SvOwner> findLingLingUserInfoList(Integer userId, Integer first, Integer count) {
         return svOwnerDao.findManagerUser(userId,first,count);
+    }
+
+    @Override
+    public List<SvResidential> findManagerBuilding(Integer ownerId, Integer first, Integer count) {
+        return svOwnerDao.findManagerBuilding(ownerId,first,count);
     }
 
 }

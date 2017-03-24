@@ -2,10 +2,7 @@
 package org.li.module.lingling.service;
 
 
-import org.li.module.lingling.bean.SvLingLingDevice;
-import org.li.module.lingling.bean.SvOwner;
-import org.li.module.lingling.bean.SvVisitorQrcode;
-import org.li.module.lingling.bean.SysUser;
+import org.li.module.lingling.bean.*;
 
 import java.util.List;
 
@@ -42,4 +39,6 @@ public interface SvOwnerService {
     SysUser findLingLingManagerInfo(String phone);
 
     List<SvOwner> findLingLingUserInfoList(Integer userId, Integer first, Integer count);
+
+    List<SvResidential> findManagerBuilding(Integer ownerId, Integer first, Integer count);
 }

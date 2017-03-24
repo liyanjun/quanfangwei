@@ -2,10 +2,7 @@
 package org.li.module.lingling.dao.impl;
 
 import org.li.common.base.dao.LingLingBaseDao;
-import org.li.module.lingling.bean.SvLingLingDevice;
-import org.li.module.lingling.bean.SvOwner;
-import org.li.module.lingling.bean.SvVisitorQrcode;
-import org.li.module.lingling.bean.SysUser;
+import org.li.module.lingling.bean.*;
 import org.li.module.lingling.dao.SvOwnerDao;
 import org.springframework.stereotype.Repository;
 
@@ -47,6 +44,11 @@ public class SvOwnerDaoImpl extends LingLingBaseDao<Integer, SvOwner> implements
     @Override
     public List<SvOwner> findManagerUser(Integer userId, Integer first, Integer count) {
         return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findManagerUser", getParameter( userId,  first,  count));
+    }
+
+    @Override
+    public List<SvResidential> findManagerBuilding(Integer ownerId, Integer first, Integer count) {
+        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findManagerBuilding", getParameter( ownerId,  first,  count));
     }
 
     private Map getParameter(Integer ownerId, Integer first, Integer count){

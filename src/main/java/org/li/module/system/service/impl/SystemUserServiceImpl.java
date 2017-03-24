@@ -3,6 +3,7 @@ package org.li.module.system.service.impl;
 
 import org.li.common.base.page.PageInfo;
 import org.li.common.base.page.PagerControl;
+import org.li.common.util.DateUtil;
 import org.li.common.util.lingling.LingLingSDK;
 import org.li.module.lingling.bean.SvLingLingDevice;
 import org.li.module.lingling.dao.SvOwnerDao;
@@ -66,16 +67,18 @@ public class SystemUserServiceImpl implements SystemUserService {
     public Integer delete(Integer id) {
         SystemUser temp = new SystemUser();
         temp.setId(id);
-        temp.setId(1);
+        temp.setIsDel(1);
+        temp.setUpdateTime(DateUtil.getCurrentTimestamp());
         return systemUserDao.update(temp);
     }
 
-    public Integer delete(Integer id, Integer updateId) {
-        SystemUser temp = new SystemUser();
-        temp.setId(id);
-        temp.setId(1);
-        return systemUserDao.update(temp);
-    }
+//    public Integer delete(Integer id, Integer updateId) {
+//        SystemUser temp = new SystemUser();
+//        temp.setId(id);
+//        temp.setIsDel(1);
+//        temp.setUpdateTime(DateUtil.getCurrentTimestamp());
+//        return systemUserDao.update(temp);
+//    }
 
     @Override
     public SystemUser findByPhone(String phone) {
@@ -88,16 +91,5 @@ public class SystemUserServiceImpl implements SystemUserService {
         systemUser.setRoleId(systemUserDao.findRoleId(systemUser.getId()));
         return systemUser;
     }
-
-//    @Override
-//    public void createQRCode(SystemUser systemUser) {
-//        List<SvLingLingDevice> devices = svOwnerDao.findUserDevices(systemUser.getOwnerId(),null,null);
-//        //TODO 生成开门秘钥,生成我们自己的设备记录
-//        List<SvDevice> svDevices = LingLingSDK.createSdkKey(devices);
-//        //TODO 生成业主二维码
-//        LingLingSDK.createQrcodeKey(devices, systemUser);
-//
-//    }
-
 
 }

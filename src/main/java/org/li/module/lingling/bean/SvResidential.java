@@ -57,13 +57,22 @@ public class SvResidential extends BaseEntity {
 	private Integer endTime;
 
 	/**状态，0为无效，1为有效*/
+	private Integer roomStatus;
+
+	/**备注*/
+	private String roomNote;
+
+	/**父ID*/
+	private Integer parentId;
+
+	/**房间号*/
+	private String roomNumber;
+
+	/**房间状态：0代表未出租，1代表已出租*/
 	private Integer status;
 
 	/**备注*/
 	private String note;
-
-	/**父ID*/
-	private Integer parentId;
 
 	public SvResidential(){
 	}
@@ -179,7 +188,29 @@ public class SvResidential extends BaseEntity {
 		return this.parentId;
 	}
 
+	public Integer getRoomStatus() {
+		return roomStatus;
+	}
 
+	public void setRoomStatus(Integer roomStatus) {
+		this.roomStatus = roomStatus;
+	}
+
+	public String getRoomNote() {
+		return roomNote;
+	}
+
+	public void setRoomNote(String roomNote) {
+		this.roomNote = roomNote;
+	}
+
+	public String getRoomNumber() {
+		return roomNumber;
+	}
+
+	public void setRoomNumber(String roomNumber) {
+		this.roomNumber = roomNumber;
+	}
 
 	public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)

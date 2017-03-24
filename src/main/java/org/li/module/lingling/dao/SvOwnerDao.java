@@ -1,10 +1,7 @@
 
 package org.li.module.lingling.dao;
 import org.li.common.base.dao.IDao;
-import org.li.module.lingling.bean.SvLingLingDevice;
-import org.li.module.lingling.bean.SvOwner;
-import org.li.module.lingling.bean.SvVisitorQrcode;
-import org.li.module.lingling.bean.SysUser;
+import org.li.module.lingling.bean.*;
 import org.li.module.user.bean.SvDevice;
 
 import java.util.List;
@@ -25,4 +22,6 @@ public interface SvOwnerDao extends IDao<Integer, SvOwner> {
     SysUser findLingLingManagerInfo(String phone);
 
     List<SvOwner> findManagerUser(Integer userId, Integer first, Integer count);
+
+    List<SvResidential> findManagerBuilding(Integer ownerId, Integer first, Integer count);
 }

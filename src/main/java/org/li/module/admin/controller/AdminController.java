@@ -2,15 +2,17 @@ package org.li.module.admin.controller;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.li.common.util.DateUtil;
 import org.li.common.util.EHCacheUtil;
 import org.li.common.vo.Result;
-import org.li.module.lingling.bean.SvOwner;
-import org.li.module.lingling.bean.SvVisitorQrcode;
+import org.li.module.lingling.bean.*;
 import org.li.module.lingling.service.SvOwnerService;
 import org.li.module.system.bean.SystemUser;
+import org.li.module.system.service.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -23,6 +25,9 @@ public class AdminController {
 
     @Autowired
     SvOwnerService svOwnerService;
+
+    @Autowired
+    SystemUserService systemUserService;
 
     @ResponseBody
     @RequestMapping("findPerson")
@@ -44,7 +49,9 @@ public class AdminController {
     @ResponseBody
     @RequestMapping("findBuilding")
     @ApiOperation(value = "查询管理员所管理的楼栋住房", httpMethod = "POST", response = Result.class, notes = "查询管理员所管理的楼栋住房")
-    public Result findBuilding(@RequestHeader String token) {
+    public Result findBuilding(@RequestHeader String token,
+                               @ApiParam(required = true,name = "first",value = "当前浏览到的记录-1") @RequestParam Integer first,
+                               @ApiParam(required = true,name = "count",value = "本次要加载的记录") @RequestParam Integer count) {
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
         if(systemUser == null){
             return Result.fail("登录超时");
@@ -52,7 +59,8 @@ public class AdminController {
         if(systemUser.getRoleId() != 3){
             return Result.fail("权限不足");
         }
-        return Result.success("查询管理员所管理的楼栋住房成功");
+        List<SvResidential> svResidentials = svOwnerService.findManagerBuilding(systemUser.getOwnerId(),first,count);
+        return Result.success("查询管理员所管理的楼栋住房成功",svResidentials);
     }
 
     @ResponseBody
@@ -71,6 +79,13 @@ public class AdminController {
                             @ApiParam(required = true, name = "beginTime", value = "有效期开始时间") @RequestParam String beginTime,
                             @ApiParam(required = true, name = "endTime", value = "有效期结束时间") @RequestParam String endTime,
                             @RequestHeader String token) {
+        SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
+        if(systemUser == null){
+            return Result.fail("登录超时");
+        }
+        if(systemUser.getRoleId() != 3){
+            return Result.fail("权限不足");
+        }
         return Result.success("新增用户成功");
     }
 
@@ -79,6 +94,19 @@ public class AdminController {
     @ApiOperation(value = "删除用户", httpMethod = "POST", response = Result.class, notes = "删除用户")
     public Result deletePerson(@ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone,
                                @RequestHeader String token) {
+        SystemUser admin = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
+        if(admin == null){
+            return Result.fail("登录超时");
+        }
+        if(admin.getRoleId() != 3){
+            return Result.fail("权限不足");
+        }
+        SystemUser systemUser = systemUserService.findByPhone(phone);
+        if(systemUser == null){
+            return Result.fail("该用户不存在");
+        }
+        systemUserService.delete(systemUser.getId());
+        // TODO 在他们的数据库删除
         return Result.success("删除用户成功");
     }
 
@@ -86,10 +114,33 @@ public class AdminController {
     @RequestMapping("editPerson")
     @ApiOperation(value = "编辑用户", httpMethod = "POST", response = Result.class, notes = "编辑用户")
     public Result editPerson(@ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone,
-                             @ApiParam(required = true, name = "addressId", value = "楼栋住房ID") @RequestParam String addressId,
+                             @ApiParam(required = true, name = "addressId", value = "楼栋住房ID") @RequestParam Integer addressId,
+                             @ApiParam(required = true, name = "addressId", value = "楼栋住房名称") @RequestParam String addressName,
                              @ApiParam(required = true, name = "beginTime", value = "有效期开始时间") @RequestParam String beginTime,
                              @ApiParam(required = true, name = "endTime", value = "有效期结束时间") @RequestParam String endTime,
                              @RequestHeader String token) {
+        SystemUser admin = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
+        if(admin == null){
+            return Result.fail("登录超时");
+        }
+        if(admin.getRoleId() != 3){
+            return Result.fail("权限不足");
+        }
+        SystemUser systemUser = systemUserService.findByPhone(phone);
+        if(systemUser == null){
+            return Result.fail("该用户不存在");
+        }
+
+        systemUser.setAddressId(addressId);
+        systemUser.setAddress(addressName);
+        try {
+            systemUser.setBeginDate(DateUtil.strToTimestamp(beginTime));
+            systemUser.setEndDate(DateUtil.strToTimestamp(endTime));
+        } catch (ParseException e) {
+            return Result.fail("日期格式不正确");
+        }
+        systemUserService.updateSystemUser(systemUser);
+        // TODO 更新他们的数据库
         return Result.success("编辑用户成功");
     }
 }
