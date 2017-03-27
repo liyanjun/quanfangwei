@@ -91,7 +91,7 @@ public class AdminController {
     @ApiOperation(value = "编辑用户", httpMethod = "POST", response = Result.class, notes = "编辑用户")
     public Result editPerson(@ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone,
                              @ApiParam(required = true, name = "addressId", value = "楼栋住房ID") @RequestParam Integer addressId,
-                             @ApiParam(required = true, name = "addressId", value = "楼栋住房名称") @RequestParam String addressName,
+                             @ApiParam(required = true, name = "addressName", value = "楼栋住房名称") @RequestParam String addressName,
                              @ApiParam(required = true, name = "beginTime", value = "有效期开始时间") @RequestParam String beginTime,
                              @ApiParam(required = true, name = "endTime", value = "有效期结束时间") @RequestParam String endTime,
                              @RequestParam String token) {

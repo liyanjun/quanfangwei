@@ -96,7 +96,7 @@ public class SystemController {
 
     @ResponseBody
     @RequestMapping("login")
-    @ApiOperation(value = "用户登陆", httpMethod = "POST", response = org.li.common.vo.Result.class, notes = "用户登陆")
+    @ApiOperation(value = "用户登录", httpMethod = "POST", response = org.li.common.vo.Result.class, notes = "用户登录")
     public Result login(@ApiParam(required = true, name = "phone", value = "用户输入的手机号") @RequestParam String phone,
                         @ApiParam(required = true, name = "password", value = "密码") @RequestParam String password) {
         SystemUser systemUser = userService.findByPhone(phone);
@@ -108,6 +108,22 @@ public class SystemController {
         }
         if (!CryptographyUtil.md5(password).equals(systemUser.getPassword())) {
             return Result.fail("账号密码错误");
+        }
+        SvOwner svOwner = svOwnerService.findLingLingUserInfo(phone);
+        SysUser sysUser = svOwnerService.findLingLingManagerInfo(phone);
+        if (svOwner == null && sysUser == null && systemUser.getRoleId().intValue() != 1) {
+            // 角色改变成访客
+            systemUser.setRoleId(1);
+        }
+        if (svOwner != null  && systemUser.getRoleId().intValue() != 2) {
+            // 角色改变成用户
+            systemUser.setRoleId(2);
+            systemUser.setValue(svOwner);
+        }
+        if (sysUser != null && systemUser.getRoleId().intValue() != 3) {
+            // 角色改变成管理员
+            systemUser.setRoleId(3);
+            systemUser.setAdminValue(sysUser);
         }
         String token = CryptographyUtil.getToken(phone, password);
         Object oldToken = EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, phone);
@@ -168,9 +184,9 @@ public class SystemController {
     }
 
     @ResponseBody
-    @RequestMapping("editPassword")
+    @RequestMapping("logout")
     @ApiOperation(value = "登出", httpMethod = "POST", response = org.li.common.vo.Result.class, notes = "登出")
-    public Result editPassword(@ApiParam(required = true, name = "token", value = "") @RequestParam String token) {
+    public Result logout(@ApiParam(required = true, name = "token", value = "") @RequestParam String token) {
         EHCacheUtil.getInstance().remove(EHCacheUtil.LOGIN_CACHE, token);
         return Result.success("成功登出");
     }
