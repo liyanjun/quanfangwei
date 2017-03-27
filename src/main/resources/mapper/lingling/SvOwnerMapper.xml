@@ -111,7 +111,7 @@
 			d.custom_type,
 			d.residential_type,
 			d.note,
-			d.v3_device_id,
+			d.v3_device_id as v3DeviceId,
 			d.is_online,
 			d.x_coordinate,
 			d.y_coordinate,
@@ -260,7 +260,7 @@
 			vq.end_time as endTime,
 			vq.effec_number as effecNumber,
 			vq. STATUS,
-			vq.v3_code_id,
+			vq.v3_code_id as v3CodeId,
 			vq.user_id
 		FROM
 			sv_visitor_qrcode vq

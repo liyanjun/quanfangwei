@@ -32,16 +32,10 @@ public class AdminController {
     @ResponseBody
     @RequestMapping("findPerson")
     @ApiOperation(value = "查询管理员辖内人员", httpMethod = "POST", response = Result.class, notes = "查询管理员辖内人员")
-    public Result findPerson(@RequestHeader String token,
+    public Result findPerson(@RequestParam String token,
                              @ApiParam(required = true,name = "first",value = "当前浏览到的记录-1") @RequestParam Integer first,
                              @ApiParam(required = true,name = "count",value = "本次要加载的记录") @RequestParam Integer count) {
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
-        if(systemUser == null){
-            return Result.fail("登录超时");
-        }
-        if(systemUser.getRoleId() != 3){
-            return Result.fail("权限不足");
-        }
         List<SvOwner> svOwners = svOwnerService.findLingLingUserInfoList(systemUser.getOwnerId(),first,count);
         return Result.success("查询管理员辖内人员成功",svOwners);
     }
@@ -49,16 +43,10 @@ public class AdminController {
     @ResponseBody
     @RequestMapping("findBuilding")
     @ApiOperation(value = "查询管理员所管理的楼栋住房", httpMethod = "POST", response = Result.class, notes = "查询管理员所管理的楼栋住房")
-    public Result findBuilding(@RequestHeader String token,
+    public Result findBuilding(@RequestParam String token,
                                @ApiParam(required = true,name = "first",value = "当前浏览到的记录-1") @RequestParam Integer first,
                                @ApiParam(required = true,name = "count",value = "本次要加载的记录") @RequestParam Integer count) {
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
-        if(systemUser == null){
-            return Result.fail("登录超时");
-        }
-        if(systemUser.getRoleId() != 3){
-            return Result.fail("权限不足");
-        }
         List<SvResidential> svResidentials = svOwnerService.findManagerBuilding(systemUser.getOwnerId(),first,count);
         return Result.success("查询管理员所管理的楼栋住房成功",svResidentials);
     }
@@ -78,14 +66,8 @@ public class AdminController {
                             @ApiParam(required = true, name = "addressId", value = "楼栋住房ID") @RequestParam String addressId,
                             @ApiParam(required = true, name = "beginTime", value = "有效期开始时间") @RequestParam String beginTime,
                             @ApiParam(required = true, name = "endTime", value = "有效期结束时间") @RequestParam String endTime,
-                            @RequestHeader String token) {
+                            @RequestParam String token) {
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
-        if(systemUser == null){
-            return Result.fail("登录超时");
-        }
-        if(systemUser.getRoleId() != 3){
-            return Result.fail("权限不足");
-        }
         return Result.success("新增用户成功");
     }
 
@@ -93,14 +75,8 @@ public class AdminController {
     @RequestMapping("deletePerson")
     @ApiOperation(value = "删除用户", httpMethod = "POST", response = Result.class, notes = "删除用户")
     public Result deletePerson(@ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone,
-                               @RequestHeader String token) {
+                               @RequestParam String token) {
         SystemUser admin = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
-        if(admin == null){
-            return Result.fail("登录超时");
-        }
-        if(admin.getRoleId() != 3){
-            return Result.fail("权限不足");
-        }
         SystemUser systemUser = systemUserService.findByPhone(phone);
         if(systemUser == null){
             return Result.fail("该用户不存在");
@@ -118,14 +94,8 @@ public class AdminController {
                              @ApiParam(required = true, name = "addressId", value = "楼栋住房名称") @RequestParam String addressName,
                              @ApiParam(required = true, name = "beginTime", value = "有效期开始时间") @RequestParam String beginTime,
                              @ApiParam(required = true, name = "endTime", value = "有效期结束时间") @RequestParam String endTime,
-                             @RequestHeader String token) {
+                             @RequestParam String token) {
         SystemUser admin = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
-        if(admin == null){
-            return Result.fail("登录超时");
-        }
-        if(admin.getRoleId() != 3){
-            return Result.fail("权限不足");
-        }
         SystemUser systemUser = systemUserService.findByPhone(phone);
         if(systemUser == null){
             return Result.fail("该用户不存在");

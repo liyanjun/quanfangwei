@@ -3,10 +3,10 @@ package org.li.common.util.lingling.result;
 import com.google.gson.JsonObject;
 
 /**
- * SDK秘钥令令返回结果实体
+ * 生成二维码令令返回结果实体
  * Created by 衍君 on 2017/3/20.
  */
-public class LingLingSdkKeyResult extends LingLingResult {
+public class LingLingQrcodeResult extends LingLingResult {
     private JsonObject responseResult;
 
     public JsonObject getResponseResult() {

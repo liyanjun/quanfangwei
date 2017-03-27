@@ -44,6 +44,7 @@ public class SystemUserServiceImpl implements SystemUserService {
         }
         Integer i = systemUserDao.insert(systemUser);
         systemUserDao.insertUserRole(new SystemUserRole(systemUser.getId(),roleId));
+        systemUser.setRoleId(roleId);
         return i;
     }
 
