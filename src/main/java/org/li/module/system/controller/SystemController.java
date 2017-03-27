@@ -99,13 +99,13 @@ public class SystemController {
                         @ApiParam(required = true, name = "password", value = "密码") @RequestParam String password) {
         SystemUser systemUser = userService.findByPhone(phone);
         if (systemUser == null) {
-            return Result.success("账号密码错误");
+            return Result.fail("账号密码错误");
         }
         if (StringUtils.isEmpty(password)) {
-            return Result.success("账号密码错误");
+            return Result.fail("账号密码错误");
         }
         if (!CryptographyUtil.md5(password).equals(systemUser.getPassword())) {
-            return Result.success("账号密码错误");
+            return Result.fail("账号密码错误");
         }
         String token = CryptographyUtil.getToken(phone,password);
         Object oldToken = EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, phone);
