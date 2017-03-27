@@ -31,6 +31,7 @@ public class LingLingSDK {
     static String url = "http://115.29.49.78:8889/cgi-bin";
 
     public static List<String> createSdkKey(List<SvLingLingDevice> devices) {
+        // TODO 记录通讯log
         List<String> sdkKeys = new ArrayList<>();
         List<Integer> deviceIds = ParameterUtil.getDeviceId(devices);
         Map<String, String> map = new HashMap<>();
@@ -91,5 +92,9 @@ public class LingLingSDK {
             throw new RuntimeException(e);
         }
         return result;
+    }
+
+    public static List<String> createAdminSdkKey() {
+        return null;
     }
 }

@@ -58,6 +58,10 @@ public class SystemController {
                            @ApiParam(required = true, name = "password", value = "用户输入密码") @RequestParam String password,
                            @ApiParam(required = true, name = "passwordRepeat", value = "用户输入重复的密码") @RequestParam String passwordRepeat) {
         Integer roleId = 1;
+        SystemUser isExist = userService.findByPhone(phone);
+        if (isExist != null) {
+            return Result.fail("该手机号码已注册。");
+        }
         Result result = validate(phone, code, password, passwordRepeat);
         if (result != null) {
             return result;
@@ -83,11 +87,11 @@ public class SystemController {
         // 验证码已使用，删除掉它
         EHCacheUtil.getInstance().remove(EHCacheUtil.CAPTCHA_CACHE, phone);
         //生成token
-        String token = CryptographyUtil.getToken(phone,password);
+        String token = CryptographyUtil.getToken(phone, password);
         systemUser.setPassword("");
         EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE, token, systemUser);
         EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE, phone, token);
-        return Result.success("用户注册成功", LoginResponseVO.build(systemUser,token));
+        return Result.success("用户注册成功", LoginResponseVO.build(systemUser, token));
     }
 
     @ResponseBody
@@ -105,7 +109,7 @@ public class SystemController {
         if (!CryptographyUtil.md5(password).equals(systemUser.getPassword())) {
             return Result.fail("账号密码错误");
         }
-        String token = CryptographyUtil.getToken(phone,password);
+        String token = CryptographyUtil.getToken(phone, password);
         Object oldToken = EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, phone);
         Object oldTokenRecord = EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, oldToken);
         if (oldToken != null) {
@@ -121,9 +125,9 @@ public class SystemController {
     }
 
     @ResponseBody
-    @RequestMapping("editPassword")
+    @RequestMapping("findPassword")
     @ApiOperation(value = "找回密码", httpMethod = "POST", response = org.li.common.vo.Result.class, notes = "找回密码")
-    public Result editPassword(@ApiParam(required = true, name = "phone", value = "用户输入的手机号") @RequestParam String phone,
+    public Result findPassword(@ApiParam(required = true, name = "phone", value = "用户输入的手机号") @RequestParam String phone,
                                @ApiParam(required = true, name = "code", value = "验证码") @RequestParam String code,
                                @ApiParam(required = true, name = "password", value = "用户输入密码") @RequestParam String password,
                                @ApiParam(required = true, name = "passwordRepeat", value = "用户输入重复的密码") @RequestParam String passwordRepeat) {
@@ -137,6 +141,38 @@ public class SystemController {
         // 验证码已使用，删除掉它
         EHCacheUtil.getInstance().remove(EHCacheUtil.CAPTCHA_CACHE, phone);
         return Result.success("密码已重新设置");
+    }
+
+    @ResponseBody
+    @RequestMapping("editPassword")
+    @ApiOperation(value = "修改密码", httpMethod = "POST", response = org.li.common.vo.Result.class, notes = "修改密码")
+    public Result editPassword(@ApiParam(required = true, name = "token", value = "") @RequestParam String token,
+                               @ApiParam(required = true, name = "oldPassword", value = "旧密码") @RequestParam String oldPassword,
+                               @ApiParam(required = true, name = "password", value = "用户输入密码") @RequestParam String password,
+                               @ApiParam(required = true, name = "passwordRepeat", value = "用户输入重复的密码") @RequestParam String passwordRepeat) {
+        SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
+        if (systemUser == null) {
+            return Result.fail("请登录后修改密码");
+        }
+        SystemUser user = userService.findByPhone(systemUser.getPhone());
+        if (!user.getPassword().equals(oldPassword)) {
+            return Result.fail("旧密码不正确。");
+        }
+        Result result = validatePassword(password, passwordRepeat);
+        if (result != null) {
+            return result;
+        }
+        user.setPassword(CryptographyUtil.md5(password));
+        userService.updateSystemUser(systemUser);
+        return Result.success("密码已修改");
+    }
+
+    @ResponseBody
+    @RequestMapping("editPassword")
+    @ApiOperation(value = "登出", httpMethod = "POST", response = org.li.common.vo.Result.class, notes = "登出")
+    public Result editPassword(@ApiParam(required = true, name = "token", value = "") @RequestParam String token) {
+        EHCacheUtil.getInstance().remove(EHCacheUtil.LOGIN_CACHE, token);
+        return Result.success("成功登出");
     }
 
     /**
@@ -156,15 +192,22 @@ public class SystemController {
         if (captcha == null || code == null || !captcha.equals(code)) {
             return Result.fail("验证码不正确。");
         }
+        return validatePassword(password, passwordRepeat);
+    }
+
+    /**
+     * 密码验证
+     *
+     * @param password
+     * @param passwordRepeat
+     * @return
+     */
+    private Result validatePassword(String password, String passwordRepeat) {
         if (password == null || passwordRepeat == null || !password.equals(passwordRepeat)) {
             return Result.fail("两次密码输入不一致。");
         }
         if (password.length() < 6 || passwordRepeat.length() < 6) {
             return Result.fail("请输入六位以上密码。");
-        }
-        SystemUser systemUser = userService.findByPhone(phone);
-        if(systemUser != null){
-            return Result.fail("该手机号码已注册。");
         }
         return null;
     }

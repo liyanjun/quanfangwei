@@ -34,7 +34,10 @@ public class UserController {
     @ApiOperation(value = "二维码生成", httpMethod = "POST", response = Result.class, notes = "生成门禁二维码")
     public Result createQRCode(@RequestParam String token) {
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
-
+        if(systemUser.getRoleId() == 3){
+//            svOwnerService.fin
+            List<String> sdkKeys = LingLingSDK.createAdminSdkKey();
+        }
         // TODO 查询用户角色，判断需要生成用户二维码还是管理员二维码
         List<SvLingLingDevice> devices = svOwnerService.findUserDevices(systemUser.getOwnerId(), null, null);
         List<String> sdkKeys = LingLingSDK.createSdkKey(devices);
