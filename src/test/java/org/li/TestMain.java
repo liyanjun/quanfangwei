@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.li.common.util.ConnectUtil;
 import org.li.common.util.lingling.LingLingSDK;
 import org.li.common.util.lingling.result.LingLingResult;
+import org.li.common.util.lingling.result.LingLingSdkKeyResult;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,8 +30,8 @@ public class TestMain {
         HttpPost httpPost = ConnectUtil.createPost("http://115.29.49.78:8889/cgi-bin/key/makeSdkKey/21F2548CC77394880637C358419E6596",map);
         try {
             String response = ConnectUtil.submitPost(httpPost);
-            LingLingResult lingLingResult = new Gson().fromJson(response,LingLingResult.class);
-
+            LingLingSdkKeyResult lingLingResult = new Gson().fromJson(response,LingLingSdkKeyResult.class);
+            System.out.println(lingLingResult.getResponseResult().get("4191"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

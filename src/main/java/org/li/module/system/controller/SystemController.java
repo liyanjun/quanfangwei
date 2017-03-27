@@ -67,8 +67,7 @@ public class SystemController {
         SysUser sysUser = svOwnerService.findLingLingManagerInfo(phone);
         if (svOwner == null && sysUser == null) {
             // 访客用户
-            userService.insertSystemUser(systemUser, roleId);
-            return Result.success("用户注册成功", systemUser);
+            roleId = 1;
         }
 
         if (svOwner != null) {
@@ -86,7 +85,6 @@ public class SystemController {
         //生成token
         String token = CryptographyUtil.getToken(phone,password);
         systemUser.setPassword("");
-        systemUser.setRoleId(roleId);
         EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE, token, systemUser);
         EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE, phone, token);
         return Result.success("用户注册成功", LoginResponseVO.build(systemUser,token));

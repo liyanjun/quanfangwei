@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MSMUtil {
     private static Logger logger = LoggerFactory.getLogger(MSMUtil.class);
-    public static void sendCaptchaMSM(String captcha){
+    public static void sendCaptchaMSM(String phone,String captcha){
         try {
             IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", "your accessKey", "your accessSecret");
             DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", "Sms",  "sms.aliyuncs.com");
@@ -24,9 +24,9 @@ public class MSMUtil {
             SingleSendSmsRequest request = new SingleSendSmsRequest();
             request.setSignName("测试签名");//控制台创建的签名名称
             request.setTemplateCode("SMS_111111");//控制台创建的模板CODE
-            request.setParamString("{\"name\":\"123\"}");//短信模板中的变量；数字需要转换为字符串；个人用户每个变量长度必须小于15个字符。"
+            request.setParamString("{\"name\":\""+captcha+"\"}");//短信模板中的变量；数字需要转换为字符串；个人用户每个变量长度必须小于15个字符。"
             //request.setParamString("{}");
-            request.setRecNum("13000001111");//接收号码
+            request.setRecNum("phone");//接收号码
             SingleSendSmsResponse httpResponse = client.getAcsResponse(request);
         } catch (Exception e) {
             logger.error("发送短信错误",e);

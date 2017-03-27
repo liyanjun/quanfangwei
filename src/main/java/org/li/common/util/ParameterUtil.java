@@ -15,7 +15,7 @@ public class ParameterUtil {
         List<Integer> list = new ArrayList<>();
         for (SvLingLingDevice svDevice : devices) {
             if(svDevice!=null)
-            list.add(svDevice.getDeviceId());
+            list.add(svDevice.getV3DeviceId());
         }
         return list;
     }

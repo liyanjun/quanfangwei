@@ -37,7 +37,11 @@ public class SvOwnerDaoImpl extends LingLingBaseDao<Integer, SvOwner> implements
     @Override
     public SysUser findLingLingManagerInfo(String phone) {
         // 使用手机号查出多个管理员，问题解决
-        SysUser returnObj = (SysUser) this.getSqlSession().selectList(this.getMapperNameSpace() + ".findLingLingManagerInfo", phone).get(0);
+        List<Object> list = this.getSqlSession().selectList(this.getMapperNameSpace() + ".findLingLingManagerInfo", phone);
+        if(list.size() == 0) {
+            return null;
+        }
+        SysUser returnObj = (SysUser) list.get(0);
         return returnObj;
     }
 
