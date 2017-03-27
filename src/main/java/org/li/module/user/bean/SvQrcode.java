@@ -1,8 +1,10 @@
 package org.li.module.user.bean;
 
 import org.li.common.base.bean.BaseEntity;
+import org.li.module.lingling.bean.SvVisitorQrcode;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -40,6 +42,8 @@ public class SvQrcode extends BaseEntity {
 
 	/**二维码创建时间*/
 	private Timestamp createTime;
+
+	private List<SvVisitorQrcode> svVisitorQrcodes;
 
 	public SvQrcode(){
 	}
@@ -107,6 +111,14 @@ public class SvQrcode extends BaseEntity {
 	}
 	public void setEndTime(Integer value) {
 		this.endTime = value;
+	}
+
+	public List<SvVisitorQrcode> getSvVisitorQrcodes() {
+		return svVisitorQrcodes;
+	}
+
+	public void setSvVisitorQrcodes(List<SvVisitorQrcode> svVisitorQrcodes) {
+		this.svVisitorQrcodes = svVisitorQrcodes;
 	}
 
 	public Integer getEndTime() {

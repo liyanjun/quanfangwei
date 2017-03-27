@@ -9,6 +9,8 @@ import org.li.module.user.service.SvQrcodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author liyanjun
  * @date 2017-3-20 16:28:07
@@ -53,6 +55,13 @@ public class SvQrcodeServiceImpl implements SvQrcodeService {
     @Override
     public Integer delete(Integer id, Integer updateId) {
         return null;
+    }
+
+    @Override
+    public List<SvQrcode> findByUserId(Integer id) {
+        SvQrcode svQrcode = new SvQrcode();
+        svQrcode.setUserId(id);
+        return svQrcodeDao.getListByObj(svQrcode);
     }
 
    /* public Integer delete(Integer id) {

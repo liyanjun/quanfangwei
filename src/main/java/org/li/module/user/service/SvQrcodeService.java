@@ -5,6 +5,8 @@ import org.li.common.base.page.PageInfo;
 import org.li.common.base.page.PagerControl;
 import org.li.module.user.bean.*;
 
+import java.util.List;
+
 
 /**
  * 
@@ -25,4 +27,5 @@ public interface SvQrcodeService {
     
     Integer delete(Integer id, Integer updateId);
 
+    List<SvQrcode> findByUserId(Integer id);
 }

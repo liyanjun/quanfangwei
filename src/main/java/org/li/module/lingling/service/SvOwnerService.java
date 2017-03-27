@@ -34,7 +34,7 @@ public interface SvOwnerService {
      * @param first
      * @param count
      */
-    List<SvVisitorQrcode> findVisitRecord(Integer ownerId, Integer first, Integer count);
+    List<SvVisitorQrcode> findVisitRecord(Integer ownerId, Integer codeId,Integer first, Integer count);
 
     SysUser findLingLingManagerInfo(String phone);
 

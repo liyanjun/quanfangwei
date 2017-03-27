@@ -34,8 +34,8 @@ public class SvOwnerServiceImpl implements SvOwnerService {
     }
 
     @Override
-    public List<SvVisitorQrcode> findVisitRecord(Integer ownerId, Integer first, Integer count) {
-        return svOwnerDao.findVisitRecord(ownerId,first,count);
+    public List<SvVisitorQrcode> findVisitRecord(Integer ownerId, Integer codeId,Integer first, Integer count) {
+        return svOwnerDao.findVisitRecord(ownerId,codeId,first,count);
     }
 
     @Override

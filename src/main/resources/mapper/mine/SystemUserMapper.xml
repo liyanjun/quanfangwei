@@ -20,11 +20,6 @@
 		<result property="headImgUrl" jdbcType="VARCHAR" column="headImgUrl"/>
 		<result property="addressId" jdbcType="INTEGER" column="addressId"/>
 		<result property="address" jdbcType="VARCHAR" column="address"/>
-		<result property="qrcodeKey" jdbcType="VARCHAR" column="qrcode_key"/>
-		<result property="endTime" jdbcType="INTEGER" column="end_time"/>
-		<result property="qrcodeCreateTime" jdbcType="TIMESTAMP" column="qrcode_create_time"/>
-		<result property="beginDate" jdbcType="TIMESTAMP" column="begin_date"/>
-		<result property="endDate" jdbcType="TIMESTAMP" column="end_date"/>
 		<result property="createTime" jdbcType="TIMESTAMP" column="create_time"/>
 		<result property="updateTime" jdbcType="TIMESTAMP" column="update_time"/>
 		<result property="isDel" jdbcType="TINYINT" column="is_del"/>
@@ -45,11 +40,6 @@
 		headImgUrl,
 		addressId,
 		address,
-		qrcode_key,
-		end_time,
-		qrcode_create_time,
-		begin_date,
-		end_date,
 		create_time,
 		update_time,
 		is_del	
@@ -103,11 +93,6 @@
 			#{headImgUrl},
 			#{addressId},
 			#{address},
-			#{qrcodeKey},
-			#{endTime},
-			#{qrcodeCreateTime},
-			#{beginDate},
-			#{endDate},
 	        now(),<!--生成日期  -->
 			#{updateTime},
 			#{isDel}      )
@@ -159,21 +144,6 @@
 	        </if>
     		<if test=" address != null" >
 	        	address,
-	        </if>
-    		<if test=" qrcodeKey != null" >
-	        	qrcode_key,
-	        </if>
-    		<if test=" endTime != null" >
-	        	end_time,
-	        </if>
-    		<if test=" qrcodeCreateTime != null" >
-	        	qrcode_create_time,
-	        </if>
-    		<if test=" beginDate != null" >
-	        	begin_date,
-	        </if>
-    		<if test=" endDate != null" >
-	        	end_date,
 	        </if>
     		<if test=" createTime != null" >
 	        	create_time,
@@ -231,21 +201,6 @@
     		<if test=" address != null" >
 	        	#{address},
 	        </if>
-    		<if test=" qrcodeKey != null" >
-	        	#{qrcodeKey},
-	        </if>
-    		<if test=" endTime != null" >
-	        	#{endTime},
-	        </if>
-    		<if test=" qrcodeCreateTime != null" >
-	        	#{qrcodeCreateTime},
-	        </if>
-    		<if test=" beginDate != null" >
-	        	#{beginDate},
-	        </if>
-    		<if test=" endDate != null" >
-	        	#{endDate},
-	        </if>
     		<if test=" createTime != null" >
 	        	#{createTime},
 	        </if>
@@ -302,21 +257,6 @@
 				<if test="address!=null">
 					address = #{address},
 				</if>
-				<if test="qrcodeKey!=null">
-					qrcode_key = #{qrcodeKey},
-				</if>
-				<if test="endTime!=null">
-					end_time = #{endTime},
-				</if>
-				<if test="qrcodeCreateTime!=null">
-					qrcode_create_time = #{qrcodeCreateTime},
-				</if>
-				<if test="beginDate!=null">
-					begin_date = #{beginDate},
-				</if>
-				<if test="endDate!=null">
-					end_date = #{endDate},
-				</if>
 				<if test="createTime!=null">
 					create_time = #{createTime},
 				</if>
@@ -343,11 +283,6 @@
 			headImgUrl = #{headImgUrl},
 			addressId = #{addressId},
 			address = #{address},
-			qrcode_key = #{qrcodeKey},
-			end_time = #{endTime},
-			qrcode_create_time = #{qrcodeCreateTime},
-			begin_date = #{beginDate},
-			end_date = #{endDate},
 			create_time = #{createTime},
 			is_del = #{isDel}		
     where 

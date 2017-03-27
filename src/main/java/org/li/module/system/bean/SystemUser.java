@@ -87,29 +87,6 @@ public class SystemUser extends BaseEntity {
     private String address;
 
     /**
-     * 二维码字符串
-     */
-    private String qrcodeKey;
-
-    /**
-     * 二维码有效时间，单位分钟，最大4095分钟
-     */
-    private Integer endTime;
-
-    /***/
-    private Timestamp qrcodeCreateTime;
-
-    /**
-     * 开始有效时间
-     */
-    private Timestamp beginDate;
-
-    /**
-     * 结束有效时间
-     */
-    private Timestamp endDate;
-
-    /**
      * 记录创建时间
      */
     private Timestamp createTime;
@@ -253,46 +230,6 @@ public class SystemUser extends BaseEntity {
 
     public String getAddress() {
         return this.address;
-    }
-
-    public void setQrcodeKey(String value) {
-        this.qrcodeKey = value;
-    }
-
-    public String getQrcodeKey() {
-        return this.qrcodeKey;
-    }
-
-    public void setEndTime(Integer value) {
-        this.endTime = value;
-    }
-
-    public Integer getEndTime() {
-        return this.endTime;
-    }
-
-    public void setQrcodeCreateTime(Timestamp value) {
-        this.qrcodeCreateTime = value;
-    }
-
-    public Timestamp getQrcodeCreateTime() {
-        return this.qrcodeCreateTime;
-    }
-
-    public void setBeginDate(Timestamp value) {
-        this.beginDate = value;
-    }
-
-    public Timestamp getBeginDate() {
-        return this.beginDate;
-    }
-
-    public void setEndDate(Timestamp value) {
-        this.endDate = value;
-    }
-
-    public Timestamp getEndDate() {
-        return this.endDate;
     }
 
     public Integer getRoleId() {

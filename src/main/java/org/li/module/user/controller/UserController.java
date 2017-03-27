@@ -1,8 +1,10 @@
 package org.li.module.user.controller;
 
 import com.google.common.collect.Lists;
+import com.google.gson.JsonObject;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.li.common.util.DateUtil;
 import org.li.common.util.EHCacheUtil;
 import org.li.common.util.lingling.LingLingSDK;
 import org.li.common.util.lingling.result.LingLingOpenResult;
@@ -12,9 +14,12 @@ import org.li.module.lingling.bean.SvLingLingDevice;
 import org.li.module.lingling.bean.SvVisitorQrcode;
 import org.li.module.lingling.service.SvOwnerService;
 import org.li.module.system.bean.SystemUser;
+import org.li.module.user.bean.SvQrcode;
+import org.li.module.user.service.SvQrcodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,20 +34,23 @@ public class UserController {
     @Autowired
     SvOwnerService svOwnerService;
 
+    @Autowired
+    SvQrcodeService svQrcodeService;
+
     @ResponseBody
     @RequestMapping("createQRCode")
     @ApiOperation(value = "二维码生成", httpMethod = "POST", response = Result.class, notes = "生成门禁二维码")
     public Result createQRCode(@RequestParam String token) {
-        SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
-        if(systemUser.getRoleId() == 3){
-//            svOwnerService.fin
-            List<String> sdkKeys = LingLingSDK.createAdminSdkKey();
-        }
-        // TODO 查询用户角色，判断需要生成用户二维码还是管理员二维码
-        List<SvLingLingDevice> devices = svOwnerService.findUserDevices(systemUser.getOwnerId(), null, null);
-        List<String> sdkKeys = LingLingSDK.createSdkKey(devices);
-        String qrcode = LingLingSDK.createQrcodeKey(sdkKeys, systemUser);
-        return Result.success("二维码生成成功", qrcode);
+//        SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
+//        if(systemUser.getRoleId() == 3){
+////            svOwnerService.fin
+//            List<String> sdkKeys = LingLingSDK.createAdminSdkKey();
+//        }
+//        // TODO 查询用户角色，判断需要生成用户二维码还是管理员二维码
+//        List<SvLingLingDevice> devices = svOwnerService.findUserDevices(systemUser.getOwnerId(), null, null);
+//        List<String> sdkKeys = LingLingSDK.createSdkKey(devices);
+//        String qrcode = LingLingSDK.createQrcodeKey(sdkKeys, systemUser);
+        return Result.success("二维码生成成功", "F2EB940855150DD1DEE75408770F7C9C001196F3C2025E40B9492034C1F5CEAD8ED77B0D1D7D3E0B9CA6A32C9CA6A32CCC19B184ABDD3720");
     }
 
     @ResponseBody
@@ -51,8 +59,35 @@ public class UserController {
     public Result createVisitorQRCode(@ApiParam(required = true, name = "name", value = "访客名") @RequestParam String name,
                                       @ApiParam(required = true, name = "visitorPhone", value = "访客的手机号") @RequestParam String visitorPhone,
                                       @ApiParam(required = true, name = "visitorDate", value = "访问日期（年月日，如2016-03-16）") @RequestParam String visitorDate,
-                                      @RequestParam String token) {
-        return Result.success("访客二维码生成成功");
+                                      @ApiParam(required = true, name = "token", value = "token") @RequestParam String token) {
+//        SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
+//        SvQrcode svQrcode = new SvQrcode();
+//        if(systemUser.getRoleId() == 3){
+////            svOwnerService.fin
+//            List<String> sdkKeys = LingLingSDK.createAdminSdkKey();
+//
+//        }
+//
+//        // TODO 查询用户角色，判断需要生成用户二维码还是管理员二维码
+//        svQrcode.setType(2);
+//        svQrcode.setName(name);
+//        svQrcode.setVisitPhone(visitorPhone);
+//        try {
+//            svQrcode.setStartTime(DateUtil.strToTimestamp(visitorDate + " 00:00:00"));
+//        } catch (ParseException e) {
+//            Result.fail("时间格式有误");
+//        }
+//        svQrcode.setEndTime(4095);
+//        svQrcode.setUserId(systemUser.getId());
+//
+//        List<SvLingLingDevice> devices = svOwnerService.findUserDevices(systemUser.getOwnerId(), null, null);
+//        List<String> sdkKeys = LingLingSDK.createSdkKey(devices);
+//        JsonObject qrCode = LingLingSDK.createVisitorQRCode(sdkKeys,systemUser);
+//        svQrcode.setQrcodeKey(qrCode.get("qrcodeKey").getAsString());
+//        svQrcode.setCodeId(qrCode.get("codeId").getAsInt());
+//        svQrcodeService.insertSvQrcode(svQrcode);
+        return Result.success("访客二维码生成成功","F2EB940855150DD1DEE75408770F7C9C001196F3C2025E40B9492034C1F5CEAD8ED77B0D1D7D3E0B9CA6A32C9CA6A32CCC19B184ABDD3720");
+//        return Result.success("访客二维码生成成功",svQrcode.getQrcodeKey());
     }
 
     @ResponseBody
@@ -101,8 +136,12 @@ public class UserController {
                                   @ApiParam(required = true, name = "first", value = "当前浏览到的记录-1") @RequestParam Integer first,
                                   @ApiParam(required = true, name = "count", value = "本次要加载的记录") @RequestParam Integer count) {
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
-        List<SvVisitorQrcode> svVisitorQrcodes = svOwnerService.findVisitRecord(systemUser.getOwnerId(), first, count);
-        return Result.success("查询访客记录成功", svVisitorQrcodes);
+        List<SvQrcode> svQrcodes = svQrcodeService.findByUserId(systemUser.getId());
+        for (SvQrcode svQrcode : svQrcodes){
+            List<SvVisitorQrcode> svVisitorQrcodes = svOwnerService.findVisitRecord(systemUser.getOwnerId(),svQrcode.getCodeId(), first, count);
+            svQrcode.setSvVisitorQrcodes(svVisitorQrcodes);
+        }
+        return Result.success("查询访客记录成功", svQrcodes);
     }
 
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<!-- author:   liyanjun,  date:    2017-3-20 10:52:44,    业主信息表-->
 
 <mapper namespace="org.li.module.lingling.dao.impl.SvOwnerDaoImpl">
 
@@ -265,7 +264,7 @@
 		FROM
 			sv_visitor_qrcode vq
 		WHERE
-		vq.owner_id = #{ownerId} <if test="first != null and count != null ">LIMIT #{first}, #{count}</if>
+		vq.owner_id = #{ownerId} AND code_id = #{codeId}<if test="first != null and count != null ">LIMIT #{first}, #{count}</if>
 	</select>
 
 	<!--通过residential_id查询住房情况-->

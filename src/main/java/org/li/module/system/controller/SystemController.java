@@ -115,7 +115,7 @@ public class SystemController {
             // 角色改变成访客
             systemUser.setRoleId(1);
         }
-        if (svOwner != null  && systemUser.getRoleId().intValue() != 2) {
+        if (svOwner != null && systemUser.getRoleId().intValue() != 2) {
             // 角色改变成用户
             systemUser.setRoleId(2);
             systemUser.setValue(svOwner);
@@ -127,11 +127,10 @@ public class SystemController {
         }
         String token = CryptographyUtil.getToken(phone, password);
         Object oldToken = EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, phone);
-        Object oldTokenRecord = EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, oldToken);
         if (oldToken != null) {
             //之前存在有效登陆的，清理掉
+            EHCacheUtil.getInstance().remove(EHCacheUtil.LOGIN_CACHE, phone);
             EHCacheUtil.getInstance().remove(EHCacheUtil.LOGIN_CACHE, oldToken);
-            EHCacheUtil.getInstance().remove(EHCacheUtil.LOGIN_CACHE, oldTokenRecord);
         }
 
         EHCacheUtil.getInstance().put(EHCacheUtil.LOGIN_CACHE, token, systemUser);
@@ -171,7 +170,7 @@ public class SystemController {
             return Result.fail("请登录后修改密码");
         }
         SystemUser user = userService.findByPhone(systemUser.getPhone());
-        if (!user.getPassword().equals(oldPassword)) {
+        if (!user.getPassword().equals(CryptographyUtil.md5(oldPassword))) {
             return Result.fail("旧密码不正确。");
         }
         Result result = validatePassword(password, passwordRepeat);
@@ -186,7 +185,10 @@ public class SystemController {
     @ResponseBody
     @RequestMapping("logout")
     @ApiOperation(value = "登出", httpMethod = "POST", response = org.li.common.vo.Result.class, notes = "登出")
-    public Result logout(@ApiParam(required = true, name = "token", value = "") @RequestParam String token) {
+    public Result logout(@ApiParam(required = true, name = "token", value = "") @RequestParam String token,
+                         @ApiParam(required = true, name = "phone", value = "手机号") @RequestParam String phone) {
+
+        EHCacheUtil.getInstance().remove(EHCacheUtil.LOGIN_CACHE, phone);
         EHCacheUtil.getInstance().remove(EHCacheUtil.LOGIN_CACHE, token);
         return Result.success("成功登出");
     }

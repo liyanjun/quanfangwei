@@ -22,11 +22,11 @@ public class MSMUtil {
             DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", "Sms",  "sms.aliyuncs.com");
             IAcsClient client = new DefaultAcsClient(profile);
             SingleSendSmsRequest request = new SingleSendSmsRequest();
-            request.setSignName("测试签名");//控制台创建的签名名称
-            request.setTemplateCode("SMS_111111");//控制台创建的模板CODE
-            request.setParamString("{\"name\":\""+captcha+"\"}");//短信模板中的变量；数字需要转换为字符串；个人用户每个变量长度必须小于15个字符。"
+//            request.setSignName("测试签名");//控制台创建的签名名称
+            request.setTemplateCode("SMS_58190147");//控制台创建的模板CODE
+            request.setParamString("{\"code\":\""+captcha+"\"}");//短信模板中的变量；数字需要转换为字符串；个人用户每个变量长度必须小于15个字符。"
             //request.setParamString("{}");
-            request.setRecNum("phone");//接收号码
+            request.setRecNum(phone);//接收号码
             SingleSendSmsResponse httpResponse = client.getAcsResponse(request);
         } catch (Exception e) {
             logger.error("发送短信错误",e);

@@ -30,8 +30,10 @@ public class SvOwnerDaoImpl extends LingLingBaseDao<Integer, SvOwner> implements
     }
 
     @Override
-    public List<SvVisitorQrcode> findVisitRecord(Integer ownerId, Integer first, Integer count) {
-        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findVisitRecord", getParameter( ownerId,  first,  count));
+    public List<SvVisitorQrcode> findVisitRecord(Integer ownerId, Integer codeId,Integer first, Integer count) {
+        Map map = getParameter( ownerId,  first,  count);
+        map.put("codeId",codeId);
+        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findVisitRecord", map);
     }
 
     @Override

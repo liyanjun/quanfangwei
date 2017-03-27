@@ -103,12 +103,12 @@ public class AdminController {
 
         systemUser.setAddressId(addressId);
         systemUser.setAddress(addressName);
-        try {
+       /* try {
             systemUser.setBeginDate(DateUtil.strToTimestamp(beginTime));
             systemUser.setEndDate(DateUtil.strToTimestamp(endTime));
         } catch (ParseException e) {
             return Result.fail("日期格式不正确");
-        }
+        }*/
         systemUserService.updateSystemUser(systemUser);
         // TODO 更新他们的数据库
         return Result.success("编辑用户成功");
