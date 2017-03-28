@@ -28,6 +28,7 @@ import java.util.Map;
 public class LingLingSDK {
     static Logger logger = LoggerFactory.getLogger(LingLingSDK.class);
     static String url = "http://115.29.49.78:8889/cgi-bin";
+    public static String qrUrl = "http://qr.topscan.com/api.php?text=";
 
     public static List<String> createSdkKey(List<SvLingLingDevice> devices) {
         // TODO 记录通讯log
@@ -73,7 +74,7 @@ public class LingLingSDK {
             logger.error("获取用户二维码错误", e);
             throw new RuntimeException(e);
         }
-        return result.getResponseResult().get("qrcodeKey").getAsString();
+        return qrUrl + result.getResponseResult().get("qrcodeKey").getAsString();
     }
 
     public static LingLingOpenResult open(String sdkKey) {

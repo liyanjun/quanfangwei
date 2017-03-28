@@ -206,7 +206,7 @@
 			)
 	</select>
 
-	<!--查询管理员所管理的楼栋住房-->
+	<!--查询管理员所管理的楼栋-->
 	<select id="findManagerBuilding" resultType="org.li.module.lingling.bean.SvOwner">
 		SELECT
 			r.residential_id as residentialId,
@@ -223,22 +223,21 @@
 			r.end_time  as endTime,
 			r. STATUS,
 			r.note,
-			room.room_number as roomNumber,
-			room. STATUS as roomStatus,
-			room.note as roomNote
 		FROM
-			sv_room room
-		LEFT JOIN sv_residential r ON room.residential_id = r.residential_id
+			sv_residential r
+		LEFT JOIN sys_user_residential sys ON r.residential_id = sys.residential_id
 		WHERE
-			EXISTS (
-				SELECT
-					*
-				FROM
-					sys_user_residential ur
-				WHERE
-					ur.user_id = #{ownerId}
-				AND r.residential_id = ur.residential_id
-			)
+			sys.user_id = #{ownerId}
+	</select>
+
+	<!--查询管理员所管理的住房-->
+	<select id="findManagerRoom" resultType="org.li.module.lingling.bean.SvRoom">
+		SELECT
+			*
+		FROM
+			sv_room
+		WHERE
+			residential_id = #{residentialId}
 	</select>
 
 	<!--通过owner_id查询访客记录-->
