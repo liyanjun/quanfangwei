@@ -53,4 +53,19 @@ public class SvOwnerServiceImpl implements SvOwnerService {
         return svOwnerDao.findManagerBuilding(ownerId,first,count);
     }
 
+    @Override
+    public List<SvLingLingDevice> findAllDevices() {
+        return svOwnerDao.findAllDevices();
+    }
+
+    @Override
+    public List<SvLingLingDevice> findAllDevices(Integer first, Integer count) {
+        return svOwnerDao.findAllDevices(first,count);
+    }
+
+    @Override
+    public SvLingLingDevice findDevicesById(Integer devId) {
+        return svOwnerDao.findDevicesById(devId);
+    }
+
 }

@@ -82,6 +82,7 @@ public class SystemController {
         if (sysUser != null) {
             roleId = 3;
             systemUser.setAdminValue(sysUser);
+            //TODO 获取一个令令ID
         }
         userService.insertSystemUser(systemUser, roleId);
         // 验证码已使用，删除掉它
@@ -124,6 +125,8 @@ public class SystemController {
             // 角色改变成管理员
             systemUser.setRoleId(3);
             systemUser.setAdminValue(sysUser);
+            //TODO 如果没有令令ID
+            //TODO 获取一个令令ID
         }
         String token = CryptographyUtil.getToken(phone, password);
         Object oldToken = EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, phone);
@@ -178,7 +181,7 @@ public class SystemController {
             return result;
         }
         user.setPassword(CryptographyUtil.md5(password));
-        userService.updateSystemUser(systemUser);
+        userService.updateSystemUser(user);
         return Result.success("密码已修改");
     }
 

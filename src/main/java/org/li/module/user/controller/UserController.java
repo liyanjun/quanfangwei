@@ -1,6 +1,5 @@
 package org.li.module.user.controller;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -8,7 +7,6 @@ import org.li.common.util.DateUtil;
 import org.li.common.util.EHCacheUtil;
 import org.li.common.util.lingling.LingLingSDK;
 import org.li.common.util.lingling.result.LingLingOpenResult;
-import org.li.common.util.lingling.result.LingLingQrcodeResult;
 import org.li.common.vo.Result;
 import org.li.module.lingling.bean.SvLingLingDevice;
 import org.li.module.lingling.bean.SvVisitorQrcode;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
+
 
 /**
  * 用户接口
@@ -41,16 +40,17 @@ public class UserController {
     @RequestMapping("createQRCode")
     @ApiOperation(value = "二维码生成", httpMethod = "POST", response = Result.class, notes = "生成门禁二维码")
     public Result createQRCode(@RequestParam String token) {
-//        SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
-//        if(systemUser.getRoleId() == 3){
-////            svOwnerService.fin
-//            List<String> sdkKeys = LingLingSDK.createAdminSdkKey();
-//        }
-//        // TODO 查询用户角色，判断需要生成用户二维码还是管理员二维码
-//        List<SvLingLingDevice> devices = svOwnerService.findUserDevices(systemUser.getOwnerId(), null, null);
-//        List<String> sdkKeys = LingLingSDK.createSdkKey(devices);
-//        String qrcode = LingLingSDK.createQrcodeKey(sdkKeys, systemUser);
-        return Result.success("二维码生成成功", "F2EB940855150DD1DEE75408770F7C9C001196F3C2025E40B9492034C1F5CEAD8ED77B0D1D7D3E0B9CA6A32C9CA6A32CCC19B184ABDD3720");
+        SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
+        List<SvLingLingDevice> devices = null;
+        if(systemUser.getRoleId() == 3){
+            devices = svOwnerService.findAllDevices();
+        }else{
+           devices = svOwnerService.findUserDevices(systemUser.getOwnerId(), null, null);
+        }
+
+        List<String> sdkKeys = LingLingSDK.createSdkKey(devices);
+        String qrcode = LingLingSDK.createQrcodeKey(sdkKeys, systemUser);
+        return Result.success("二维码生成成功", qrcode);
     }
 
     @ResponseBody
@@ -60,34 +60,32 @@ public class UserController {
                                       @ApiParam(required = true, name = "visitorPhone", value = "访客的手机号") @RequestParam String visitorPhone,
                                       @ApiParam(required = true, name = "visitorDate", value = "访问日期（年月日，如2016-03-16）") @RequestParam String visitorDate,
                                       @ApiParam(required = true, name = "token", value = "token") @RequestParam String token) {
-//        SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
-//        SvQrcode svQrcode = new SvQrcode();
-//        if(systemUser.getRoleId() == 3){
-////            svOwnerService.fin
-//            List<String> sdkKeys = LingLingSDK.createAdminSdkKey();
-//
-//        }
-//
-//        // TODO 查询用户角色，判断需要生成用户二维码还是管理员二维码
-//        svQrcode.setType(2);
-//        svQrcode.setName(name);
-//        svQrcode.setVisitPhone(visitorPhone);
-//        try {
-//            svQrcode.setStartTime(DateUtil.strToTimestamp(visitorDate + " 00:00:00"));
-//        } catch (ParseException e) {
-//            Result.fail("时间格式有误");
-//        }
-//        svQrcode.setEndTime(4095);
-//        svQrcode.setUserId(systemUser.getId());
-//
-//        List<SvLingLingDevice> devices = svOwnerService.findUserDevices(systemUser.getOwnerId(), null, null);
-//        List<String> sdkKeys = LingLingSDK.createSdkKey(devices);
-//        JsonObject qrCode = LingLingSDK.createVisitorQRCode(sdkKeys,systemUser);
-//        svQrcode.setQrcodeKey(qrCode.get("qrcodeKey").getAsString());
-//        svQrcode.setCodeId(qrCode.get("codeId").getAsInt());
-//        svQrcodeService.insertSvQrcode(svQrcode);
-        return Result.success("访客二维码生成成功","F2EB940855150DD1DEE75408770F7C9C001196F3C2025E40B9492034C1F5CEAD8ED77B0D1D7D3E0B9CA6A32C9CA6A32CCC19B184ABDD3720");
-//        return Result.success("访客二维码生成成功",qrUrl+svQrcode.getQrcodeKey());
+        SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
+        List<SvLingLingDevice> devices = null;
+        SvQrcode svQrcode = new SvQrcode();
+        if(systemUser.getRoleId() == 3){
+            devices = svOwnerService.findAllDevices();
+        }else{
+            devices = svOwnerService.findUserDevices(systemUser.getOwnerId(), null, null);
+        }
+        svQrcode.setType(2);
+        svQrcode.setName(name);
+        svQrcode.setVisitPhone(visitorPhone);
+        try {
+            svQrcode.setStartTime(DateUtil.strToTimestamp(visitorDate + " 00:00:00"));
+        } catch (ParseException e) {
+            Result.fail("时间格式有误");
+        }
+        svQrcode.setEndTime(4095);
+        svQrcode.setUserId(systemUser.getId());
+
+        List<String> sdkKeys = LingLingSDK.createSdkKey(devices);
+        JsonObject qrCode = LingLingSDK.createVisitorQRCode(sdkKeys,systemUser);
+        svQrcode.setQrcodeKey(qrCode.get("qrcodeKey").getAsString());
+        svQrcode.setCodeId(qrCode.get("codeId").getAsInt());
+        svQrcodeService.insertSvQrcode(svQrcode);
+//        return Result.success("访客二维码生成成功","F2EB940855150DD1DEE75408770F7C9C001196F3C2025E40B9492034C1F5CEAD8ED77B0D1D7D3E0B9CA6A32C9CA6A32CCC19B184ABDD3720");
+        return Result.success("访客二维码生成成功",LingLingSDK.qrUrl+svQrcode.getQrcodeKey());
     }
 
     @ResponseBody
@@ -97,8 +95,13 @@ public class UserController {
                           @ApiParam(required = true, name = "first", value = "当前浏览到的记录-1") @RequestParam Integer first,
                           @ApiParam(required = true, name = "count", value = "本次要加载的记录") @RequestParam Integer count) {
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
-        List<SvLingLingDevice> svLingLingDeviceList = svOwnerService.findUserDevices(systemUser.getOwnerId(), first, count);
-        return Result.success("查询用户可用门禁设备成功", svLingLingDeviceList);
+        List<SvLingLingDevice> devices = null;
+        if(systemUser.getRoleId() == 3){
+            devices = svOwnerService.findAllDevices(first, count);
+        }else{
+            devices = svOwnerService.findUserDevices(systemUser.getOwnerId(), first, count);
+        }
+        return Result.success("查询用户可用门禁设备成功", devices);
     }
 
     @ResponseBody
@@ -107,25 +110,33 @@ public class UserController {
     public Result open(@ApiParam(required = true, name = "devId", value = "设备Id") @RequestParam Integer devId,
                        @RequestParam String token) {
         LingLingOpenResult result = null;
+        SvLingLingDevice svLingLingDevice = null;
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
-        // TODO 处理管理员逻辑
-        List<SvLingLingDevice> svLingLingDeviceList = svOwnerService.findUserDevices(systemUser.getOwnerId(), null, null);
-        for (SvLingLingDevice svLingLingDevice : svLingLingDeviceList) {
-            //检查用户是否拥有这个设备
-            if (svLingLingDevice.getDeviceId().intValue() != devId.intValue()) {
-                continue;
-            }
-            List<String> sdkKeys = LingLingSDK.createSdkKey(Collections.singletonList(svLingLingDevice));
-            if (sdkKeys.size() > 0) {
-                result = LingLingSDK.open(sdkKeys.iterator().next());
+        if(systemUser.getRoleId() == 3){
+            svLingLingDevice = svOwnerService.findDevicesById(devId);
+        }else{
+            List<SvLingLingDevice> svLingLingDeviceList = svOwnerService.findUserDevices(systemUser.getOwnerId(), null, null);
+            for (SvLingLingDevice temp : svLingLingDeviceList) {
+                //检查用户是否拥有这个设备
+                if (temp.getDeviceId().intValue() == devId.intValue()) {
+                    svLingLingDevice = temp;
+                    break;
+                }
             }
         }
+
+        List<String> sdkKeys = LingLingSDK.createSdkKey(Collections.singletonList(svLingLingDevice));
+        if (sdkKeys.size() > 0) {
+            result = LingLingSDK.open(sdkKeys.iterator().next());
+        }
+
         if(result == null){
             return Result.fail("开门失败");
         }
         if(!"1".equals(result.getStatusCode())){
             return Result.fail(result.getResponseResult());
         }
+
         return Result.success(result.getResponseResult());
     }
 

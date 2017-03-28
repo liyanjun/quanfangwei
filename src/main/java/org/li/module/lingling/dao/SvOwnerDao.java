@@ -24,4 +24,10 @@ public interface SvOwnerDao extends IDao<Integer, SvOwner> {
     List<SvOwner> findManagerUser(Integer userId, Integer first, Integer count);
 
     List<SvResidential> findManagerBuilding(Integer ownerId, Integer first, Integer count);
+
+    List<SvLingLingDevice> findAllDevices();
+
+    List<SvLingLingDevice> findAllDevices(Integer first, Integer count);
+
+    SvLingLingDevice findDevicesById(Integer devId);
 }

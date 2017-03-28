@@ -41,4 +41,10 @@ public interface SvOwnerService {
     List<SvOwner> findLingLingUserInfoList(Integer userId, Integer first, Integer count);
 
     List<SvResidential> findManagerBuilding(Integer ownerId, Integer first, Integer count);
+
+    List<SvLingLingDevice> findAllDevices();
+
+    List<SvLingLingDevice> findAllDevices(Integer first, Integer count);
+
+    SvLingLingDevice findDevicesById(Integer devId);
 }

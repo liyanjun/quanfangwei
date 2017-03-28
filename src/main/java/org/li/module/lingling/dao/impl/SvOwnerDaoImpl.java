@@ -57,6 +57,21 @@ public class SvOwnerDaoImpl extends LingLingBaseDao<Integer, SvOwner> implements
         return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findManagerBuilding", getParameter( ownerId,  first,  count));
     }
 
+    @Override
+    public List<SvLingLingDevice> findAllDevices() {
+        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findUserDevices");
+    }
+
+    @Override
+    public List<SvLingLingDevice> findAllDevices(Integer first, Integer count) {
+        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findUserDevices",getParameter(null,first,count));
+    }
+
+    @Override
+    public SvLingLingDevice findDevicesById(Integer devId) {
+        return this.getSqlSession().selectOne(this.getMapperNameSpace() + ".findDevicesById",devId);
+    }
+
     private Map getParameter(Integer ownerId, Integer first, Integer count){
         Map<String, Object> map = new HashMap<String, Object>();
         if (null != ownerId) {

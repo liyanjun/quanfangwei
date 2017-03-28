@@ -125,6 +125,72 @@
 			o.owner_id = #{ownerId} <if test="first != null  and count != null ">LIMIT #{first}, #{count}</if>
 	</select>
 
+	<select id="findAllDevices" resultType="org.li.module.lingling.bean.SvLingLingDevice">
+		SELECT
+		d.device_id as deviceId,
+		d.name as name,
+		d.family_id as familyId,
+		d.device_type as deviceType,
+		d.device_code,
+		d.mac,
+		d.default_mac,
+		d.wifi_ssid,
+		d.wifi_password,
+		d.bluetooch_name,
+		d.bluetooch_password,
+		d.lock_type,
+		d.lock_interval,
+		d.last_synchro_time,
+		d. STATUS,
+		d.region_id,
+		d.custom_type,
+		d.residential_type,
+		d.note,
+		d.v3_device_id as v3DeviceId,
+		d.is_online,
+		d.x_coordinate,
+		d.y_coordinate,
+		d.mark,
+		d.lock_status,
+		d.make_time
+		FROM
+		sv_device d
+		<if test="first != null and count != null ">LIMIT #{first}, #{count}</if>
+	</select>
+
+	<select id="findAllDevices" resultType="org.li.module.lingling.bean.SvLingLingDevice">
+		SELECT
+		d.device_id as deviceId,
+		d.name as name,
+		d.family_id as familyId,
+		d.device_type as deviceType,
+		d.device_code,
+		d.mac,
+		d.default_mac,
+		d.wifi_ssid,
+		d.wifi_password,
+		d.bluetooch_name,
+		d.bluetooch_password,
+		d.lock_type,
+		d.lock_interval,
+		d.last_synchro_time,
+		d. STATUS,
+		d.region_id,
+		d.custom_type,
+		d.residential_type,
+		d.note,
+		d.v3_device_id as v3DeviceId,
+		d.is_online,
+		d.x_coordinate,
+		d.y_coordinate,
+		d.mark,
+		d.lock_status,
+		d.make_time
+		FROM
+		sv_device d
+		WHERE d.device_id = #{devId}
+	</select>
+
 	<!--通过residential_id查询社区下的住户列表-->
 	<select id="findResidentialUser" resultType="org.li.module.lingling.bean.SvOwner">
 		SELECT
