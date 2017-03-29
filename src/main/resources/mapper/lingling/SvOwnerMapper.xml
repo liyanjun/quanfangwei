@@ -158,7 +158,7 @@
 		<if test="first != null and count != null ">LIMIT #{first}, #{count}</if>
 	</select>
 
-	<select id="findAllDevices" resultType="org.li.module.lingling.bean.SvLingLingDevice">
+	<select id="findDeviceById" resultType="org.li.module.lingling.bean.SvLingLingDevice">
 		SELECT
 		d.device_id as deviceId,
 		d.name as name,
@@ -229,51 +229,82 @@
 	<!--通过user_id查询社区管理员管理下的住户列表-->
 	<select id="findManagerUser" resultType="org.li.module.lingling.bean.SvOwner">
 		SELECT
-			o.owner_id as ownerId,
-			o.regcode,
-			o.owner_name as ownerName,
-			o.owner_telephone as ownerTelephone,
-			o.weixin_id,
-			o.reg_time,
-			o.reg_effec_day,
-			o.first_login_time,
-			o.use_effec_day,
-			o. STATUS,
-			o.residential_id,
-			o.call_id,
-			o.terminal_type,
-			o.note,
-			o.lingling_id,
-			o.visitor_authority,
-			o.owner_gender as ownerGender,
-			o.owner_race as ownerRace,
-			o.owner_birthday as ownerBirthday,
-			o.owner_census_addr as ownerCensusAddr,
-			o.owner_iden_number,
-			o.iden_img_id,
-			o.phone_IMEI,
-			o.longitude,
+		o.owner_id as ownerId,
+		o.regcode,
+		o.owner_name as ownerName,
+		o.owner_telephone as ownerTelephone,
+		o.weixin_id,
+		o.reg_time,
+		o.reg_effec_day,
+		o.first_login_time,
+		o.use_effec_day,
+		o. STATUS,
+		o.residential_id as residentialId,
+		o.call_id,
+		o.terminal_type,
+		o.note,
+		o.lingling_id,
+		o.visitor_authority,
+		o.owner_gender as ownerGender,
+		o.owner_race as ownerRace,
+		o.owner_birthday as ownerBirthday,
+		o.owner_census_addr as ownerCensusAddr,
+		o.owner_iden_number,
+		o.iden_img_id,
+		o.phone_IMEI,
+		o.longitude,
+		o.latitude,
+		o.owner_police,
+		room_number as roomNumber,
+		residential_name as residentialName
+		FROM sv_owner o LEFT JOIN sv_residential sr
+		ON o.residential_id = sr.residential_id
+		LEFT JOIN sv_room_owner r ON o.owner_id = r.owner_id
+		LEFT JOIN  sv_room room ON r.room_id = room.room_id
+		WHERE o.residential_id in (SELECT residential_id FROM sys_user_residential WHERE user_id = #{ownerId})
+		<if test="first != null and count != null ">LIMIT #{first}, #{count}</if>
+	</select>
 
-			o.latitude,
-			o.owner_police
-		  FROM
-			sv_owner o
-		  WHERE
-			EXISTS (
-			SELECT
-				*
-			FROM
-				sv_residential r
-			LEFT JOIN sys_user_residential ur ON r.residential_id = ur.residential_id
-			LEFT JOIN sys_user u ON u.user_id = ur.user_id
-			WHERE
-			u.user_id = #{ownerId}
-			AND o.residential_id = r.residential_id
-			)
+	<select id="findManagerUserByName" resultType="org.li.module.lingling.bean.SvOwner">
+		SELECT
+		o.owner_id as ownerId,
+		o.regcode,
+		o.owner_name as ownerName,
+		o.owner_telephone as ownerTelephone,
+		o.weixin_id,
+		o.reg_time,
+		o.reg_effec_day,
+		o.first_login_time,
+		o.use_effec_day,
+		o. STATUS,
+		o.residential_id as residentialId,
+		o.call_id,
+		o.terminal_type,
+		o.note,
+		o.lingling_id,
+		o.visitor_authority,
+		o.owner_gender as ownerGender,
+		o.owner_race as ownerRace,
+		o.owner_birthday as ownerBirthday,
+		o.owner_census_addr as ownerCensusAddr,
+		o.owner_iden_number,
+		o.iden_img_id,
+		o.phone_IMEI,
+		o.longitude,
+		o.latitude,
+		o.owner_police,
+		room_number as roomNumber,
+		residential_name as residentialName
+		FROM sv_owner o LEFT JOIN sv_residential sr
+		ON o.residential_id = sr.residential_id
+		LEFT JOIN sv_room_owner r ON o.owner_id = r.owner_id
+		LEFT JOIN  sv_room room ON r.room_id = room.room_id
+	    WHERE o.residential_id in (SELECT residential_id FROM sys_user_residential WHERE user_id = #{ownerId})
+		AND o.owner_name like concat(concat('%',#{name}),'%')
 	</select>
 
 	<!--查询管理员所管理的楼栋-->
-	<select id="findManagerBuilding" resultType="org.li.module.lingling.bean.SvOwner">
+	<select id="findManagerBuilding" resultType="org.li.module.lingling.bean.SvResidential">
 		SELECT
 			r.residential_id as residentialId,
 			r.region_id as regionId,
@@ -288,7 +319,7 @@
 			r.start_time as startTime,
 			r.end_time  as endTime,
 			r. STATUS,
-			r.note,
+			r.note
 		FROM
 			sv_residential r
 		LEFT JOIN sys_user_residential sys ON r.residential_id = sys.residential_id
@@ -299,7 +330,11 @@
 	<!--查询管理员所管理的住房-->
 	<select id="findManagerRoom" resultType="org.li.module.lingling.bean.SvRoom">
 		SELECT
-			*
+			room_id as roomId,
+			residential_id as residentialId,
+			room_number as roomNumber,
+			status as status,
+			note as note
 		FROM
 			sv_room
 		WHERE

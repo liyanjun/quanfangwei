@@ -59,17 +59,31 @@ public class SvOwnerDaoImpl extends LingLingBaseDao<Integer, SvOwner> implements
 
     @Override
     public List<SvLingLingDevice> findAllDevices() {
-        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findUserDevices");
+        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findAllDevices");
     }
 
     @Override
     public List<SvLingLingDevice> findAllDevices(Integer first, Integer count) {
-        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findUserDevices",getParameter(null,first,count));
+        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findAllDevices",getParameter(null,first,count));
     }
 
     @Override
     public SvLingLingDevice findDevicesById(Integer devId) {
-        return this.getSqlSession().selectOne(this.getMapperNameSpace() + ".findDevicesById",devId);
+        return this.getSqlSession().selectOne(this.getMapperNameSpace() + ".findDeviceById",devId);
+    }
+
+    @Override
+    public List<SvRoom> findManagerRoom(Integer residentialId, Integer first, Integer count) {
+        Map map = getParameter( null,  first,  count);
+        map.put("residentialId",residentialId);
+        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findManagerRoom",map);
+    }
+
+    @Override
+    public List<SvOwner> findLingLingUserInfoByName(Integer ownerId, String name, int first, int count) {
+        Map map = getParameter( ownerId,  first,  count);
+        map.put("name",name);
+        return this.getSqlSession().selectList(this.getMapperNameSpace() + ".findManagerUserByName",map);
     }
 
     private Map getParameter(Integer ownerId, Integer first, Integer count){

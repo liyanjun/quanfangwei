@@ -82,7 +82,11 @@ public class SystemController {
         if (sysUser != null) {
             roleId = 3;
             systemUser.setAdminValue(sysUser);
-            //TODO 获取一个令令ID
+            // 获取一个令令ID
+            if(StringUtils.isEmpty(systemUser.getLinglingId())){
+                String linglingId = LingLingSDK.getLingLingId();
+                systemUser.setLinglingId(linglingId);
+            }
         }
         userService.insertSystemUser(systemUser, roleId);
         // 验证码已使用，删除掉它
@@ -125,9 +129,13 @@ public class SystemController {
             // 角色改变成管理员
             systemUser.setRoleId(3);
             systemUser.setAdminValue(sysUser);
-            //TODO 如果没有令令ID
-            //TODO 获取一个令令ID
+            if(StringUtils.isEmpty(systemUser.getLinglingId())){
+                String linglingId = LingLingSDK.getLingLingId();
+                systemUser.setLinglingId(linglingId);
+            }
         }
+        //TODO 修改update,同时updateRoleId
+//        userService.updateSystemUser(systemUser);
         String token = CryptographyUtil.getToken(phone, password);
         Object oldToken = EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, phone);
         if (oldToken != null) {
@@ -154,6 +162,9 @@ public class SystemController {
             return result;
         }
         SystemUser systemUser = userService.findByPhone(phone);
+        if(systemUser == null){
+            return Result.fail("账号不存在");
+        }
         systemUser.setPassword(CryptographyUtil.md5(password));
         userService.updateSystemUser(systemUser);
         // 验证码已使用，删除掉它

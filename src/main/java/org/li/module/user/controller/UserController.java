@@ -45,9 +45,11 @@ public class UserController {
         if(systemUser.getRoleId() == 3){
             devices = svOwnerService.findAllDevices();
         }else{
-           devices = svOwnerService.findUserDevices(systemUser.getOwnerId(), null, null);
+            devices = svOwnerService.findUserDevices(systemUser.getOwnerId(), null, null);
         }
-
+        if(devices.size() == 0){
+            return Result.fail("没有可用的设备，无法生成二维码");
+        }
         List<String> sdkKeys = LingLingSDK.createSdkKey(devices);
         String qrcode = LingLingSDK.createQrcodeKey(sdkKeys, systemUser);
         return Result.success("二维码生成成功", qrcode);
@@ -62,12 +64,15 @@ public class UserController {
                                       @ApiParam(required = true, name = "token", value = "token") @RequestParam String token) {
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
         List<SvLingLingDevice> devices = null;
-        SvQrcode svQrcode = new SvQrcode();
         if(systemUser.getRoleId() == 3){
             devices = svOwnerService.findAllDevices();
         }else{
             devices = svOwnerService.findUserDevices(systemUser.getOwnerId(), null, null);
         }
+        if(devices.size() == 0){
+            return Result.fail("没有可用的设备，无法生成二维码");
+        }
+        SvQrcode svQrcode = new SvQrcode();
         svQrcode.setType(2);
         svQrcode.setName(name);
         svQrcode.setVisitPhone(visitorPhone);

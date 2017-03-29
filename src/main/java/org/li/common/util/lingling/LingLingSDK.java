@@ -120,4 +120,21 @@ public class LingLingSDK {
         }
         return result.getResponseResult();
     }
+
+    public static String getLingLingId() {
+        LingLingQrcodeResult result = null;
+        Map<String, String> map = new HashMap<>();
+        Message m = new Message();
+        map.put("MESSAGE", new Gson().toJson(m));
+        HttpPost httpPost = ConnectUtil.createPost(url + "/qrcode/getLingLingId/21F2548CC77394880637C358419E6596", map);
+        try {
+            String response = ConnectUtil.submitPost(httpPost);
+            result = new Gson().fromJson(response, LingLingQrcodeResult.class);
+        } catch (IOException e) {
+            logger.error("获取令令ID错误", e);
+            throw new RuntimeException(e);
+        }
+        return result.getResponseResult().get("lingLingId").getAsString();
+
+    }
 }

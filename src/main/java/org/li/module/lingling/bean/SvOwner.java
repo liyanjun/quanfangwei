@@ -102,8 +102,11 @@ public class SvOwner extends BaseEntity {
 	/***/
 	private String ownerActiveTo;
 
+	/**房号名*/
+	private String roomNumber;
+
 	/**
-	 * 小区名
+	 * 楼栋名
 	 */
 	private String residentialName;
 
@@ -323,6 +326,14 @@ public class SvOwner extends BaseEntity {
 
 	public String getResidentialName() {
 		return residentialName;
+	}
+
+	public String getRoomNumber() {
+		return roomNumber;
+	}
+
+	public void setRoomNumber(String roomNumber) {
+		this.roomNumber = roomNumber;
 	}
 }
 

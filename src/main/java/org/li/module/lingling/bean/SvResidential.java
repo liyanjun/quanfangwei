@@ -7,7 +7,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.li.common.base.bean.BaseEntity;
 
 import java.sql.Timestamp;
-
+import java.util.List;
 
 
 /**
@@ -73,6 +73,8 @@ public class SvResidential extends BaseEntity {
 
 	/**备注*/
 	private String note;
+
+	private List<SvRoom> svRoomList;
 
 	public SvResidential(){
 	}
@@ -210,6 +212,14 @@ public class SvResidential extends BaseEntity {
 
 	public void setRoomNumber(String roomNumber) {
 		this.roomNumber = roomNumber;
+	}
+
+	public List<SvRoom> getSvRoomList() {
+		return svRoomList;
+	}
+
+	public void setSvRoomList(List<SvRoom> svRoomList) {
+		this.svRoomList = svRoomList;
 	}
 
 	public String toString() {

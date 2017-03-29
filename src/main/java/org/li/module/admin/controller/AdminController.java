@@ -2,17 +2,20 @@ package org.li.module.admin.controller;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
-import org.li.common.util.DateUtil;
 import org.li.common.util.EHCacheUtil;
 import org.li.common.vo.Result;
-import org.li.module.lingling.bean.*;
+import org.li.module.lingling.bean.SvOwner;
+import org.li.module.lingling.bean.SvResidential;
+import org.li.module.lingling.bean.SvRoom;
 import org.li.module.lingling.service.SvOwnerService;
 import org.li.module.system.bean.SystemUser;
 import org.li.module.system.service.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -30,9 +33,9 @@ public class AdminController {
     SystemUserService systemUserService;
 
     @ResponseBody
-    @RequestMapping("findPerson")
-    @ApiOperation(value = "查询管理员辖内人员", httpMethod = "POST", response = Result.class, notes = "查询管理员辖内人员")
-    public Result findPerson(@RequestParam String token,
+    @RequestMapping("personList")
+    @ApiOperation(value = "查询管理员辖内人员列表", httpMethod = "POST", response = Result.class, notes = "查询管理员辖内人员")
+    public Result personList(@RequestParam String token,
                              @ApiParam(required = true,name = "first",value = "当前浏览到的记录-1") @RequestParam Integer first,
                              @ApiParam(required = true,name = "count",value = "本次要加载的记录") @RequestParam Integer count) {
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
@@ -41,13 +44,25 @@ public class AdminController {
     }
 
     @ResponseBody
+    @RequestMapping("findPerson")
+    @ApiOperation(value = "根据姓名查询管理员辖内人员", httpMethod = "POST", response = Result.class, notes = "查询管理员辖内人员")
+    public Result findPerson(@RequestParam String token,
+                             @ApiParam(required = true, name = "name",value = "人员名")@RequestParam String name) {
+        SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
+        List<SvOwner> svOwners = svOwnerService.findLingLingUserInfoByName(systemUser.getOwnerId(),name,0,10);
+        return Result.success("根据名字查询管理员辖内人员成功",svOwners);
+    }
+
+    @ResponseBody
     @RequestMapping("findBuilding")
     @ApiOperation(value = "查询管理员所管理的楼栋住房", httpMethod = "POST", response = Result.class, notes = "查询管理员所管理的楼栋住房")
-    public Result findBuilding(@RequestParam String token,
-                               @ApiParam(required = true,name = "first",value = "当前浏览到的记录-1") @RequestParam Integer first,
-                               @ApiParam(required = true,name = "count",value = "本次要加载的记录") @RequestParam Integer count) {
+    public Result findBuilding(@RequestParam String token) {
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
-        List<SvResidential> svResidentials = svOwnerService.findManagerBuilding(systemUser.getOwnerId(),first,count);
+        List<SvResidential> svResidentials = svOwnerService.findManagerBuilding(systemUser.getOwnerId(),null,null);
+        for (SvResidential svResidential : svResidentials){
+            List<SvRoom> svRooms = svOwnerService.findManagerRoom(svResidential.getResidentialId(),null,null);
+            svResidential.setSvRoomList(svRooms);
+        }
         return Result.success("查询管理员所管理的楼栋住房成功",svResidentials);
     }
 

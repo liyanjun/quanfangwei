@@ -66,11 +66,7 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     public Integer delete(Integer id) {
-        SystemUser temp = new SystemUser();
-        temp.setId(id);
-        temp.setIsDel(1);
-        temp.setUpdateTime(DateUtil.getCurrentTimestamp());
-        return systemUserDao.update(temp);
+        return systemUserDao.delete(id);
     }
 
 //    public Integer delete(Integer id, Integer updateId) {
