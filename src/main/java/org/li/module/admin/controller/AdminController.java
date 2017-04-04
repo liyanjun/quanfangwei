@@ -2,7 +2,12 @@ package org.li.module.admin.controller;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.li.common.util.DateUtil;
 import org.li.common.util.EHCacheUtil;
+import org.li.common.util.face.FaceUtil;
+import org.li.common.util.face.result.CompareResult;
+import org.li.common.util.face.result.CreditCardResult;
+import org.li.common.util.lingling.LingLingSDK;
 import org.li.common.vo.Result;
 import org.li.module.lingling.bean.SvOwner;
 import org.li.module.lingling.bean.SvResidential;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -70,34 +76,73 @@ public class AdminController {
     @RequestMapping("addPerson")
     @ApiOperation(value = "新增用户", httpMethod = "POST", response = Result.class, notes = "新增用户")
     public Result addPerson(@ApiParam(required = true, name = "username", value = "用户姓名") @RequestParam String username,
-                            @ApiParam(required = true, name = "sex", value = "性别(0:男，1：女)") @RequestParam Integer sex,
+                            @ApiParam(required = true, name = "sex", value = "性别(1:男，2：女)") @RequestParam Integer sex,
                             @ApiParam(required = true, name = "nation", value = "民族") @RequestParam String nation,
                             @ApiParam(required = true, name = "birthday", value = "生日") @RequestParam String birthday,
                             @ApiParam(required = true, name = "creditAddress", value = "身份证地址") @RequestParam String creditAddress,
                             @ApiParam(required = true, name = "creditNo", value = "身份证号") @RequestParam String creditNo,
                             @ApiParam(required = true, name = "creditImgUrl", value = "身份证照地址") @RequestParam String creditImgUrl,
+                            @ApiParam(required = true, name = "idenImgId", value = "身份证照提交后获取的ID") @RequestParam Integer idenImgId,
                             @ApiParam(required = true, name = "headImgUrl", value = "大头自拍照地址") @RequestParam String headImgUrl,
                             @ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone,
-                            @ApiParam(required = true, name = "addressId", value = "楼栋住房ID") @RequestParam String addressId,
+                            @ApiParam(required = true, name = "residentialId", value = "楼栋ID") @RequestParam Integer residentialId,
+                            @ApiParam(required = true, name = "residentialName", value = "楼栋名称") @RequestParam String residentialName,
+                            @ApiParam(required = true, name = "roomId", value = "住房ID") @RequestParam Integer roomId,
+                            @ApiParam(required = true, name = "roomName", value = "住房编号") @RequestParam Integer roomName,
                             @ApiParam(required = true, name = "beginTime", value = "有效期开始时间") @RequestParam String beginTime,
                             @ApiParam(required = true, name = "endTime", value = "有效期结束时间") @RequestParam String endTime,
                             @RequestParam String token) {
-        SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
+        CompareResult compareResult = FaceUtil.compareFace(creditImgUrl,headImgUrl);
+        if(compareResult.getConfidence() < 60){
+            Result.fail("脸部识别对比度低，请重新提交大头照和身份证照。");
+        }
+        SvOwner svOwner = new SvOwner();
+        svOwner.setResidentialId(residentialId);
+        svOwner.setOwnerTelephone(phone);
+        svOwner.setOwnerName(username);
+        svOwner.setOwnerRace(nation);
+        svOwner.setOwnerGender(sex);
+        svOwner.setOwnerIdenNumber(creditNo);
+        svOwner.setOwnerCensusAddr(creditAddress);
+        svOwner.setIdenImgId(idenImgId);
+        svOwner.setLinglingId(LingLingSDK.getLingLingId());
+        svOwner.setStatus(1);
+
+        try {
+            svOwner.setOwnerBirthday(DateUtil.strToTimestamp(birthday));
+        } catch (ParseException e) {
+            return Result.success("生日时间格式不对");
+        }
+        //TODO 插入新的room_owner
+        //TODO 大头照处理
+        svOwnerService.insertSvOwner(svOwner);
         return Result.success("新增用户成功");
+    }
+
+    @ResponseBody
+    @RequestMapping("readCreditCard")
+    @ApiOperation(value = "识别身份证信息", httpMethod = "POST", response = Result.class, notes = "识别身份证信息")
+    public Result readCreditCard(@ApiParam(required = true, name = "creditImgUrl", value = "身份证照地址") @RequestParam String creditImgUrl,
+                             @RequestParam String token) {
+        CreditCardResult creditCardResult = FaceUtil.readCreditCard(creditImgUrl);
+        if(creditCardResult.getCards().size() == 0){
+            Result.fail("身份证识别失败。");
+        }
+        return Result.success("身份证识别成功。",creditCardResult.getCards().get(0));
     }
 
     @ResponseBody
     @RequestMapping("deletePerson")
     @ApiOperation(value = "删除用户", httpMethod = "POST", response = Result.class, notes = "删除用户")
     public Result deletePerson(@ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone,
+                               @ApiParam(required = true, name = "ownerId", value = "ownerId") @RequestParam Integer ownerId,
                                @RequestParam String token) {
-        SystemUser admin = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
+        svOwnerService.deleteOwner(ownerId);
         SystemUser systemUser = systemUserService.findByPhone(phone);
-        if(systemUser == null){
-            return Result.fail("该用户不存在");
+        if(systemUser != null){
+            systemUserService.delete(systemUser);
         }
-        systemUserService.delete(systemUser.getId());
-        // TODO 在他们的数据库删除
+
         return Result.success("删除用户成功");
     }
 
@@ -105,27 +150,24 @@ public class AdminController {
     @RequestMapping("editPerson")
     @ApiOperation(value = "编辑用户", httpMethod = "POST", response = Result.class, notes = "编辑用户")
     public Result editPerson(@ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone,
-                             @ApiParam(required = true, name = "addressId", value = "楼栋住房ID") @RequestParam Integer addressId,
-                             @ApiParam(required = true, name = "addressName", value = "楼栋住房名称") @RequestParam String addressName,
+                             @ApiParam(required = true, name = "ownerId", value = "ownerId") @RequestParam Integer ownerId,
+                             @ApiParam(required = true, name = "residentialId", value = "楼栋ID") @RequestParam Integer residentialId,
+                             @ApiParam(required = true, name = "residentialName", value = "楼栋名称") @RequestParam String residentialName,
+                             @ApiParam(required = true, name = "roomId", value = "住房ID") @RequestParam Integer roomId,
+                             @ApiParam(required = true, name = "roomName", value = "住房编号") @RequestParam Integer roomName,
                              @ApiParam(required = true, name = "beginTime", value = "有效期开始时间") @RequestParam String beginTime,
                              @ApiParam(required = true, name = "endTime", value = "有效期结束时间") @RequestParam String endTime,
                              @RequestParam String token) {
-        SystemUser admin = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
         SystemUser systemUser = systemUserService.findByPhone(phone);
-        if(systemUser == null){
-            return Result.fail("该用户不存在");
+        if(systemUser != null){
+            systemUser.setAddressId(residentialId);
+            systemUser.setAddress(residentialName);
+            systemUserService.updateSystemUser(systemUser);
         }
+        SvOwner svOwner = svOwnerService.findLingLingUserInfoById(ownerId);
+        svOwner.setResidentialId(residentialId);
+        //TODO 删除room_owner,插入新的room_owner
 
-        systemUser.setAddressId(addressId);
-        systemUser.setAddress(addressName);
-       /* try {
-            systemUser.setBeginDate(DateUtil.strToTimestamp(beginTime));
-            systemUser.setEndDate(DateUtil.strToTimestamp(endTime));
-        } catch (ParseException e) {
-            return Result.fail("日期格式不正确");
-        }*/
-        systemUserService.updateSystemUser(systemUser);
-        // TODO 更新他们的数据库
         return Result.success("编辑用户成功");
     }
 }

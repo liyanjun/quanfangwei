@@ -7,9 +7,7 @@ import org.li.module.lingling.service.SvOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 业主信息表
@@ -78,4 +76,18 @@ public class SvOwnerServiceImpl implements SvOwnerService {
         return svOwnerDao.findLingLingUserInfoByName(ownerId,name,first,count);
     }
 
+    @Override
+    public SvOwner findLingLingUserInfoById(Integer ownerId) {
+        return svOwnerDao.getEntityById(ownerId);
+    }
+
+    @Override
+    public void deleteOwner(Integer ownerId) {
+        svOwnerDao.delete(ownerId);
+    }
+
+    @Override
+    public void insertSvOwner(SvOwner svOwner) {
+        //TODO 待实现
+    }
 }

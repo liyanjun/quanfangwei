@@ -20,7 +20,7 @@ public interface SystemUserService {
 
     SystemUser find(Integer id);
 
-    Integer delete(Integer id);
+    Integer delete(SystemUser id);
 
 //    Integer delete(Integer id, Integer updateId);
 

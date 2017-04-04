@@ -51,6 +51,9 @@ public class UserController {
             return Result.fail("没有可用的设备，无法生成二维码");
         }
         List<String> sdkKeys = LingLingSDK.createSdkKey(devices);
+        if(sdkKeys.size() == 0){
+            return Result.fail("生成SDK秘钥失败，请联系管理员");
+        }
         String qrcode = LingLingSDK.createQrcodeKey(sdkKeys, systemUser);
         return Result.success("二维码生成成功", qrcode);
     }
@@ -85,12 +88,15 @@ public class UserController {
         svQrcode.setUserId(systemUser.getId());
 
         List<String> sdkKeys = LingLingSDK.createSdkKey(devices);
+        if(sdkKeys.size() == 0){
+            return Result.fail("生成SDK秘钥失败，请联系管理员");
+        }
         JsonObject qrCode = LingLingSDK.createVisitorQRCode(sdkKeys,systemUser);
         svQrcode.setQrcodeKey(qrCode.get("qrcodeKey").getAsString());
         svQrcode.setCodeId(qrCode.get("codeId").getAsInt());
         svQrcodeService.insertSvQrcode(svQrcode);
 //        return Result.success("访客二维码生成成功","F2EB940855150DD1DEE75408770F7C9C001196F3C2025E40B9492034C1F5CEAD8ED77B0D1D7D3E0B9CA6A32C9CA6A32CCC19B184ABDD3720");
-        return Result.success("访客二维码生成成功",LingLingSDK.qrUrl+svQrcode.getQrcodeKey());
+        return Result.success("访客二维码生成成功",svQrcode.getQrcodeKey());
     }
 
     @ResponseBody

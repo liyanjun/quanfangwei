@@ -364,7 +364,7 @@
 		FROM
 			sv_visitor_qrcode vq
 		WHERE
-		vq.owner_id = #{ownerId} AND code_id = #{codeId}<if test="first != null and count != null ">LIMIT #{first}, #{count}</if>
+		vq.owner_id = #{ownerId} AND v3_code_id = #{codeId}<if test="first != null and count != null ">LIMIT #{first}, #{count}</if>
 	</select>
 
 	<!--通过residential_id查询住房情况-->
@@ -590,5 +590,9 @@
 		</trim>
 	</insert>
 
-
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		delete from sv_owner
+		where
+		owner_id = #{id}
+	</delete>
 </mapper>

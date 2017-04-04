@@ -74,7 +74,7 @@ public class LingLingSDK {
             logger.error("获取用户二维码错误", e);
             throw new RuntimeException(e);
         }
-        return qrUrl + result.getResponseResult().get("qrcodeKey").getAsString();
+        return result.getResponseResult().get("qrcodeKey").getAsString();
     }
 
     public static LingLingOpenResult open(String sdkKey) {

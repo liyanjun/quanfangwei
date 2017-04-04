@@ -50,5 +50,11 @@ public interface SvOwnerService {
 
     List<SvRoom> findManagerRoom(Integer residentialId, Integer first, Integer count);
 
+    void deleteOwner(Integer systemUser);
+
     List<SvOwner> findLingLingUserInfoByName(Integer ownerId, String name, int i, int i1);
+
+    SvOwner findLingLingUserInfoById(Integer ownerId);
+
+    void insertSvOwner(SvOwner svOwner);
 }

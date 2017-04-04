@@ -3,23 +3,15 @@ package org.li.module.system.service.impl;
 
 import org.li.common.base.page.PageInfo;
 import org.li.common.base.page.PagerControl;
-import org.li.common.util.DateUtil;
-import org.li.common.util.lingling.LingLingSDK;
-import org.li.module.lingling.bean.SvLingLingDevice;
 import org.li.module.lingling.dao.SvOwnerDao;
 import org.li.module.system.bean.SystemUser;
 import org.li.module.system.bean.SystemUserRole;
 import org.li.module.system.dao.SystemUserDao;
 import org.li.module.system.service.SystemUserService;
-import org.li.module.user.bean.SvDevice;
 import org.li.module.user.dao.SvDeviceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.beans.Transient;
-
-import java.util.List;
 
 /**
  * @author liyanjun
@@ -65,17 +57,10 @@ public class SystemUserServiceImpl implements SystemUserService {
         return systemUserDao.getEntityById(id);
     }
 
-    public Integer delete(Integer id) {
-        return systemUserDao.delete(id);
-    }
+    public Integer delete(SystemUser systemUser) {
 
-//    public Integer delete(Integer id, Integer updateId) {
-//        SystemUser temp = new SystemUser();
-//        temp.setId(id);
-//        temp.setIsDel(1);
-//        temp.setUpdateTime(DateUtil.getCurrentTimestamp());
-//        return systemUserDao.update(temp);
-//    }
+        return systemUserDao.delete(systemUser.getId());
+    }
 
     @Override
     public SystemUser findByPhone(String phone) {
