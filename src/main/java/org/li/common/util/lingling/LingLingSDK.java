@@ -49,7 +49,7 @@ public class LingLingSDK {
                     sdkKeys.add(sdkKey.getAsString());
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("获取Sdkkey错误", e);
             throw new RuntimeException(e);
         }
@@ -70,7 +70,7 @@ public class LingLingSDK {
         try {
             String response = ConnectUtil.submitPost(httpPost);
             result = new Gson().fromJson(response, LingLingQrcodeResult.class);
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("获取用户二维码错误", e);
             throw new RuntimeException(e);
         }
@@ -87,7 +87,7 @@ public class LingLingSDK {
         try {
             String response = ConnectUtil.submitPost(httpPost);
             result = new Gson().fromJson(response, LingLingOpenResult.class);
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("远程开门错误", e);
             throw new RuntimeException(e);
         }
@@ -114,7 +114,7 @@ public class LingLingSDK {
         try {
             String response = ConnectUtil.submitPost(httpPost);
             result = new Gson().fromJson(response, LingLingQrcodeResult.class);
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("获取访客二维码错误", e);
             throw new RuntimeException(e);
         }
