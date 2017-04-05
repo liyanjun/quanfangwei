@@ -2,6 +2,8 @@ package org.li.module.admin.controller;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.li.common.util.CryptographyUtil;
+import org.li.common.util.DateUtil;
 import org.li.common.util.EHCacheUtil;
 import org.li.common.util.face.FaceUtil;
 import org.li.common.util.face.result.CompareResult;
@@ -182,10 +184,10 @@ public class AdminController {
         return Result.success("编辑用户成功");
     }
 
-    @RequestMapping(value = "/uploadApk")
+    @RequestMapping(value = "/uploadImg")
     @ResponseBody
     @ApiOperation(value = "上传文件", httpMethod = "POST", response = Result.class, notes = "上传文件")
-    public Result uploadApk(
+    public Result uploadImg(
             @ApiParam(required = true, name = "img", value = "上传文件内容") @RequestParam(value = "img") MultipartFile img,
             @ApiParam(required = true, name = "type", value = "上传文件类型,1-大头照，2-身份证照") @RequestParam(value = "type") Integer type,
             @RequestParam String token,
@@ -204,6 +206,10 @@ public class AdminController {
         }
         // 文件原名称
         String originFileName = img.getOriginalFilename();
+        String prefix=originFileName.substring(originFileName.lastIndexOf(".")+1);
+        originFileName = CryptographyUtil.md5(originFileName + DateUtil.getCurrentTimestamp().toString());
+        originFileName =originFileName+"."+prefix;
+
         try {
             ImageUtil.SaveFileFromInputStream(img.getInputStream(),realPath+"/"+originFileName);
         } catch (IOException e) {
@@ -211,68 +217,7 @@ public class AdminController {
             return Result.fail("文件上传失败");
         }
 
-        return Result.success("文件上传成功",originFileName);
+        return Result.success("文件上传成功","/system/download?fileName="+originFileName+"&type=" + type);
     }
 
-    /**
-     * 文件下载
-     * @Description:
-     * @param fileName
-     * @param request
-     * @param response
-     * @return
-     */
-    @RequestMapping("/download")
-    @ApiOperation(value = "下载文件", httpMethod = "GET", response = Result.class, notes = "下载文件")
-    public String downloadFile(@ApiParam(required = true, name = "fileName", value = "文件名") @RequestParam(value = "fileName") String fileName,
-                               @ApiParam(required = true, name = "type", value = "上传文件类型,1-大头照，2-身份证照") @RequestParam(value = "type") Integer type,
-                               @RequestParam String token,
-                               HttpServletRequest request, HttpServletResponse response) {
-        if (fileName != null) {
-            //获取保存的路径，
-            String realPath = request.getSession().getServletContext()
-                    .getRealPath("/upload/credit");
-            if(type == 1){
-                realPath = request.getSession().getServletContext()
-                        .getRealPath("/upload/head");
-            }
-            File file = new File(realPath, fileName);
-            if (file.exists()) {
-                response.setContentType("application/force-download");// 设置强制下载不打开
-                response.addHeader("Content-Disposition",
-                        "attachment;fileName=" + fileName);// 设置文件名
-                byte[] buffer = new byte[1024];
-                FileInputStream fis = null;
-                BufferedInputStream bis = null;
-                try {
-                    fis = new FileInputStream(file);
-                    bis = new BufferedInputStream(fis);
-                    OutputStream os = response.getOutputStream();
-                    int i = bis.read(buffer);
-                    while (i != -1) {
-                        os.write(buffer, 0, i);
-                        i = bis.read(buffer);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (bis != null) {
-                        try {
-                            bis.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    if (fis != null) {
-                        try {
-                            fis.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
 }

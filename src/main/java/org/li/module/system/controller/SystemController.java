@@ -21,6 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -45,7 +48,7 @@ public class SystemController {
             return Result.fail("请输入正确的手机号码。");
         }
         String captcha = GenerateUtil.geneCaptcha();
-//        MSMUtil.sendCaptchaMSM(captcha);
+        MSMUtil.sendCaptchaMSM(phone,captcha);
         EHCacheUtil.getInstance().put(EHCacheUtil.CAPTCHA_CACHE, phone, captcha);
         return Result.success("获取验证码成功", captcha);
     }
@@ -240,6 +243,67 @@ public class SystemController {
         }
         if (password.length() < 6 || passwordRepeat.length() < 6) {
             return Result.fail("请输入六位以上密码。");
+        }
+        return null;
+    }
+
+    /**
+     * 文件下载
+     * @Description:
+     * @param fileName
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/download")
+    @ApiOperation(value = "下载文件", httpMethod = "GET", response = Result.class, notes = "下载文件")
+    public String downloadFile(@ApiParam(required = true, name = "fileName", value = "文件名") @RequestParam(value = "fileName") String fileName,
+                               @ApiParam(required = true, name = "type", value = "上传文件类型,1-大头照，2-身份证照") @RequestParam(value = "type") Integer type,
+                               HttpServletRequest request, HttpServletResponse response) {
+        if (fileName != null) {
+            //获取保存的路径，
+            String realPath = request.getSession().getServletContext()
+                    .getRealPath("/upload/credit");
+            if(type == 1){
+                realPath = request.getSession().getServletContext()
+                        .getRealPath("/upload/head");
+            }
+            File file = new File(realPath, fileName);
+            if (file.exists()) {
+                response.setContentType("application/force-download");// 设置强制下载不打开
+                response.addHeader("Content-Disposition",
+                        "attachment;fileName=" + fileName);// 设置文件名
+                byte[] buffer = new byte[1024];
+                FileInputStream fis = null;
+                BufferedInputStream bis = null;
+                try {
+                    fis = new FileInputStream(file);
+                    bis = new BufferedInputStream(fis);
+                    OutputStream os = response.getOutputStream();
+                    int i = bis.read(buffer);
+                    while (i != -1) {
+                        os.write(buffer, 0, i);
+                        i = bis.read(buffer);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (bis != null) {
+                        try {
+                            bis.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (fis != null) {
+                        try {
+                            fis.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
         }
         return null;
     }
