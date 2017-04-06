@@ -74,11 +74,11 @@ public class AdminController {
 
     @ResponseBody
     @RequestMapping("findPersonByPhone")
-    @ApiOperation(value = "根据ID查询管理员辖内人员", httpMethod = "POST", response = Result.class, notes = "查询管理员辖内人员")
+    @ApiOperation(value = "根据手机号查询管理员辖内人员", httpMethod = "POST", response = Result.class, notes = "查询管理员辖内人员")
     public Result findPersonByPhone(@RequestParam String token,
-                             @ApiParam(required = true, name = "phone", value = "人员名") @RequestParam String phone) {
+                             @ApiParam(required = true, name = "phone", value = "手机号") @RequestParam String phone) {
         SvOwner svOwner = svOwnerService.findLingLingUserInfo(phone);
-        return Result.success("根据名字查询管理员辖内人员成功", svOwner);
+        return Result.success("根据手机号查询管理员辖内人员成功", svOwner);
     }
 
     @ResponseBody
