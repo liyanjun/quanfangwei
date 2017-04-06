@@ -73,16 +73,34 @@ public class AdminController {
     }
 
     @ResponseBody
+    @RequestMapping("findPersonByPhone")
+    @ApiOperation(value = "根据ID查询管理员辖内人员", httpMethod = "POST", response = Result.class, notes = "查询管理员辖内人员")
+    public Result findPersonByPhone(@RequestParam String token,
+                             @ApiParam(required = true, name = "phone", value = "人员名") @RequestParam String phone) {
+        SvOwner svOwner = svOwnerService.findLingLingUserInfo(phone);
+        return Result.success("根据名字查询管理员辖内人员成功", svOwner);
+    }
+
+    @ResponseBody
     @RequestMapping("findBuilding")
-    @ApiOperation(value = "查询管理员所管理的楼栋住房", httpMethod = "POST", response = Result.class, notes = "查询管理员所管理的楼栋住房")
+    @ApiOperation(value = "查询管理员所管理的楼栋", httpMethod = "POST", response = Result.class, notes = "查询管理员所管理的楼栋")
     public Result findBuilding(@RequestParam String token) {
         SystemUser systemUser = (SystemUser) EHCacheUtil.getInstance().get(EHCacheUtil.LOGIN_CACHE, token);
         List<SvResidential> svResidentials = svOwnerService.findManagerBuilding(systemUser.getOwnerId(), null, null);
-        for (SvResidential svResidential : svResidentials) {
-            List<SvRoom> svRooms = svOwnerService.findManagerRoom(svResidential.getResidentialId(), null, null);
-            svResidential.setSvRoomList(svRooms);
-        }
-        return Result.success("查询管理员所管理的楼栋住房成功", svResidentials);
+//        for (SvResidential svResidential : svResidentials) {
+//            List<SvRoom> svRooms = svOwnerService.findManagerRoom(svResidential.getResidentialId(), null, null);
+//            svResidential.setSvRoomList(svRooms);
+//        }
+        return Result.success("查询管理员所管理的楼栋成功", svResidentials);
+    }
+
+    @ResponseBody
+    @RequestMapping("findRoom")
+    @ApiOperation(value = "查询管理员所管理的住房", httpMethod = "POST", response = Result.class, notes = "查询管理员所管理的住房")
+    public Result findRoom(@RequestParam String token,
+                           @ApiParam(required = true, name = "residentialId", value = "楼栋ID") @RequestParam Integer residentialId) {
+        List<SvRoom> svRooms = svOwnerService.findManagerRoom(residentialId, null, null);
+        return Result.success("查询管理员所管理的住房成功", svRooms);
     }
 
     @ResponseBody
