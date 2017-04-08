@@ -113,7 +113,7 @@ public class AdminController {
                             @ApiParam(required = true, name = "creditAddress", value = "身份证地址") @RequestParam String creditAddress,
                             @ApiParam(required = true, name = "creditNo", value = "身份证号") @RequestParam String creditNo,
                             @ApiParam(required = true, name = "creditImgUrl", value = "身份证照地址") @RequestParam String creditImgUrl,
-                            @ApiParam(required = true, name = "idenImgId", value = "身份证照提交后获取的ID") @RequestParam Integer idenImgId,
+//                            @ApiParam(required = true, name = "idenImgId", value = "身份证照提交后获取的ID") @RequestParam Integer idenImgId,
                             @ApiParam(required = true, name = "headImgUrl", value = "大头自拍照地址") @RequestParam String headImgUrl,
                             @ApiParam(required = true, name = "phone", value = "用户手机号") @RequestParam String phone,
                             @ApiParam(required = true, name = "residentialId", value = "楼栋ID") @RequestParam Integer residentialId,
@@ -135,7 +135,7 @@ public class AdminController {
         svOwner.setOwnerGender(sex);
         svOwner.setOwnerIdenNumber(creditNo);
         svOwner.setOwnerCensusAddr(creditAddress);
-        svOwner.setIdenImgId(idenImgId);
+//        svOwner.setIdenImgId(idenImgId);
         svOwner.setLinglingId(LingLingSDK.getLingLingId());
         svOwner.setStatus(1);
 
